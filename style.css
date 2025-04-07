@@ -1,0 +1,46 @@
+body {
+  font-family: arial, sans-serif;
+  background-color: lightblue;
+}
+
+h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;     
+}
+
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  width: 40%;
+  }
+
+th {
+    border: 3px solid;
+    text-align: left;
+    padding: 8px;
+    background-color: yellowgreen;
+  }
+
+td {
+    border: 3px solid;
+    text-align: left;
+    padding: 8px;
+    background-color: antiquewhite;
+    transform: antiquewhite;
+  }
+
+a {
+  font-weight: bold;
+  color: black;
+  transition: transform 0.25s ease-in-out, color 0.1s ease-in-out; /* Ajout de la transition pour la mise à l'échelle */
+  display: inline-block; /* Cela permet à l'élément de se mettre à l'échelle sans problème */
+}
+
+a:hover {
+  color: gray; /* Change la couleur au survol */
+  transform: scale(1.1); /* Augmente la taille du texte à 150% */
+  transform-origin: center; /* Le point d'origine de l'échelle est centré */
+}
