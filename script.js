@@ -1,4 +1,4 @@
-const fileInput = document.getElementById('fileInput');
+const fileInput = document.getElementById('fileInput')
 const fileTableBody = document.getElementById('fileTableBody');
 const parentPathHeader = document.getElementById('parentpath');
 

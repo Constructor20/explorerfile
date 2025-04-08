@@ -4,12 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" /> -->
     <title>Explorateur de Fichiers</title>
 </head>
 <body>
   
     <h2>Explorateur de Fichiers</h2>
-
+    <!-- <form action="/upload" class="dropzone" id="myDropzone">
+        <div class="dz-message">
+            Déposez vos fichiers ici ou cliquez pour télécharger.
+        </div>
+    </form> -->
+    
+    <input type="file" id="fileInput" webkitdirectory multiple style="display: none;" />
+    <label for="fileInput" class="box-button">
+        <div class="button"><span>Sélectionner un dossier :</span></div>
+    </label>
     <!-- <-Tableau des chmn/fiches-->
     <table>
         <thead>
@@ -25,7 +35,37 @@
             <!-- Les fichiers seront insérés ici dynamiquement -->
         </tbody>
     </table>
-
     <script src="script.js"></script>
+    <!-- <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script>
+        // Configuration de Dropzone
+        Dropzone.options.myDropzone = {
+            autoProcessQueue: false, // Empêche l'envoi automatique des fichiers
+            init: function () {
+                this.on('addedfile', function (file) {
+                    console.log('Fichier ajouté :', file);
+                    return file
+                });
+            }
+        };
+
+        // Sélectionner un fichier déposé
+        document.getElementById('selectFileButton').addEventListener('click', function () {
+            const dropzoneInstance = Dropzone.forElement('#myDropzone');
+            const files = dropzoneInstance.files; // Liste des fichiers ajoutés
+
+            if (files.length > 0) {
+                const firstFile = files[0]; // Sélectionner le premier fichier
+                const fileInfoDiv = document.getElementById('fileInfo');
+                fileInfoDiv.innerHTML = `
+                    <p><strong>Nom :</strong> ${firstFile.name}</p>
+                    <p><strong>Taille :</strong> ${(firstFile.size / 1024).toFixed(2)} KB</p>
+                    <p><strong>Type :</strong> ${firstFile.type || 'Type inconnu'}</p>
+                `;
+            } else {
+                alert('Aucun fichier n’a été déposé.');
+            }
+        });
+    </script> -->
 </body>
 </html>
