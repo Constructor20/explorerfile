@@ -1,4 +1,4 @@
-const fileInput = document.getElementById('fileInput');
+const fileInput = document.getElementById('fileInput')
 const fileTableBody = document.getElementById('fileTableBody');
 const parentPathHeader = document.getElementById('parentpath');
 
@@ -61,3 +61,6 @@ fileInput.addEventListener('change', (event) => {
 }
 
 });
+//newcommit qsgdrdrhdds ,sùghdhù
+//spgùwphwhù
+// soes,gp^wp,espoe
