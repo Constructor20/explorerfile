@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/98.css" /> -->
     <!-- <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" /> -->
     <title>Explorateur de Fichiers</title>
 </head>
@@ -15,16 +16,29 @@
             Déposez vos fichiers ici ou cliquez pour télécharger.
         </div>
     </form> -->
-    
-    <input type="file" id="fileInput" webkitdirectory multiple style="display: none;" />
-    <label for="fileInput" class="box-button">
-        <div class="button"><span>Sélectionner un dossier :</span></div>
-    </label>
     <!-- <-Tableau des chmn/fiches-->
+
+
     <table>
         <thead>
             <tr>
-                <th id="parentpath"></th>
+                <div class="container">
+                    <!-- Bouton placé à gauche du tableau -->
+                    <div class="box-button">
+                        <input type="file" id="fileInput" webkitdirectory multiple style="display: none;" />
+                        <label for="fileInput">
+                            <div class="button"><span>Sélectionner un dossier :</span></div>
+                        </label>
+                    </div>
+                </div>
+            </tr>
+            <tr>
+                <th id="parentpath" class="path-left"></th>
+                <th id="backpath" class="path-right">
+                    <div id="backpath" class="path-right">
+                        <button id="goBackButton">Retour</button>
+                    </div>
+                </th>
             </tr>
             <tr>
                 <th>Chemin d'accès</th>

@@ -21,10 +21,16 @@ h2 {
   text-align: center;
 } */
 
+.container {
+  display: flex; /* Utilise flexbox pour aligner les éléments horizontalement */
+  align-items: flex-start; /* Aligne les éléments en haut */
+  gap: 20px; /* Espacement entre le bouton et le tableau */
+  margin: 20px auto; /* Centre horizontalement le conteneur */
+  width: fit-content; /* Ajuste la largeur au contenu */
+}
+
+
 .box-button {
-  left: 20px;
-  top: 10px;
-  position:relative;
   cursor: pointer;
   border: 4px solid black;
   background-color: gray;
@@ -33,6 +39,7 @@ h2 {
   user-select: none;
   display: inline-block;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .button {
@@ -52,11 +59,29 @@ h2 {
   transform: translateY(10px);
 }
 
+#goBackButton {
+  background-color: gray;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+#goBackButton:hover {
+  background-color: darkgray;
+}
+
 table {
   margin-left: auto;
   margin-right: auto;
   border-collapse: collapse;
   width: 40%;
+  }
+  
+th[colspan="2"] {
+    text-align: center;
+    padding: 0;
   }
 
 th {
