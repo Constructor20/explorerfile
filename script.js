@@ -42,7 +42,7 @@ function selectPath(e) {
     })
     console.log(selectedfiles)
     console.log(path)
-    updateParentPath(selectedfiles)
+    parentPathHeader.textContent = `Chemin parent: ${path}`;
     generateTableRows(selectedfiles, path)
 };
 
