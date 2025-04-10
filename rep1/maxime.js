@@ -16,9 +16,21 @@ function updateParentPath(files) {
     }
 }
 
+function isDirectory(path) {
+    if (/\/$/.test(path)) {
+        return true; // Si le chemin se termine par un "/", c'est un dossier
+    } else if (/\.\w+$/.test(path)) {
+        return false; // Si le chemin contient une extension (ex: .txt, .mp4), c'est un fichier
+    }
+    console.log(path)
+    return alert("Le fichier n'est pas un dossier ou un fichier valide")
+    ; // Si aucune des conditions n'est remplie
+}
+
 // Fonction pour générer un lien pour un fichier ou un dossier
 function generateLinkForFile(file, firstFilePath) {
     let pathWithoutFileName = file.webkitRelativePath.substring(0, file.webkitRelativePath.lastIndexOf('/'));
+    console.log(pathWithoutFileName)
     const parentFolderName = firstFilePath.substring(0, firstFilePath.lastIndexOf('/'));
     if (parentFolderName === pathWithoutFileName) {
         pathWithoutFileName = '/';
@@ -54,31 +66,54 @@ function generateTableRows(files, firstFilePath) {
         const row = document.createElement('tr');
         const cellPath = document.createElement('td');
         const link = document.createElement('a');
+        const linkData = generateLinkForFile(file, firstFilePath);
 
         if (file.webkitRelativePath) {
+            if (isDirectory(file.webkitRelativePath)) {
+                // Initialiser un tableau pour stocker les liens
+                const tab = [];
+        
+                // Ajouter les liens dans le tableau
+                const links = fileTableBody.querySelectorAll('a'); // Sélectionne tous les éléments <a>
+                links.forEach((a) => {
+                    //to do
+                    // faire un getattribute du data+path pour avoir le nombre d'occurence
 
-            link.addEventListener('click', selectPath)
-            // Appeler la fonction pour générer le lien
-            const linkData = generateLinkForFile(file, firstFilePath);
-            // Crée le href
-            link.href = linkData.href;
-            link.textContent = linkData.text;
-            link.setAttribute("data-path", linkData.data)
-        } else {
-            
-            link.textContent = 'Aucun chemin disponible';
+
+
+
+                    const key = "data-" + a.getAttribute("data-path")
+                    const dataPath = a.setAttribute(key, a.getAttribute(key)+1);
+                    if (dataPath) {
+                        tab.push(dataPath); // Ajoute le chemin "data-path" dans le tableau
+                    }
+                })
+        
+                console.log("Liens récupérés :", tab);
+            }
         }
 
-        cellPath.appendChild(link);
-        row.appendChild(cellPath);
+                link.addEventListener('click', selectPath)
+                // Appeler la fonction pour générer le lien
+                
+                // Crée le href
+                link.href = linkData.href;
+                link.textContent = linkData.text;
+                link.setAttribute("data-path", linkData.data)
 
-        // Crée une cellule pour le nom du fichier
-        const cellName = document.createElement('td');
-        cellName.textContent = file.name;
-        row.appendChild(cellName);
-
-        fileTableBody.appendChild(row);
-    });
+                console.log(isDirectory(file.webkitRelativePath))
+                cellPath.appendChild(link);
+                row.appendChild(cellPath);
+                
+                // Crée une cellule pour le nom du fichier
+                const cellName = document.createElement('td');
+                cellName.textContent = file.name;
+                row.appendChild(cellName);
+        
+                fileTableBody.appendChild(row);
+            }
+        
+    );
 }
 
 // Gestion de l'événement "change" sur l'input
