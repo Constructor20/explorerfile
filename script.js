@@ -42,6 +42,7 @@ function selectPath(e) {
     })
     console.log(selectedfiles)
     console.log(path)
+    updateParentPath(selectedfiles)
     generateTableRows(selectedfiles, path)
 };
 
@@ -85,16 +86,8 @@ function generateTableRows(files, firstFilePath) {
 fileInput.addEventListener('change', (event) => {
     const files = event.target.files;
     console.log(files)
-    if (files.length > 0) {
-        const firstFilePath = files[0].webkitRelativePath;
-        if (firstFilePath) {
-            const parentPathWithoutFileName = '/' + firstFilePath.substring(0, firstFilePath.lastIndexOf('/'));
-            parentPathHeader.textContent = `Chemin parent: ${parentPathWithoutFileName}`;
-        } else {
-            parentPathHeader.textContent = 'Aucun chemin disponible';
-        }
-
+        updateParentPath(files);
         // Appeler la fonction pour générer les lignes du tableau
         generateTableRows(files, files[0]?.webkitRelativePath);
     }
-});
+);
