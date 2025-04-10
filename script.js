@@ -1,12 +1,40 @@
 const fileInput = document.getElementById('fileInput');
 const fileTableBody = document.getElementById('fileTableBody');
 const parentPathHeader = document.getElementById('parentpath');
+const goBackButton = document.getElementById('goBackButton');
+
+const goBackPath = () => {
+    const currentPath = parentPathHeader.textContent.replace('Chemin parent: ', '').trim();
+
+    // Si on est déjà à la racine, ne rien faire
+    if (currentPath === '/') {
+        return;
+    }
+
+    // Calculer le chemin parent
+    const parentPath = currentPath.substring(0, currentPath.lastIndexOf('/')) || '/';
+
+    // Filtrer les fichiers pour n'afficher que ceux du dossier parent
+    const parentFiles = Array.from(fileInput.files).filter((file) => {
+        return file.webkitRelativePath.startsWith(parentPath) &&
+               file.webkitRelativePath.replace(parentPath, '').indexOf('/') === -1;
+    });
+
+    // Mettre à jour le chemin parent
+    parentPathHeader.textContent = `Chemin parent: ${parentPath}`;
+
+    // Mettre à jour le tableau
+    generateTableRows(parentFiles, parentPath);
+};
+
+goBackButton.addEventListener('click', goBackPath);
 
 function updateParentPath(files) {
     if (files.length > 0) {
         const firstFilePath = files[0].webkitRelativePath;
         if (firstFilePath) {
             const parentPathWithoutFileName = '/' + firstFilePath.substring(0, firstFilePath.lastIndexOf('/'));
+            // parentPathWithoutFileName = oldparentpathwithoutFileName;
             parentPathHeader.textContent = `Chemin parent: ${parentPathWithoutFileName}`;
         } else {
             parentPathHeader.textContent = 'Aucun chemin disponible';
@@ -37,7 +65,7 @@ function selectPath(e) {
     console.log(e.target)
     const path = e.target.getAttribute("data-path")
     console.log(fileInput.files)
-    const selectedfiles = Array.from(fileInput.files).filter((file)=>{
+    const selectedfiles = Array.from(fileInput.files).filter((file) => {
         return file.webkitRelativePath.includes(path)
     })
     console.log(selectedfiles)
@@ -45,6 +73,8 @@ function selectPath(e) {
     parentPathHeader.textContent = `Chemin parent: ${path}`;
     generateTableRows(selectedfiles, path)
 };
+
+
 
 function generateTableRows(files, firstFilePath) {
     fileTableBody.innerHTML = '';
@@ -63,10 +93,10 @@ function generateTableRows(files, firstFilePath) {
             const linkData = generateLinkForFile(file, firstFilePath);
             // Crée le href
             link.href = linkData.href;
-            link.textContent = linkData.text;
+            link.textContent = `.${firstFilePath == linkData.text ? "/" : linkData.text} `;
+
             link.setAttribute("data-path", linkData.data)
         } else {
-            
             link.textContent = 'Aucun chemin disponible';
         }
 
@@ -86,8 +116,8 @@ function generateTableRows(files, firstFilePath) {
 fileInput.addEventListener('change', (event) => {
     const files = event.target.files;
     console.log(files)
-        updateParentPath(files);
-        // Appeler la fonction pour générer les lignes du tableau
-        generateTableRows(files, files[0]?.webkitRelativePath);
-    }
+    updateParentPath(files);
+    // Appeler la fonction pour générer les lignes du tableau
+    generateTableRows(files, files[0]?.webkitRelativePath);
+}
 );
