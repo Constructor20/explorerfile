@@ -48,8 +48,6 @@ function updateParentPath(files) {
         } else {
             parentPathHeader.textContent = 'Aucun chemin disponible';
         }
-    } else {
-        parentPathHeader.textContent = 'Aucun fichier sélectionné';
     }
 }
 
@@ -75,16 +73,16 @@ function generateLinkForFile(file, firstFilePath) {
 
 // Fonction pour gérer le clic sur un lien
 function selectPath(e) {
-    const path = e.target.getAttribute("data-path")
-
-    oldparentpath = parentPathHeader.textContent.replace('Chemin parent: ', '').trim();
-
-    const selectedfiles = Array.from(fileInput.files).filter((file) => {
-        return file.webkitRelativePath.includes(path)
-    })
+    const path = e.target.getAttribute("data-path");
+    // Filtrer les fichiers pour n'afficher que ceux du chemin sélectionné
+    const selectedFiles = Array.from(fileInput.files).filter((file) => {
+        return file.webkitRelativePath.startsWith(path)
+    });
+    // Mettre à jour le chemin parent
     parentPathHeader.textContent = `Chemin parent: ${path}`;
-    generateTableRows(selectedfiles, path)
-};
+    // Mettre à jour le tableau
+    generateTableRows(selectedFiles, path);
+}
 
 
 function generateTableRows(files, firstFilePath) {
@@ -97,16 +95,22 @@ function generateTableRows(files, firstFilePath) {
         if (file.webkitRelativePath || file.path) {
             const linkData = generateLinkForFile(file, firstFilePath);
             link.href = linkData.href;
-            link.textContent = '.'+linkData.text;
+            if (linkData.data === parentFolderName) {
+                link.textContent = './';
+            } else {
+                link.textContent = '.' + linkData.text;
+            }
             link.setAttribute("data-path", linkData.data);
-            link.addEventListener('click', selectPath);
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Empêche le comportement par défaut du lien
+                e.target.textContent = './'; // Remplace le texte par "./"
+                selectPath(e); // Appelle la fonction pour gérer la navigation
+            });
         } else {
             link.textContent = 'Aucun chemin disponible';
         }
-
         cellPath.appendChild(link);
         row.appendChild(cellPath);
-
         // Crée une cellule pour le nom du fichier
         const cellName = document.createElement('td');
         cellName.textContent = file.name;
