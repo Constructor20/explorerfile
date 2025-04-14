@@ -73,50 +73,56 @@ function generateLinkForFile(file, firstFilePath) {
 
 // Fonction pour gérer le clic sur un lien
 function selectPath(e) {
-    const path = e.target.getAttribute("data-path");
-    // Filtrer les fichiers pour n'afficher que ceux du chemin sélectionné
-    const selectedFiles = Array.from(fileInput.files).filter((file) => {
-        return file.webkitRelativePath.startsWith(path)
-    });
-    // Mettre à jour le chemin parent
+    const path = e.target.getAttribute("data-path")
+
+    oldparentpath = parentPathHeader.textContent.replace('Chemin parent: ', '').trim();
+
+    const selectedfiles = Array.from(fileInput.files).filter((file) => {
+        return file.webkitRelativePath.includes(path)
+    })
     parentPathHeader.textContent = `Chemin parent: ${path}`;
-    // Mettre à jour le tableau
-    generateTableRows(selectedFiles, path);
-}
+    generateTableRows(selectedfiles, path)
+};
 
 
 function generateTableRows(files, firstFilePath) {
-    fileTableBody.innerHTML = '';
+    fileTableBody.innerHTML = ''; // Réinitialise le tableau
+
     files.forEach((file) => {
-        const row = document.createElement('tr');
-        const cellPath = document.createElement('td');
-        const link = document.createElement('a');
+        const row = document.createElement('tr'); // Crée une nouvelle ligne
+        const cellPath = document.createElement('td'); // Colonne pour le chemin
+        const link = document.createElement('a'); // Lien pour le chemin
 
         if (file.webkitRelativePath || file.path) {
             const linkData = generateLinkForFile(file, firstFilePath);
             link.href = linkData.href;
-            if (linkData.data === parentFolderName) {
-                link.textContent = './';
+
+            // Vérifie si le chemin parent correspond au chemin d'accès
+            const parentPath = parentPathHeader.textContent.replace('Chemin parent: ', '').trim();
+            if (linkData.data === parentPath) {
+                link.textContent = './'; // Affiche "./" si le chemin parent correspond
             } else {
-                link.textContent = '.' + linkData.text;
+                link.textContent = '.' + linkData.text; // Texte par défaut
             }
+
             link.setAttribute("data-path", linkData.data);
             link.addEventListener('click', (e) => {
                 e.preventDefault(); // Empêche le comportement par défaut du lien
-                e.target.textContent = './'; // Remplace le texte par "./"
                 selectPath(e); // Appelle la fonction pour gérer la navigation
             });
         } else {
             link.textContent = 'Aucun chemin disponible';
         }
-        cellPath.appendChild(link);
-        row.appendChild(cellPath);
+
+        cellPath.appendChild(link); // Ajoute le lien à la cellule
+        row.appendChild(cellPath); // Ajoute la cellule à la ligne
+
         // Crée une cellule pour le nom du fichier
         const cellName = document.createElement('td');
         cellName.textContent = file.name;
-        row.appendChild(cellName);
+        row.appendChild(cellName); // Ajoute la cellule à la ligne
 
-        fileTableBody.appendChild(row);
+        fileTableBody.appendChild(row); // Ajoute la ligne au tableau
     });
 }
 
