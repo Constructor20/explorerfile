@@ -6,6 +6,7 @@ const goBackButton = document.getElementById('goBackButton');
 
 // Variables globales
 const pathStack = [];
+const tableStack = []; // Pile pour sauvegarder les états du tableau
 const basePath = '/';
 
 // Fonction pour gérer le retour au dossier parent
@@ -16,32 +17,60 @@ const goBackPath = () => {
         console.log('La pile pathStack est vide. Retour au chemin de base.');
         const initialFiles = getFromLocalStorage('initialFiles');
         if (initialFiles) {
-            // Afficher un chemin explicite pour la racine
-            parentPathHeader.textContent = `Chemin parent: ${pathStack}`;
+            parentPathHeader.textContent = `Chemin parent: Racine`;
             console.log('Chemin parent réinitialisé à la racine.');
 
             generateTableRows(initialFiles.map(file => ({
                 name: file.name,
                 webkitRelativePath: file.path
-            })), basePath);
+            })), '/');
         }
         return;
+    }
+
+    // Restaurer l'état précédent du tableau
+    const previousTableState = tableStack.pop();
+    console.log('État du tableau restauré depuis tableStack :', previousTableState);
+
+    if (previousTableState) {
+        restoreTableRows(previousTableState); // Utilise la nouvelle fonction pour restaurer le tableau
     }
 
     const parentPath = pathStack.pop();
     console.log('Chemin parent retiré de la pile :', parentPath);
 
-    const parentFiles = Array.from(fileInput.files).filter((file) => {
-        return file.webkitRelativePath.startsWith(parentPath) &&
-               file.webkitRelativePath.replace(parentPath, '').indexOf('/') === -1;
-    });
-    console.log('Fichiers filtrés pour le chemin parent :', parentFiles);
-
     parentPathHeader.textContent = `Chemin parent: ${parentPath}`;
     console.log('Chemin parent mis à jour après retour :', parentPathHeader.textContent);
-
-    generateTableRows(parentFiles, parentPath);
 };
+
+function restoreTableRows(previousTableState) {
+    console.log('Restauration du tableau avec l\'état :', previousTableState);
+
+    fileTableBody.innerHTML = ''; // Réinitialise le tableau
+
+    previousTableState.forEach(rowData => {
+        const row = document.createElement('tr');
+        const cellPath = document.createElement('td');
+        const link = document.createElement('a');
+
+        link.textContent = rowData.path || 'Aucun chemin disponible';
+        link.setAttribute('data-path', rowData.path);
+        link.href = `#${rowData.path}`;
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            selectPath(e); // Ajoute l'événement pour gérer le clic
+        });
+
+        cellPath.appendChild(link);
+        row.appendChild(cellPath);
+
+        const cellName = document.createElement('td');
+        cellName.textContent = rowData.name;
+        row.appendChild(cellName);
+
+        fileTableBody.appendChild(row);
+    });
+}
 
 // Fonction pour mettre à jour le chemin parent
 function updateParentPath(files) {
@@ -144,7 +173,6 @@ function saveToLocalStorage(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
 }
 
-// Récupérer des données depuis le localStorage
 function getFromLocalStorage(key) {
     const data = localStorage.getItem(key);
     return data ? JSON.parse(data) : null;
@@ -153,13 +181,22 @@ function getFromLocalStorage(key) {
 // Gestion de l'événement "change" sur l'input
 fileInput.addEventListener('change', (event) => {
     const files = Array.from(event.target.files);
+
     saveToLocalStorage('initialFiles', files.map(file => ({
         name: file.name,
         path: file.webkitRelativePath
     })));
 
     updateParentPath(files);
-    generateTableRows(files, files[0]?.webkitRelativePath);
+    generateTableRows(files, '/');
+
+    // Sauvegarder l'état initial du tableau
+    const initialTableState = Array.from(fileTableBody.children).map(row => ({
+        path: row.querySelector('a')?.getAttribute('data-path') || '',
+        name: row.querySelector('td:last-child')?.textContent || ''
+    }));
+    tableStack.push(initialTableState);
+    console.log('État initial du tableau sauvegardé dans tableStack :', tableStack);
 });
 
 // Gestion du bouton "Retour"
