@@ -29,7 +29,7 @@ const goBackPath = () => {
     }
 
     // Restaurer l'état précédent du tableau
-    const previousTableState = tableStack.pop();
+    const previousTableState = tableStack.pop('');
     console.log('État du tableau restauré depuis tableStack :', previousTableState);
 
     if (previousTableState) {
@@ -53,7 +53,7 @@ function restoreTableRows(previousTableState) {
         const cellPath = document.createElement('td');
         const link = document.createElement('a');
 
-        link.textContent = rowData.path || 'Aucun chemin disponible';
+        link.textContent = './'+rowData.path || 'Aucun chemin disponible';
         link.setAttribute('data-path', rowData.path);
         link.href = `#${rowData.path}`;
         link.addEventListener('click', (e) => {
