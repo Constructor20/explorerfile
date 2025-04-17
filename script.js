@@ -11,37 +11,34 @@ const basePath = '/';
 
 // Fonction pour gérer le retour au dossier parent
 const goBackPath = () => {
-    console.log('État de pathStack avant pop :', pathStack);
+    console.log('État de tableStack avant pop :', tableStack);
 
-    if (pathStack.length === 0) {
-        console.log('La pile pathStack est vide. Retour au chemin de base.');
+    if (tableStack.length === 0) {
+        console.log('Retour au chemin initial sélectionné :', initialParentPath);
         const initialFiles = getFromLocalStorage('initialFiles');
         if (initialFiles) {
-            parentPathHeader.textContent = `Chemin parent: Racine`;
-            console.log('Chemin parent réinitialisé à la racine.');
+            parentPathHeader.textContent = `Chemin parent: ${initialParentPath}`;
 
             generateTableRows(initialFiles.map(file => ({
                 name: file.name,
                 webkitRelativePath: file.path
-            })), '/');
+            })), initialParentPath);
         }
         return;
     }
 
-    // Restaurer l'état précédent du tableau
-    const previousTableState = tableStack.pop('');
-    console.log('État du tableau restauré depuis tableStack :', previousTableState);
+    // Sinon, on remonte d'un cran
+    const previousState = tableStack.pop();
+    const { tableState, parentPath } = previousState;
 
-    if (previousTableState) {
-        restoreTableRows(previousTableState); // Utilise la nouvelle fonction pour restaurer le tableau
+    if (tableState) {
+        restoreTableRows(tableState);
     }
 
-    const parentPath = pathStack.pop();
-    console.log('Chemin parent retiré de la pile :', parentPath);
-
-    parentPathHeader.textContent = `Chemin parent: ${parentPath}`;
+    parentPathHeader.textContent = `Chemin parent: ${parentPath || initialParentPath}`;
     console.log('Chemin parent mis à jour après retour :', parentPathHeader.textContent);
 };
+
 
 function restoreTableRows(previousTableState) {
     console.log('Restauration du tableau avec l\'état :', previousTableState);
@@ -53,7 +50,7 @@ function restoreTableRows(previousTableState) {
         const cellPath = document.createElement('td');
         const link = document.createElement('a');
 
-        link.textContent = './'+rowData.path || 'Aucun chemin disponible';
+        link.textContent = './' + rowData.path || 'Aucun chemin disponible';
         link.setAttribute('data-path', rowData.path);
         link.href = `#${rowData.path}`;
         link.addEventListener('click', (e) => {
@@ -179,25 +176,41 @@ function getFromLocalStorage(key) {
 }
 
 // Gestion de l'événement "change" sur l'input
+let initialParentPath = '/'; // Valeur par défaut
+
 fileInput.addEventListener('change', (event) => {
     const files = Array.from(event.target.files);
 
-    saveToLocalStorage('initialFiles', files.map(file => ({
-        name: file.name,
-        path: file.webkitRelativePath
-    })));
+    if (files.length > 0) {
+        // On récupère le dossier racine du premier fichier
+        const firstFilePath = files[0].webkitRelativePath;
+        initialParentPath = '/' + firstFilePath.split('/')[0]; // par ex: /Public
 
-    updateParentPath(files);
-    generateTableRows(files, '/');
+        // Sauvegarde dans le localStorage (optionnel)
+        saveToLocalStorage('initialParentPath', initialParentPath);
 
-    // Sauvegarder l'état initial du tableau
-    const initialTableState = Array.from(fileTableBody.children).map(row => ({
-        path: row.querySelector('a')?.getAttribute('data-path') || '',
-        name: row.querySelector('td:last-child')?.textContent || ''
-    }));
-    tableStack.push(initialTableState);
-    console.log('État initial du tableau sauvegardé dans tableStack :', tableStack);
+        // Mise à jour du header avec le dossier racine
+        parentPathHeader.textContent = `Chemin parent: ${initialParentPath}`;
+
+        saveToLocalStorage('initialFiles', files.map(file => ({
+            name: file.name,
+            path: file.webkitRelativePath
+        })));
+
+        generateTableRows(files, initialParentPath);
+
+        // Sauvegarde de l'état initial
+        const initialTableState = files.map(file => ({
+            path: file.webkitRelativePath.substring(0, file.webkitRelativePath.lastIndexOf('/')),
+            name: file.name
+        }));
+        tableStack.push({
+            tableState: initialTableState,
+            parentPath: initialParentPath
+        });
+    }
 });
+
 
 // Gestion du bouton "Retour"
 goBackButton.addEventListener('click', goBackPath);
