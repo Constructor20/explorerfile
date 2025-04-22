@@ -3,7 +3,6 @@
 $chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__;
 
 $icon_folder = "icon/folder.png";
-$icon_file = "icon/file.png";
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +71,14 @@ $icon_file = "icon/file.png";
                                       <a href='?path=$chemin_url'>/$fichier</a>
                                       </td>
                                   </tr>";
-                          } elseif (is_file($chemin_complet)) {
+                          } else {
+                            $icon_file = scandir($chemin);
+                            $path_parts = pathinfo($fichier);
+                            $path_icon = pathinfo($icon_file);
+                            echo $path_parts['extension'], "\n";
+
+                            if ($path_parts['extension'] == $path_icon['filename'])
+                            
                               echo "<tr>
                                       <td>
                                       <img src='$icon_file' class='icon' style='vertical-align: middle;' />
