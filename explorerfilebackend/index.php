@@ -1,7 +1,32 @@
 <?php
 // Récupère le chemin actuel ou le dossier racine si aucun paramètre 'path' n'est fourni
 $chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__;
-
+function findicon($chemin) {
+  if (!is_dir($chemin)) {
+  $pathinfo = pathinfo($chemin);
+  var_dump($chemin);
+  // var_dump($pathinfo);
+  switch ($pathinfo['extension']) {
+    case 'html':
+      $extension = 'html';
+      break;
+    case 'css':
+      $extension = 'css';
+      break;
+    case 'php':
+      $extension = 'php';
+      break;
+    case 'txt':
+      $extension = 'txt';
+      break;
+    default:
+      $extension = 'file';
+    }
+  return "<img src='./icon/$extension.png' class='icon' style='vertical-align: middle;' />";
+  } else {
+    return "<img src='./icon/folder2.png' class='icon' style='vertical-align: middle;' />";
+  }
+}
 $icon_folder = "icon/folder.png";
 ?>
 
@@ -55,40 +80,39 @@ $icon_folder = "icon/folder.png";
                           </td>
                       </tr>";
               }
-
               if (is_dir($chemin)) {
                   $fichiers = scandir($chemin);
 
                   foreach ($fichiers as $fichier) {
-                      if ($fichier !== "." && $fichier !== "..") {
-                          $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
-                          $chemin_url = urlencode($chemin_complet);
-
-                          if (is_dir($chemin_complet)) {
-                              echo "<tr>
-                                      <td>
-                                      <img src='$icon_folder' class='icon' style='vertical-align: middle;' />
-                                      <a href='?path=$chemin_url'>/$fichier</a>
-                                      </td>
-                                  </tr>";
-                          } else {
-                            $icon_file = scandir($chemin);
-                            $path_parts = pathinfo($fichier);
-                            $path_icon = pathinfo($icon_file);
-                            echo $path_parts['extension'], "\n";
-
-                            if ($path_parts['extension'] == $path_icon['filename'])
-                            
-                              echo "<tr>
-                                      <td>
-                                      <img src='$icon_file' class='icon' style='vertical-align: middle;' />
-                                      /$fichier
-                                      </td>
-                                  </tr>";
-                          }
+                    $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
+                    $chemin_url = urlencode($chemin_complet);
+                    $icon = findicon($chemin_complet);
+                    // $fichier !== "." && $fichier !== ".."
+                      if (is_dir($fichier)) {
+                        if ($fichier !== "." && $fichier !== "..") {
+                          echo "<tr>
+                                  <td>
+                                      $icon
+                                  <a href='?path=$chemin_url'>/$fichier</a>
+                                  </td>
+                                </tr>";
+                        }
+                      } else {
+                        $icon_file_path = 'icon';
+                        $icon_file = scandir(directory: $icon_file_path);
+                        // $path_parts = pathinfo($fichier);
+                        // return le visuel de mon icon
+                        
+                        // echo $path_parts['extension'], "\n";
+                          echo "<tr>
+                                  <td>
+                                  $icon
+                                  //$fichier
+                                  </td>
+                              </tr>";
                       }
                   }
-              } else {
+                } else {
                   echo "<tr><td>⚠️ Ce dossier n'existe pas.</td></tr>";
               }
               ?>
