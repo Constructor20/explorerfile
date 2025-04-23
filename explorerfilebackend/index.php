@@ -87,8 +87,8 @@ $icon_folder = "icon/folder.png";
                     $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
                     $chemin_url = urlencode($chemin_complet);
                     $icon = findicon($chemin_complet);
-                    // $fichier !== "." && $fichier !== ".."
-                      if (is_dir($fichier)) {
+              //       // $fichier !== "." && $fichier !== ".."
+                      if (is_dir($chemin_complet)) {
                         if ($fichier !== "." && $fichier !== "..") {
                           echo "<tr>
                                   <td>
@@ -107,7 +107,7 @@ $icon_folder = "icon/folder.png";
                           echo "<tr>
                                   <td>
                                   $icon
-                                  //$fichier
+                                  $fichier
                                   </td>
                               </tr>";
                       }
