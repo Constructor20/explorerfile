@@ -1,3 +1,9 @@
+body {
+  background-color: black;
+  margin: 0;
+  overflow: hidden; /* évite le scroll inutile */
+}
+
 .icon {
     width: 18px;
     vertical-align: middle;
