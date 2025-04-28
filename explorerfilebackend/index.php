@@ -60,5 +60,8 @@
     </div>
   </div>
   <script src="script.js"></script>
+  <!-- <script>
+  localStorage.clear();
+  </script> -->
 </body>
 </html>
