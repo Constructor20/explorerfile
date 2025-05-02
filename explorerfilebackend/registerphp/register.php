@@ -1,35 +1,10 @@
-<?php include 'registerinc.php' ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Créer un compte - Windows 98 Style</title>
   <link rel="stylesheet" href="https://unpkg.com/98.css" />
-  <style>
-    body {
-      background-color: teal;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .window {
-      width: 320px;
-    }
-    .register-form {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .register-form input {
-      margin-top: 4px;
-    }
-    .buttons {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 8px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="window" style="margin: auto;">
@@ -42,22 +17,32 @@
       </div>
     </div>
     <div class="window-body">
-      <form class="register-form" method="post" action="register.php">
+      <form class="register-form" method="post" action="registerinc.php">
         <label>
           Email:
-          <input type="text" name="email" required />
+          <input type="text" name="email" required placeholder="Email"/>
+          <?php if(!empty($_GET["error"])) {
+            if($_GET["error"] == "email") {
+              echo "L'email est déjà utilisé";
+            }
+          };?>
         </label>
         <label>
           Nom d'utilisateur:
-          <input type="text" name="username" required />
+          <input type="text" name="username" required placeholder="Nom d'utilisateur"/>
+          <?php if(!empty($_GET["error"])) {
+            if($_GET["error"] == "username") {
+              echo "L'username est déjà utilisé";
+            }
+          };?>
         </label>
         <label>
           Mot de passe:
-          <input type="password" name="password" required />
+          <input type="password" name="password" required placeholder="Mot de passe"/>
         </label>
         <label>
           Confirmer mot de passe:
-          <input type="password" name="confirm_password" required />
+          <input type="password" name="confirm_password" required placeholder="Confirmer mot de passe"/>
         </label>
         <div class="buttons">
           <button type="submit" class="button">Créer le compte</button>

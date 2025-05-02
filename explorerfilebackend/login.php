@@ -51,6 +51,9 @@
           <input type="password" name="password" required />
         </label>
         <div class="buttons">
+        <a href="register.php" class="button">S'inscrire</a>
+        </div>
+        <div class="buttons">
           <button type="submit" class="button">Se connecter</button>
         </div>
       </form>
