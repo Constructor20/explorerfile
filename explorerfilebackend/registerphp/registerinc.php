@@ -8,37 +8,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password = $_POST['password'] ?? null;
     $confirm_password = $_POST['confirm_password'] ?? null;
 
-    $erreur = false;
-    if (empty($username) or " ") {
-        echo "Le champ username est vide.<br>";
-        $erreur = true;
-    }
-
-    if (empty($email) or " ") {
-        echo "Le champ email est vide.<br>";
-        $erreur = true;
-    }
-
-    if (empty($password) or " ") {
-        echo "Le champ mot de passe est vide.<br>";
-        $erreur = true;
-    }
-
-    if (empty($confirm_password)) {
-        echo "Le champ de confirmation du mot de passe est vide.<br>";
-        $erreur = true;
-    }  
-
-    if ($password !== $confirm_password) {
-        echo "Les mots de passe ne correspondent pas.<br>";
-        $erreur = true;
-    }
-
-    if($erreur){
-    exit;
-    }
-
-
     $sql = "SELECT email, username FROM userdata";
     $stmt = $conn->query($sql);
     foreach($stmt as $row) {
@@ -49,14 +18,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             header('Location: register.php?error=username');
         }
     }
+    if (empty($username) or trim($username) == "") {
+        header('Location: register.php?error=blabla');
+        exit;
+    }
+    if (empty($email) or trim($email) == "") {
+        header('Location: register.php?error=email');
+        exit;
+    }
 
-    $hashpassword = password_hash($password, PASSWORD_DEFAULT);
+    if (empty($password) or trim($password) == "") {
+        header('Location: register.php?error=password');
+        exit;
+    }
+
+    if (empty($confirm_password) or trim($confirm_password) == "") {
+        header('Location: register.php?error=confirm_password');
+        exit;
+    }  
+
+    if ($password !== $confirm_password) {
+        header('Location: register.php?error=nonesamepassword');
+        exit;
+    }
+
+    $username = trim($username);
+    $email = trim($email);
+    $hashPassword = trim($hashPassword);
+    $hashPassword = password_hash(trim($password), PASSWORD_DEFAULT);
     $sql = "INSERT INTO userdata (username, email, password) VALUES(?, ?, ?)";
     $stmt = $conn->prepare($sql, [PDO::ERRMODE_EXCEPTION]);
     $stmt->bindParam(1, $username);
     $stmt->bindParam(2, $email);
-    $stmt->bindParam(3, $hashpassword);
+    $stmt->bindParam(3, $hashPassword);
     $exec = $stmt->execute();
 
-    header('Location: ../compte.php');
+    header('Location: ../compte/compte.php');
 }
