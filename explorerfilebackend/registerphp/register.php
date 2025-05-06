@@ -22,7 +22,7 @@
           Email:
           <input type="text" name="email" required placeholder="Email"/>
           <?php if(!empty($_GET["error"])) {
-            if($_GET["error"] == "email") {
+            if($_GET["error"] == "email" or $_GET["error"] == "invalid_email") {
               echo "L'email est déjà utilisé ou le champ est vide";
             }
           };?>
