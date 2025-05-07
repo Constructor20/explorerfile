@@ -1,11 +1,85 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../registerphp/login.php');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <title>Utilisateur - Modifier les informations</title>
+  <link rel="stylesheet" href="../style/stylecompte.css">
+  <link rel="stylesheet" href="https://unpkg.com/98.css">
 </head>
 <body>
-    <h1>COMPTE USER</h1>
+
+  <div class="sidebar window">
+    <div class="title-bar">
+      <div class="title-bar-text">Utilisateur</div>
+    </div>
+    <div class="window-body">
+      <h4>Mon Compte</h4>
+      <ul>
+        <li><b>Home</b></li>
+        <li><b>Mon Profil</b></li>
+      </ul>
+    </div>
+  </div>
+
+    <div class="main">
+        <div class="header">
+        <button class="button" onclick="window.location.href = '../registerphp/login.php';">Déconnexion</button>
+        </div>
+
+        <div class="window" style="width: 100%;">
+            <div class="title-bar">
+                <div class="title-bar-text">Mon Profil</div>
+            </div>
+            <div class="window-body">
+                <p><b>Utilisateur : <?php echo htmlspecialchars($_SESSION['username']);?></b></p>
+                <form method="POST" action="compteinc.php">
+                    <div class="field-row-stacked">
+                        <label>Nom</label>
+                        <input type="text" name="username" value="<?php echo htmlspecialchars($_SESSION['username']); ?>" id="username">
+                    </div>
+                    
+                    <div class="field-row-stacked">
+                        <label>Email</label>
+                        <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email']); ?>" id="email">
+                    </div>
+
+                    <div class="field-row-stacked">
+                        <label>Mot de passe</label>
+                        <input type="password" name="password" id="password" placeholder="*********">
+                    </div>
+
+                    <div class="field-row-stacked">
+                        <input type="checkbox" id="showUpdate" onchange="toggleUpdateButton()">
+                        <label for="showUpdate">Je veux modifier mes informations</label>
+                    </div>
+
+                    <div class="field-row-stacked" id="updateButtonContainer" style="display: none;">
+                        <button type="submit" class="button">Mettre à jour</button>
+                    </div>
+                </form>
+                <div class="field-row-stacked">
+                    <h4>Gestion des fichiers</h4>
+                    <button class="button">Accéder au gestionnaire de fichiers</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function toggleUpdateButton() {
+    const checkbox = document.getElementById('showUpdate');
+    const updateBtn = document.getElementById('updateButtonContainer');
+    updateBtn.style.display = checkbox.checked ? 'block' : 'none';
+    }
+    </script>
 </body>
 </html>

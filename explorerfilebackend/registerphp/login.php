@@ -17,21 +17,21 @@
       </div>
     </div>
     <div class="window-body">
-      <form class="register-form" method="post" action="../compte/compte.php">
+      <form class="register-form" method="post" action="logininc.php">
         <label>
           identifiant:
-          <input type="text" name="identifiant" required placeholder="Email ou Username"/>
+          <input type="text" name="identifiant"  placeholder="Email ou Username"/>
           <?php if(!empty($_GET["error"])) {
-            if($_GET["error"] == "identifiant") {
+            if($_GET["error"] == "identifiant" or $_GET["error"] == "emptyid") {
               echo "L'identifiant n'est pas bon";
             }
           };?>
         </label>
         <label>
           Mot de passe:
-          <input type="password" name="password" required placeholder="Mot de passe"/>
+          <input type="password" name="password"  placeholder="Mot de passe"/>
           <?php if(!empty($_GET["error"])) {
-            if($_GET["error"] == "password") {
+            if($_GET["error"] == "password" or $_GET["error"] == "emptypassword") {
               echo "Le mot de passe n'est pas bon";
             }
           };?>
