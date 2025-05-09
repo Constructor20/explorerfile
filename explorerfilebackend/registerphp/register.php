@@ -20,7 +20,7 @@
       <form class="register-form" method="post" action="registerinc.php">
         <label>
           Email:
-          <input type="text" name="email" required placeholder="Email"/>
+          <input type="email" name="email"  required placeholder="Email"/>
           <?php if(!empty($_GET["error"])) {
             if($_GET["error"] == "email" or $_GET["error"] == "invalid_email") {
               echo "L'email est déjà utilisé ou le champ est vide";
@@ -29,7 +29,7 @@
         </label>
         <label>
           Nom d'utilisateur:
-          <input type="text" name="username" placeholder="Nom d'utilisateur"/>
+          <input type="username" name="username" placeholder="Nom d'utilisateur"/>
           <?php if(!empty($_GET["error"])) {
             if($_GET["error"] == "username") {
               echo "L'username est déjà utilisé ou le champ est vide";

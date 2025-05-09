@@ -42,20 +42,35 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             <div class="window-body">
                 <p><b>Utilisateur : <?php echo htmlspecialchars($_SESSION['username']);?></b></p>
-                <form method="POST" action="compteinc.php">
+                <form action="compteinc.php" method="POST">
                     <div class="field-row-stacked">
                         <label>Nom</label>
                         <input type="text" name="username" value="<?php echo htmlspecialchars($_SESSION['username']); ?>" id="username">
+                        <?php if(!empty($_GET["error"])) {
+                            if($_GET["error"] == "username") {
+                            echo "L'username est déjà utilisé ou le champ est vide";
+                            }
+                        };?>
                     </div>
                     
                     <div class="field-row-stacked">
                         <label>Email</label>
                         <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email']); ?>" id="email">
+                        <?php if(!empty($_GET["error"])) {
+                            if($_GET["error"] == "email" or $_GET["error"] == "invalid_email") {
+                            echo "L'email est déjà utilisé ou le champ est vide";
+                            }
+                        };?>
                     </div>
 
                     <div class="field-row-stacked">
                         <label>Mot de passe</label>
                         <input type="password" name="password" id="password" placeholder="*********">
+                        <?php if(!empty($_GET["error"])) {
+                            if($_GET["error"] == "password") {
+                            echo "L'email est déjà utilisé ou le champ est vide";
+                            }
+                        };?>
                     </div>
 
                     <div class="field-row-stacked">
@@ -64,7 +79,7 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
 
                     <div class="field-row-stacked" id="updateButtonContainer" style="display: none;">
-                        <button type="submit" class="button">Mettre à jour</button>
+                        <button type="submit" class="button" name="update_account">Mettre à jour</button>
                     </div>
                 </form>
                 <div class="field-row-stacked">
