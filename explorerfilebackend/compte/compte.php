@@ -48,27 +48,25 @@ if (!isset($_SESSION['user_id'])) {
                         <input type="text" name="username" value="<?php echo htmlspecialchars($_SESSION['username']); ?>" id="username">
                         <?php if(!empty($_GET["error"])) {
                             if($_GET["error"] == "username") {
-                            echo "L'username est déjà utilisé ou le champ est vide";
+                            echo "L'username est invalide ou incorrect";
                             }
                         };?>
                     </div>
-                    
                     <div class="field-row-stacked">
                         <label>Email</label>
                         <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['email']); ?>" id="email">
                         <?php if(!empty($_GET["error"])) {
                             if($_GET["error"] == "email" or $_GET["error"] == "invalid_email") {
-                            echo "L'email est déjà utilisé ou le champ est vide";
+                            echo "L'email est invalide ou incorrect";
                             }
                         };?>
                     </div>
-
                     <div class="field-row-stacked">
                         <label>Mot de passe</label>
                         <input type="password" name="password" id="password" placeholder="*********">
                         <?php if(!empty($_GET["error"])) {
                             if($_GET["error"] == "password") {
-                            echo "L'email est déjà utilisé ou le champ est vide";
+                            echo "Le mot de passe est invalide ou incorrect";
                             }
                         };?>
                     </div>

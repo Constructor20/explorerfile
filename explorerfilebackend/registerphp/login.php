@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <title>Créer un compte</title>
   <link rel="stylesheet" href="https://unpkg.com/98.css" />
   <link rel="stylesheet" href="../style/styleregister.css" />
 </head>
+
 <body>
   <div class="window" style="margin: auto;">
     <div class="title-bar">
@@ -20,22 +22,23 @@
       <form class="register-form" method="post" action="logininc.php">
         <label>
           identifiant:
-          <input type="text" name="identifiant"  placeholder="Email ou Username"/>
-          <?php if(!empty($_GET["error"])) {
-            if($_GET["error"] == "identifiant" or $_GET["error"] == "emptyid") {
-              echo "L'identifiant n'est pas bon";
-            }
-          };?>
+          <input type="text" name="identifiant" placeholder="Email ou Username" />
+
         </label>
         <label>
           Mot de passe:
-          <input type="password" name="password"  placeholder="Mot de passe"/>
-          <?php if(!empty($_GET["error"])) {
-            if($_GET["error"] == "password" or $_GET["error"] == "emptypassword") {
-              echo "Le mot de passe n'est pas bon";
-            }
-          };?>
+          <input type="password" name="password" placeholder="Mot de passe" />
+
         </label>
+
+        <span style="color: red;">
+          <?php if (!empty($_GET["error"])) {
+            if ($_GET["error"] == "password" or $_GET["error"] == "emptypassword" or $_GET["error"] == "identifiant" or $_GET["error"] == "emptyid") {
+              echo "Le mot de passe  ou l'identifiant n'est pas bon";
+            }
+          }; ?>
+        </span>
+
         <div class="buttons">
           <button type="submit" class="button">Connexion</button>
         </div>
@@ -43,4 +46,5 @@
     </div>
   </div>
 </body>
+
 </html>
