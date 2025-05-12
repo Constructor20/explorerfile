@@ -33,9 +33,8 @@ if (!isset($_SESSION['user_id'])) {
 
     <div class="main">
         <div class="header">
-        <button class="button" onclick="window.location.href = '../registerphp/login.php';">Déconnexion</button>
+        <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
         </div>
-
         <div class="window" style="width: 100%;">
             <div class="title-bar">
                 <div class="title-bar-text">Mon Profil</div>
@@ -50,6 +49,11 @@ if (!isset($_SESSION['user_id'])) {
                             if($_GET["error"] == "username") {
                             echo "L'username est invalide ou incorrect";
                             }
+                        };
+                        if(!empty($_GET["success"])) {
+                            if($_GET["success"] == "username") {
+                            echo "L'username a été modifié avec succès";
+                            }
                         };?>
                     </div>
                     <div class="field-row-stacked">
@@ -58,6 +62,11 @@ if (!isset($_SESSION['user_id'])) {
                         <?php if(!empty($_GET["error"])) {
                             if($_GET["error"] == "email" or $_GET["error"] == "invalid_email") {
                             echo "L'email est invalide ou incorrect";
+                            }
+                        };
+                        if(!empty($_GET["success"])) {
+                            if($_GET["success"] == "email") {
+                            echo "L'email a été modifié avec succès";
                             }
                         };?>
                     </div>
@@ -92,6 +101,9 @@ if (!isset($_SESSION['user_id'])) {
     const checkbox = document.getElementById('showUpdate');
     const updateBtn = document.getElementById('updateButtonContainer');
     updateBtn.style.display = checkbox.checked ? 'block' : 'none';
+    }
+    function toggleDeconnectionButton() {
+    window.location.href = '../logout.php';
     }
     </script>
 </body>

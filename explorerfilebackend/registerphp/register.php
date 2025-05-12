@@ -54,6 +54,7 @@
             }
           };?>
         </label>
+        <div id="inscription"><a href="login.php">Déjà un compte ? Connectez-vous !</a></div>
         <div class="buttons">
           <button type="submit" class="button">Créer le compte</button>
         </div>

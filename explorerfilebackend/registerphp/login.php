@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Créer un compte</title>
+  <title>Connexion</title>
   <link rel="stylesheet" href="https://unpkg.com/98.css" />
   <link rel="stylesheet" href="../style/styleregister.css" />
 </head>
@@ -30,7 +30,6 @@
           <input type="password" name="password" placeholder="Mot de passe" />
 
         </label>
-
         <span style="color: red;">
           <?php if (!empty($_GET["error"])) {
             if ($_GET["error"] == "password" or $_GET["error"] == "emptypassword" or $_GET["error"] == "identifiant" or $_GET["error"] == "emptyid") {
@@ -38,7 +37,7 @@
             }
           }; ?>
         </span>
-
+        <div id="inscription"><a href="register.php">Pas de compte ? Inscrivez-vous !</a></div>
         <div class="buttons">
           <button type="submit" class="button">Connexion</button>
         </div>

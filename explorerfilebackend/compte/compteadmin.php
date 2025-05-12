@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../registerphp/login.php');
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -22,17 +32,16 @@
   </div>
 
   <div class="main">
-    <div class="header">
-      <button class="button">Connexion</button>
-      <button class="button">Paramètres</button>
-    </div>
+      <div class="header">
+        <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
+      </div>
 
     <div class="window" style="width: 100%;">
       <div class="title-bar">
         <div class="title-bar-text">Gestion des comptes</div>
       </div>
       <div class="window-body">
-        <p><b>Admin “username”</b></p>
+        <p><b>Admin <?php echo htmlspecialchars($_SESSION['username']);?></b></p>
         <div class="field-row-stacked">
           <label>Compte</label>
           <div class="account-list">
@@ -47,6 +56,11 @@
       </div>
     </div>
   </div>
+  <script>
+    function toggleDeconnectionButton() {
+    window.location.href = '../logout.php';
+    }
+  </script>
 
 </body>
 </html>

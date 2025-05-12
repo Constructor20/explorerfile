@@ -34,7 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $_SESSION['email'] = $row['email'];
     $_SESSION['username'] = $row['username'];
 
-    // $admin=
+    if($row['id'] == 1) {
+        header('Location: ../compte/compteadmin.php');
+        exit;
+    }
     
     header('Location: ../compte/compte.php');
 }
