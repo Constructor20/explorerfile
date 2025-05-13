@@ -43,14 +43,13 @@ if (!isset($_SESSION['user_id'])) {
       <div class="window-body">
         <p><b>Admin <?php echo htmlspecialchars($_SESSION['username']);?></b></p>
         <div class="field-row-stacked">
-          <label>Compte</label>
+          <label>Compte Utilisateur :</label>
           <div class="account-list">
-            <div class="window">▶ username</div>
-            <div class="window">▶ username</div>
-            <div class="window">▶ username</div>
-            <div class="window">▶ username</div>
-            <div class="window">▶ username</div>
-            <div class="window">▶ username</div>
+            <?php 
+              foreach ($users as $user) {
+                echo '<div class="window">▶ ' . htmlspecialchars($user['username']) . '</div>';
+            }            
+            ?>
           </div>
         </div>
       </div>

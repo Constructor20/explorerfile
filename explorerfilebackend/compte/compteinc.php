@@ -43,26 +43,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
         header('Location: compte.php?success=email');
     }
 
-    //VALIDATION NEW PASSWORD
-    if (empty($password) or trim($password) == "") {
-        header('Location: register.php?error=password');
-        exit;
-    }
+    header('Location: compte.php');
+    // //VALIDATION NEW PASSWORD
+    // if (empty($password) or trim($password) == "") {
+    //     header('Location: register.php?error=password');
+    //     exit;
+    // }
 
-    $stmt = $conn->prepare("SELECT password FROM userdata WHERE id = :id");
-    $stmt->bindParam(':id', $_SESSION['user_id']);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (password_verify($password, htmlspecialchars($row['password']))) {
-        header('Location: compte.php?error=password');
-        exit;
-    }
+    // $stmt = $conn->prepare("SELECT password FROM userdata WHERE id = :id");
+    // $stmt->bindParam(':id', $_SESSION['user_id']);
+    // $stmt->execute();
+    // $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    // if (password_verify($password, htmlspecialchars($row['password']))) {
+    //     header('Location: compte.php?error=password');
+    //     exit;
+    // }
 
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("UPDATE userdata SET password = :newpassword WHERE id = :id");
-    $stmt->bindParam(':id', $_SESSION['user_id']);
-    $stmt->bindParam(':newpassword', $hashedPassword);
-    $stmt->execute();
+    // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // $stmt = $conn->prepare("UPDATE userdata SET password = :newpassword WHERE id = :id");
+    // $stmt->bindParam(':id', $_SESSION['user_id']);
+    // $stmt->bindParam(':newpassword', $hashedPassword);
+    // $stmt->execute();
 
     
 }

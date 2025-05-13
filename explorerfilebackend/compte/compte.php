@@ -71,15 +71,8 @@ if (!isset($_SESSION['user_id'])) {
                         };?>
                     </div>
                     <div class="field-row-stacked">
-                        <label>Mot de passe</label>
-                        <input type="password" name="password" id="password" placeholder="*********">
-                        <?php if(!empty($_GET["error"])) {
-                            if($_GET["error"] == "password") {
-                            echo "Le mot de passe est invalide ou incorrect";
-                            }
-                        };?>
+                        <button type="button" class="button" id="redirectioneditpswd" onclick="redirectionPswd()">Modifier votre mot de passe</button>
                     </div>
-
                     <div class="field-row-stacked">
                         <input type="checkbox" id="showUpdate" onchange="toggleUpdateButton()">
                         <label for="showUpdate">Je veux modifier mes informations</label>
@@ -105,6 +98,13 @@ if (!isset($_SESSION['user_id'])) {
     function toggleDeconnectionButton() {
     window.location.href = '../logout.php';
     }
-    </script>
+    function redirectionPswd (){
+    document.getElementById('redirectioneditpswd').addEventListener('click', function(event) {
+    event.preventDefault();
+    window.location.href = 'edit/editmdp.php';
+    });
+    }
+</script>
+
 </body>
 </html>
