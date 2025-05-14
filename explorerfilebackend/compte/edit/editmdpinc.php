@@ -35,12 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['resetpswd'])) {
     $stmt->bindParam(':id', $_SESSION['user_id']);
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (password_verify($password, htmlspecialchars($row['password']))) {
-        header('Location: editmdp.php?error=notsamepassword');
+    if (!password_verify($password, $row['password'])) {
+        header('Location: editmdp.php?error=wrongpassword');
         exit;
     }
-
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    
+    $hashedPassword = password_hash($newpassword, PASSWORD_DEFAULT);
     $stmt = $conn->prepare("UPDATE userdata SET password = :newpassword WHERE id = :id");
     $stmt->bindParam(':id', $_SESSION['user_id']);
     $stmt->bindParam(':newpassword', $hashedPassword);

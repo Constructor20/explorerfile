@@ -15,6 +15,12 @@ if (!isset($_SESSION['user_id'])) {
   <title>Admin - Gestion des comptes</title>
   <link rel="stylesheet" href="../style/stylecompte.css">
   <link rel="stylesheet" href="https://unpkg.com/98.css">
+  <style>
+  .toggle-header {
+    cursor: pointer;
+  }
+  </style>
+
 </head>
 <body>
 
@@ -41,16 +47,10 @@ if (!isset($_SESSION['user_id'])) {
         <div class="title-bar-text">Gestion des comptes</div>
       </div>
       <div class="window-body">
-        <p><b>Admin <?php echo htmlspecialchars($_SESSION['username']);?></b></p>
+        <p><b>Admin <?php echo htmlspecialchars($_SESSION['username']); ?></b></p>
         <div class="field-row-stacked">
-          <label>Compte Utilisateur :</label>
-          <div class="account-list">
-            <?php 
-              foreach ($users as $user) {
-                echo '<div class="window">▶ ' . htmlspecialchars($user['username']) . '</div>';
-            }            
-            ?>
-          </div>
+          <label>Comptes utilisateurs :</label>
+          <?php include '../compte/edit/tableadmin.php'; ?>
         </div>
       </div>
     </div>
@@ -59,6 +59,21 @@ if (!isset($_SESSION['user_id'])) {
     function toggleDeconnectionButton() {
     window.location.href = '../logout.php';
     }
+    document.querySelectorAll('.toggle-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const arrow = header.querySelector('.arrow');
+        const details = header.nextElementSibling;
+        const isVisible = details.style.display === 'block';
+        if(details.style.display === 'block') {
+          details.style.display = 'none';
+          arrow.textContent = '▶';
+        } else {
+          details.style.display = 'block';
+          arrow.textContent = '▼';
+        }
+      });
+    });
+
   </script>
 
 </body>
