@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_account'])) {
 
     $username = $_POST['username'] ?? null;
     $email = $_POST['email'] ?? null;
-    $password = $_POST['password'] ?? null;
+    // $password = $_POST['password'] ?? null;
 
     //VALIDATION NEW USERNAME
     if ($username !== $_SESSION['username']) {
