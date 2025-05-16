@@ -48,6 +48,13 @@ if (!isset($_SESSION['user_id'])) {
       </div>
       <div class="window-body">
         <p><b>Admin <?php echo htmlspecialchars($_SESSION['username']); ?></b></p>
+        <?php 
+        if(!empty($_GET["success"])) {
+          if($_GET["success"] == "success") {
+            echo "<b><p>Les données ont bien été modifiées avec succès</b></p>";
+          }
+        };
+        ?>
         <div class="field-row-stacked">
           <label>Comptes utilisateurs :</label>
           <?php include '../compte/edit/tableadmin.php'; ?>
@@ -60,17 +67,19 @@ if (!isset($_SESSION['user_id'])) {
     window.location.href = '../logout.php';
   }
 function toggleUpdateButton(checkbox) {
-  // On récupère le bloc .window contenant ce checkbox
   const windowBloc = checkbox.closest('.window');
 
-  // On trouve le bon conteneur du bouton dans ce bloc uniquement
-  const updateButtonContainer = windowBloc.querySelector('#updateButtonContainer');
+  let updateButtonContainer = document.getElementsByName('update_account');
 
-  if (checkbox.checked) {
-    updateButtonContainer.style.display = 'block';
-  } else {
-    updateButtonContainer.style.display = 'none';
-  }
+  updateButtonContainer.forEach(theUpdate => {
+    const checkbox = document.getElementById('showUpdate' + theUpdate.id);
+    const updateButton = document.getElementById('updateButtonContainer' + theUpdate.id);
+    if (checkbox.checked) {
+      updateButton.style.display = 'block';
+    } else {
+      updateButton.style.display = 'none';
+    }
+  });
 }
 
 // Pour gérer l’ouverture/fermeture du bloc

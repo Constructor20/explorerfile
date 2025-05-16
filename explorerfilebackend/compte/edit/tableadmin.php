@@ -27,12 +27,12 @@
                     <button type="button" class="button" id="redirectioneditpswd" onclick="redirectionPswd()">Modifier votre mot de passe</button>
                 </div>
                 <div class="field-row-stacked">
-                    <input type="checkbox" id="showUpdate" onchange="toggleUpdateButton(this)">
-                    <label for="showUpdate">Je veux modifier mes informations</label>
+                    <input type="checkbox" id="showUpdate<?php echo $user['id']?>" onchange="toggleUpdateButton(this)">
+                    <label for="showUpdate<?php echo $user['id']?>">Je veux modifier mes informations</label>
                 </div>
 
-                <div class="field-row-stacked" id="updateButtonContainer" style="display: none;">
-                    <button type="submit" class="button" name="update_account">Mettre à jour</button>
+                <div class="field-row-stacked" id="updateButtonContainer<?php echo $user['id']?>" style="display: none;">
+                    <button type="submit" class="button" name="update_account" data="baba" id="<?php echo $user['id']?>">Mettre à jour</button>
                 </div>
             </form>
         </div>
