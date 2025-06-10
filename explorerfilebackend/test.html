@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/98.css"> <!-- Style Windows 98 -->
+    <link rel="stylesheet" href="style.css"> <!-- Style personnalisé -->
+    <title>Explorateur de Fichiers</title>
+</head>
+<body>
+    <div class="window" style="width: 90%; height: 90%; margin: 20px auto;">
+        <div class="title-bar">
+            <div class="title-bar-text">Explorateur de Fichiers</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="window-body" style="height: calc(100% - 40px); display: flex; flex-direction: column;">
+            <div class="field-row" style="justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <!-- Bouton pour sélectionner un dossier -->
+                <div>
+                    <input type="file" id="fileInput" webkitdirectory multiple style="display: none;" />
+                    <label for="fileInput" class="button">Sélectionner un dossier</label>
+                </div>
+                <!-- Chemin parent -->
+                <div>
+                    <span id="parentpath" style="font-size: 1.2em;">Chemin parent: /</span>
+                </div>
+                <!-- Bouton Retour -->
+                <div>
+                    <button id="goBackButton" class="button">Retour</button>
+                </div>
+            </div>
+            <!-- Tableau des fichiers -->
+            <div style="flex-grow: 1; overflow-y: auto;">
+                <table class="table" style="width: 100%; margin-top: 10px;">
+                    <thead>
+                        <tr>
+                            <th>Chemin d'accès</th>
+                            <th>Fichiers</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fileTableBody">
+                        <!-- Les fichiers seront insérés ici dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

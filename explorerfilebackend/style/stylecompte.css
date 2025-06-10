@@ -1,0 +1,24 @@
+body {
+    display: flex;
+    margin: 0;
+    height: 100vh;
+    background-color: silver;
+  }
+  .sidebar {
+    width: 200px;
+    padding: 10px;
+    background-color: #C0C0C0;
+    border-right: 2px solid gray;
+  }
+  .main {
+    flex: 1;
+    padding: 20px;
+  }
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  .account-list > div {
+    margin-bottom: 4px;
+  }
