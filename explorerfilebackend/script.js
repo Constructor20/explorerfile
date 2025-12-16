@@ -145,5 +145,3 @@ function toggleUpdateButton(checkbox) {
     }
   });
 }
-
-function

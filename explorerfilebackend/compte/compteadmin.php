@@ -77,6 +77,10 @@ if (!isset($_SESSION['user_id'])) {
       arrow.textContent = isVisible ? '▶' : '▼';
     });
   });
+
+  function redirectioneditUser (){
+    window.location.href = 'edit/tableright.php';
+  }
 </script>
 
 </body>

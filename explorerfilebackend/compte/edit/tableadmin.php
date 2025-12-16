@@ -36,7 +36,7 @@
                 </div>
             </form>
             <div class="field-row-stacked">
-                <button type="button" class="button" id="redirectioneditpswd" onclick="">Modifier votre mot de passe</button>
+                <button type="button" class="button" id="redirectionedituser" onclick="redirectioneditUser()">Modifier les droits de l'utilisateurs</button>
             </div>
         </div>
     </div>
