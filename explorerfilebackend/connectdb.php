@@ -1,8 +1,8 @@
 <?php
 
-$servername = "host.docker.internal";
+$servername = "mysql-db";
 $username = "root";
-$password = "";
+$password = "yaspasdemdpsalemerdeuxdechintok";
 $dbname = "file_explorer_bdd";
 
 try {

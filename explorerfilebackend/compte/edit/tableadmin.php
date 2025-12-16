@@ -35,6 +35,9 @@
                     <button type="submit" class="button" name="update_account" data="baba" id="<?php echo $user['id']?>">Mettre à jour</button>
                 </div>
             </form>
+            <div class="field-row-stacked">
+                <button type="button" class="button" id="redirectioneditpswd" onclick="">Modifier votre mot de passe</button>
+            </div>
         </div>
     </div>
 <?php endforeach; ?>

@@ -1,0 +1,197 @@
+Lorsque je sélectionne le dossier il faut que le dossier Parent soit mit dans le th "Dossier Parents: " et qu'il change lorsque je clique sur un <a> dossier et qu'il le remplace par celui auquel j'ai cliquer
+
+
+EXEMPLE
+
+C:/System/bal/hype/fichier.xml
+
+AFfichage Parent: "System"
+
+Affiche Enfant: "Bal/"
+		 "hype/"
+
+
+Faut d'abord séparer le dossier parents sinon sa fait tout pour tout
+
+nouvelle fonctionnalité qui fonctionne commit
+
+Fin de journée push
+
+Dropzone
+
+Prendre le tableau lors du input et le garder en mémoire dans le localhost puis ensuite l'afficher lors de la tentative de retour
+
+1) Début
+
+2) Entrée: SI bouton est cliquer
+2.1) ALORS Récupère arborescence choisis
+
+3) SI arborescence récupérer 
+3.1)ALORS afficher sous dossiers / fichiers du dossier parent
+
+4) SI cliquer sur les sous dossiers
+4.1) ALORS récupère l'arborescence du dossier cliquer
+4.2) SI arborescence de sous dossier récupérer
+4.3) ALORS remplacer l'arborescence actuelle par celle-ci
+
+
+
+Faire un filtre de files lorsque c'est cliquer pour la recherche exemple: "Public/desktop" cherche tous ceux qui commence pareille dans files et affiche dans le tableau
+
+Dans le tableau remplacer le chemin après clique par un "./"
+
+
+Et dans le tableau parent, après retour remplacer le chemin d'accès ".Public" par un "/" et Chemin parent "/" par "Public/"
+
+
+
+
+
+
+
+
+
+
+La dans le linkData.data faut dire que si c'est égale au chemin parent ./ et c'est carrer<
+
+
+COntinuer de bosser ur le updateParentPath après le retour pour correctement afficher le chemin parent
+
+
+
+
+
+
+
+
+
+
+
+
+HTML principale partie qui affiche tout.
+JS externe intégrer au HTML pour appeler le php
+PHP qui fait le job d'afficher l'arborescence
+
+a faire:
+
+Front win 98 a faire en html compatible avec le php
+js appel le php quand est cliquer
+php fait l'arborescence avec les balises html générés
+le php génère les balises html dans le fileTableBody
+
+
+
+
+Rajouter une image différente pour chaque extension
+Séparer le html et php
+Utilisateur pour accès au dossier ou fichier
+Droit quel type de fichier avec bdd
+
+mettre bon chemin icon_file
+trouver fonction qui compare tableau et extension OU découper tableau et compare extension
+
+
+🔐 1. Données à récupérer depuis le formulaire
+Quelles sont les informations que l'utilisateur fournit ?
+
+Est-ce que tu dois vérifier que tous les champs sont bien remplis ?
+
+Et que les deux mots de passe sont identiques ?
+
+🧼 2. Validation et sécurité
+Comment t'assurer que l’email est bien valide ?
+
+Comment stocker le mot de passe de manière sécurisée ?
+
+As-tu pensé à vérifier si un utilisateur avec ce nom ou cet email existe déjà ?
+
+💾 3. Insertion en base de données
+Une fois les vérifications faites, comment tu construis la requête INSERT ?
+
+Comment tu gères les erreurs potentielles (email déjà utilisé, requête échouée...) ?
+
+✅ 4. Confirmation à l’utilisateur
+Est-ce que tu veux afficher un message de succès ?
+
+Ou rediriger vers une autre page, par exemple la page de connexion ?
+
+Comparaison Username si il existe dans bdd
+hashage mdp
+insertion des données dans bdd
+
+Que doit faire registerinc.php ?
+
+Vérifier si username existe déjà OK//
+Vérifier si email existe déjà OK//
+Vérifier si mdp est en a-zA-Z0-9 + !
+
+Faut faire la vérif en regex pour le mdp avec
+
+Connection:
+Verif si c'est email ou username OK//
+Verif si email existe dans la bdd pas besoin de vérif si elle est valide pq ?
+Si elle existe dans bdd il peut se co sinon elle existe pas donc pas de co.
+
+Récupérer le mot de passe de la bdd et le comparer en hash avec password_verify()
+
+
+Si identifiant est un email existant alors bon sinon Le compte n'existe pas
+Si le mot de passe est incorrecte dire qu'il l'est 
+
+ 
+Logique pour modifier les informations du comptes 					COMPTEINC.PHP
+
+Si mettre à jour est cliquer regarder qu'elle case est différente de $_SESSION[''] user/email/mdp actuelle
+Si c'est username alors vérifier si il est valide sinon dire mauvais format de username
+Si c'est email vérifier si il est valide en regex, '/^[A-Za-z0-9]+$/', sinon dire mauvais format d'email
+Si c'est mdp vérifier si il est valide, qu'il reconfirme son mdp, vérifier si ils sont différents, sinon dire mauvais format de mdp
+
+// Après avoir fait toutes les vérifications //
+faire une commande sql qui envoie les changements de l'utilisateur
+Voir si possible que cela soit fait séparément ou ensemble
+Voir si besoin de recharger la table avec les nouveaux identifiants utilisateurs
+
+
+Logique pour vérifier si il est admin ou utilisateur
+
+Vérifier l'utilisateur si il possède cette identifiant administrateur ou non lors de la connexion
+Si son identifiant correspond à l'id administrateur l'envoyer vers compteadmin.php
+
+Déconnection page
+
+A faire: Faire redirection inscription ////
+	Faire une nouvelle page pour la modification de mdp /
+Sur page admin affichier uniqueent nom/email ////
+
+AFficher la table d'utilisateur dans le tableau admin:
+
+
+lorsqu'il cliquer sur la flèche afficher username/email/pwsd en cacher
+
+Username: jean
+Email: jean@gmail.com
+Pwsd: ********* (nombre de caractères fixe pour tous)
+
+Lorsque que c'est cliquer afficher l'onglet de l'utilisateur en question
+faire une boucle de +1 dans l'id utilisateur qui appelle en bdd
+Seulement relancer la boucle si on veut aller au 2e tableau à ce moment partir du 6 jsuqu'au 10
+
+Faire la modification de via compte admin
+
+Envoie en post a compteadmininc.php
+
+si username = username en bdd NON
+header erreur username sur compteadmin.php
+Après reprendre le php qui edit le username et l'executer
+
+
+si email = email en bdd NON
+header erreur email sur compteadmin.php
+Après reprendre le php qui edit l'email et l'executer
+
+
+Le mot de passe redirige vers une autre page et reprends le html de editmdp.php
+header erreur mot de passe sur compteadmin.php
+
+
+

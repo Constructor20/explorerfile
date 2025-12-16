@@ -1,7 +1,7 @@
 <?php
 session_start();
 session_destroy();
-header("Location: /explorerfilebackend/registerphp/login.php");
+header("Location: registerphp/login.php");
 exit;
 
 // <label>Mot de passe</label>

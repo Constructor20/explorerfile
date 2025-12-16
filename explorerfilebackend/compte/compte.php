@@ -25,8 +25,11 @@ if (!isset($_SESSION['user_id'])) {
     <div class="window-body">
       <h4>Mon Compte</h4>
       <ul>
-        <li><b>Home</b></li>
-        <li><b>Mon Profil</b></li>
+        <li><a href="../index.php">Home</a></li>
+        <li><a href="compte.php">Mon Profil</a></li>
+        <?php if($_SESSION['isadmin'] == 1) {
+            echo"<li><a href='compteadmin.php'>Gestion des comptes</a></li>";
+        }?>
       </ul>
     </div>
   </div>
@@ -84,27 +87,11 @@ if (!isset($_SESSION['user_id'])) {
                 </form>
                 <div class="field-row-stacked">
                     <h4>Gestion des fichiers</h4>
-                    <button class="button">Accéder au gestionnaire de fichiers</button>
+                    <button type="button" class="button" id="gotomanagementfiles" onclick="gotomanagementfiles()">Accéder au gestionnaire de fichiers</button>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-    function toggleUpdateButton() {
-    const checkbox = document.getElementById('showUpdate');
-    const updateBtn = document.getElementById('updateButtonContainer');
-    updateBtn.style.display = checkbox.checked ? 'block' : 'none';
-    }
-    function toggleDeconnectionButton() {
-    window.location.href = '../logout.php';
-    }
-    function redirectionPswd (){
-    document.getElementById('redirectioneditpswd').addEventListener('click', function(event) {
-    event.preventDefault();
-    window.location.href = 'edit/editmdp.php';
-    });
-    }
-</script>
-
+    <script src="../script.js"></script>
 </body>
 </html>

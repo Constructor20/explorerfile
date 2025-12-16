@@ -1,7 +1,6 @@
 <?php
 // Récupère le chemin actuel ou le dossier racine si aucun paramètre 'path' n'est fourni
-$chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__;
-
+$chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__ . "/new";
 function findicon($pChemin) {
   $pathinfo = pathinfo($pChemin);
   if(is_dir($pChemin)){
@@ -19,7 +18,7 @@ function table($chemin) {
     $icon_folder = "icon/folder2.png";
     // Lien vers le dossier parent
 
-    if ($chemin !== __DIR__) {
+    if ($chemin !== __DIR__ . "/new") {
         $parent = dirname($chemin);  // Chemin du dossier parent
         $url_parent = urlencode($parent);  // URL encodée pour le lien
         echo "<tr>
@@ -36,7 +35,7 @@ function table($chemin) {
         $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
         $chemin_url = urlencode($chemin_complet);
         $icon = findicon($chemin_complet,);
-    //       // $fichier !== "." && $fichier !== ".."
+          // $fichier !== "." && $fichier !== ".."
             if (is_dir($chemin_complet)) {
             if ($fichier !== "." && $fichier !== "..") {
                 echo "<tr>

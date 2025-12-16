@@ -33,6 +33,8 @@ if (!isset($_SESSION['user_id'])) {
       <ul>
         <li><b>Home</b></li>
         <li class="browse-item">🔍 Browse</li>
+        <li><a href="compte.php">Profil</a></li>
+        <li><a href="../index.php">Accéder au gestionnaires de fichiers</a></li>
       </ul>
     </div>
   </div>
@@ -62,38 +64,20 @@ if (!isset($_SESSION['user_id'])) {
       </div>
     </div>
   </div>
-  <script>
-  function toggleDeconnectionButton() {
-    window.location.href = '../logout.php';
-  }
-function toggleUpdateButton(checkbox) {
-  const windowBloc = checkbox.closest('.window');
+<script src="../script.js"></script>
+<script>
+  // Pour gérer l’ouverture/fermeture du bloc
+  document.querySelectorAll('.toggle-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const details = header.nextElementSibling;
+      const arrow = header.querySelector('.arrow');
 
-  let updateButtonContainer = document.getElementsByName('update_account');
-
-  updateButtonContainer.forEach(theUpdate => {
-    const checkbox = document.getElementById('showUpdate' + theUpdate.id);
-    const updateButton = document.getElementById('updateButtonContainer' + theUpdate.id);
-    if (checkbox.checked) {
-      updateButton.style.display = 'block';
-    } else {
-      updateButton.style.display = 'none';
-    }
+      const isVisible = details.style.display === 'block';
+      details.style.display = isVisible ? 'none' : 'block';
+      arrow.textContent = isVisible ? '▶' : '▼';
+    });
   });
-}
-
-// Pour gérer l’ouverture/fermeture du bloc
-document.querySelectorAll('.toggle-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const details = header.nextElementSibling;
-    const arrow = header.querySelector('.arrow');
-
-    const isVisible = details.style.display === 'block';
-    details.style.display = isVisible ? 'none' : 'block';
-    arrow.textContent = isVisible ? '▶' : '▼';
-  });
-});
-  </script>
+</script>
 
 </body>
 </html>

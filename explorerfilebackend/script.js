@@ -109,3 +109,41 @@ document.querySelectorAll('.draggable').forEach((windowEl, index) => {
     }));
   }
 });
+
+function toggleDeconnectionButton() {
+  window.location.href = '../logout.php';
+}
+function toggleUpdateButton() {
+  const checkbox = document.getElementById('showUpdate');
+  const updateBtn = document.getElementById('updateButtonContainer');
+  updateBtn.style.display = checkbox.checked ? 'block' : 'none';
+}
+function toggleDeconnectionButton() {
+  window.location.href = '../logout.php';
+}
+function redirectionPswd (){
+  document.getElementById('redirectioneditpswd').addEventListener('click', function(event) {
+  event.preventDefault();
+  window.location.href = 'edit/editmdp.php';
+});
+}
+function gotomanagementfiles() {
+    window.location.href = '../index.php'
+}
+function toggleUpdateButton(checkbox) {
+  const windowBloc = checkbox.closest('.window');
+
+  let updateButtonContainer = document.getElementsByName('update_account');
+
+  updateButtonContainer.forEach(theUpdate => {
+    const checkbox = document.getElementById('showUpdate' + theUpdate.id);
+    const updateButton = document.getElementById('updateButtonContainer' + theUpdate.id);
+    if (checkbox.checked) {
+      updateButton.style.display = 'block';
+    } else {
+      updateButton.style.display = 'none';
+    }
+  });
+}
+
+function
