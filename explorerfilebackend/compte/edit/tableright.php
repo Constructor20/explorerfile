@@ -1,3 +1,3 @@
-<?php
+<?php 
 
-?>
+include 'tablerightinc.php';

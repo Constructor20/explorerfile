@@ -119,7 +119,7 @@ function toggleUpdateButton() {
   updateBtn.style.display = checkbox.checked ? 'block' : 'none';
 }
 function toggleDeconnectionButton() {
-  window.location.href = '../logout.php';
+  window.location.href = 'logout.php';
 }
 function redirectionPswd (){
   document.getElementById('redirectioneditpswd').addEventListener('click', function(event) {

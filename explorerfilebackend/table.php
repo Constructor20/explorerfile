@@ -1,6 +1,8 @@
 <?php
 // Récupère le chemin actuel ou le dossier racine si aucun paramètre 'path' n'est fourni
 $chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__ . "/new";
+
+
 function findicon($pChemin) {
   $pathinfo = pathinfo($pChemin);
   if(is_dir($pChemin)){
