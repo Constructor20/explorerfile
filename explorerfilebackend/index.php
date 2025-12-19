@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 ?>
 
-<?php include 'table.php'; ?>
+<?php include 'affichage.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

@@ -59,7 +59,7 @@ if (!isset($_SESSION['user_id'])) {
         ?>
         <div class="field-row-stacked">
           <label>Comptes utilisateurs :</label>
-          <?php include '../compte/edit/tableadmin.php'; ?>
+          <?php include '../compte/edit/gestioncompte.php'; ?>
         </div>
       </div>
     </div>

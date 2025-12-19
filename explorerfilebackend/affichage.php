@@ -16,6 +16,11 @@ function findicon($pChemin) {
   return "<img src='$file' class='icon' style='vertical-align: middle;' />";
 } 
 
+$sql = "SELECT id, username, email, isadmin FROM userdata";;
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 function table($chemin) {
     $icon_folder = "icon/folder2.png";
     // Lien vers le dossier parent
@@ -30,37 +35,35 @@ function table($chemin) {
                 </td>
             </tr>";
     }
+
+
     if (is_dir($chemin)) {
         $fichiers = scandir($chemin);
-
         foreach ($fichiers as $fichier) {
-        $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
-        $chemin_url = urlencode($chemin_complet);
-        $icon = findicon($chemin_complet,);
-          // $fichier !== "." && $fichier !== ".."
-            if (is_dir($chemin_complet)) {
-            if ($fichier !== "." && $fichier !== "..") {
-                echo "<tr>
-                        <td>
-                            $icon
-                        <a href='?path=$chemin_url'>/$fichier</a>
-                        </td>
-                    </tr>";
-            }
-            } else {
-            $icon_file_path = 'icon';
-            $icon_file = scandir(directory: $icon_file_path);
-            // $path_parts = pathinfo($fichier);
-            // return le visuel de mon icon
-            
-            // echo $path_parts['extension'], "\n";
-                echo "<tr>
-                        <td>
-                        $icon
-                        $fichier
-                        </td>
-                    </tr>";
-            }
+          $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
+          $paths = ["new copy", "test copy 2.txt", "blabla", "test.txt"];
+          if(in_array($fichier, $paths)) {
+            $chemin_url = urlencode($chemin_complet);
+            $icon = findicon($chemin_complet,);
+              // $fichier !== "." && $fichier !== ".."
+                if (is_dir($chemin_complet)) {
+                  if ($fichier !== "." && $fichier !== "..") {
+                      echo "<tr>
+                              <td>
+                                  $icon
+                              <a href='?path=$chemin_url'>/$fichier</a>
+                              </td>
+                          </tr>";
+                  }
+                } else {
+                  echo "<tr>
+                          <td>
+                          $icon
+                          $fichier
+                          </td>
+                      </tr>";
+                }
+          }
         }
     } else {
         echo "<tr><td>⚠️ Ce dossier n'existe pas.</td></tr>";
