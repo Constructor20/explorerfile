@@ -1,4 +1,5 @@
 <?php
+include 'connectdb.php';
 // Récupère le chemin actuel ou le dossier racine si aucun paramètre 'path' n'est fourni
 $chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__ . "/new";
 
@@ -15,13 +16,17 @@ function findicon($pChemin) {
   }
   return "<img src='$file' class='icon' style='vertical-align: middle;' />";
 } 
+// verif accès fichier selon user id
+// $_SESSION['user_id'] = $dada; // A supprimer après test
+// $sql = "SELECT id, username, email, isadmin FROM userdata JOIN permission ON userdata.id = permission.user_id UNION SELECT encodedjson FROM permission";
+// $stmt = $conn->prepare($sql);
+// $stmt->execute();
+// $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// var_dump($users);
 
-$sql = "SELECT id, username, email, isadmin FROM userdata";;
-$stmt = $conn->prepare($sql);
-$stmt->execute();
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$paths = ["new copy", "test copy 2.txt", "blabla", "test.txt"];
 
-function table($chemin) {
+function table($chemin, $paths) {
     $icon_folder = "icon/folder2.png";
     // Lien vers le dossier parent
 
@@ -36,12 +41,10 @@ function table($chemin) {
             </tr>";
     }
 
-
     if (is_dir($chemin)) {
         $fichiers = scandir($chemin);
         foreach ($fichiers as $fichier) {
           $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
-          $paths = ["new copy", "test copy 2.txt", "blabla", "test.txt"];
           if(in_array($fichier, $paths)) {
             $chemin_url = urlencode($chemin_complet);
             $icon = findicon($chemin_complet,);

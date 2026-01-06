@@ -1,9 +1,8 @@
 <?php
 
 session_start();
-
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../registerphp/login.php');
+    header('Location: registerphp/login.php');
     exit;
 }
 ?>
@@ -40,7 +39,7 @@ if (!isset($_SESSION['user_id'])) {
           if($chemin == __DIR__) {
             echo '/';
           }
-            echo str_replace(__DIR__,  '',$chemin);
+            echo str_replace(__DIR__,  '', $chemin);
           ?>
         </span>
       </div>
@@ -53,7 +52,7 @@ if (!isset($_SESSION['user_id'])) {
             </tr>
           </thead>
           <tbody id="fileTableBody">
-            <?php table($chemin) ?>
+            <?php table($chemin, $paths);?>
               <div class="window" style="width: 300px; margin: 20px auto;">
                 <div class="title-bar">
                   <div class="title-bar-text">Chargement du cerveau...</div>

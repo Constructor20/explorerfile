@@ -78,6 +78,10 @@ if (!isset($_SESSION['user_id'])) {
     });
   });
 
+  function toggleDeconnectionButton() {
+    window.location.href = '../logout.php';
+  }
+
   function redirectioneditUser (){
     window.location.href = 'edit/tableright.php';
   }

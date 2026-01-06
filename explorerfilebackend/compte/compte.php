@@ -93,5 +93,10 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </div>
     <script src="../script.js"></script>
+    <script>
+    function toggleDeconnectionButton() {
+        window.location.href = '../logout.php';
+    }
+    </script>
 </body>
 </html>
