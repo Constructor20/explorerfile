@@ -1,0 +1,90 @@
+Jour 1 - 15/12:
+
+Changer le chemin dir xxx
+
+
+Compte Admin + Utilisateur
+
+Pour compte admin:
+Ajouter une colonne dire admin "true or false" XXX
+modifier le Session pour vérifier si user -> admin ou non XXX
+Modifier dans compte.php l'affiche if uesr -> admin ou non XXX
+Modifier INCcompte.php si 
+
+
+Compte Admin gestion des Utilisateurs de la visibilité
+	Comment faire:
+		Spécifier les chemins d'accès aux utilisateurs dans la bdd ?
+		
+
+Jour 2 - 16/12:
+
+--- Ajout majeur: 
+Gestion user -> Droit accès
+Séparer usre et admin xxx
+
+A faire:
+Stocker droit accès -> json encode
+Récupérer le json
+Gestion des droits des chemins des users -> adapter bdd: 
+récupérer les chemins depuis le code
+Accès et droit fait en json
+  
+Jour 3 - 17/12
+
+A faire:
+
+Modélisation table noeuds
+
+Créer la table nodes pour les permissions en json
+Créer le code pour lire les permissions json
+
+CREATE TABLE permission (
+ id INT AUTOINCREMENT,
+ user_id INT
+ encodedjson
+)
+
+
+Jour 4 - 18/12
+
+BDD + table finaliser
+
+Objectif: Faire l'affichage et penser à la logique a faire
+
+Pour afficher tableright.php il faut récupérer tout l'arborescence donc réutilisation de table.php + modif
+
+Table.php a modifier -> pour tableright.php limite rajouter une fonction identique a table puis modifier pour tableright
+
+Choix finale: Refaire table.php qui s'occupe du filtrage/ les pages elles devront fournir les infos table.php est juste la fonction d'affichages
+
+Conception gestion bdd puis front
+
+
+Jour 5 - 19/12
+
+
+refaire tout affichage.php (table.php) et faire 2 affichage différents
+
+Jour 6 - 05/01
+
+Réalisation Algo Affichage user:
+
+Faut définir path -> Récupérer id session récupérer avec celui-ci 
+
+utilise id session username+email
+Compare id session à l'id liée à username+email
+si bon SQL récupère json avec id session
+json récupérer rentrer dans tableau paths et affichage de l'user
+
+
+jour 7 - 08/01
+
+array(1) { ["paths"]=> array(4) { [0]=> string(8) "new copy" [1]=> string(15) "test copy 2.txt" [2]=> string(6) "blabla" [3]=> string(8) "test.txt" } }
+array(4) { [0]=> string(8) "new copy" [1]=> string(15) "test copy 2.txt" [2]=> string(6) "blabla" [3]=> string(8) "test.txt" }
+
+régler le listage des fichier
+soucis image pour les chemin dans tableright.php
+affichage complet de l'arborescence
+Checkbox auto cocher des éléments accessible de l'user
+style de la page

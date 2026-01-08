@@ -18,13 +18,44 @@ function findicon($pChemin) {
 } 
 // verif accès fichier selon user id
 // $_SESSION['user_id'] = $dada; // A supprimer après test
-// $sql = "SELECT id, username, email, isadmin FROM userdata JOIN permission ON userdata.id = permission.user_id UNION SELECT encodedjson FROM permission";
-// $stmt = $conn->prepare($sql);
-// $stmt->execute();
-// $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// var_dump($users);
 
-$paths = ["new copy", "test copy 2.txt", "blabla", "test.txt"];
+function path($conn)
+{
+    if (!isset($_SESSION['user_id'])) {
+        return [];
+    }
+
+    $userId = (int) $_SESSION['user_id'];
+
+    $sql = "SELECT encodedjson FROM permission WHERE user_id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $json = $stmt->fetchColumn();
+
+    if (!$json) {
+        return [];
+    }
+
+    $decoded = json_decode($json, true);
+    
+    // Retourner le tableau 'paths' si présent, sinon le tableau décod­é complet
+    if (is_array($decoded) && isset($decoded['paths'])) {
+        return $decoded['paths'];
+    }
+    
+    return is_array($decoded) ? $decoded : [];
+}
+$paths = path($conn);
+
+function completepath($chemin, $fichier) {
+  return $chemin . DIRECTORY_SEPARATOR . $fichier;
+}
+
+function findfile($chemin) {
+  return scandir($chemin);
+}
 
 function table($chemin, $paths) {
     $icon_folder = "icon/folder2.png";
@@ -42,9 +73,10 @@ function table($chemin, $paths) {
     }
 
     if (is_dir($chemin)) {
-        $fichiers = scandir($chemin);
+        $fichiers = findfile($chemin);
         foreach ($fichiers as $fichier) {
-          $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
+          $chemin_complet = completepath($chemin, $fichier);
+          var_dump($chemin_complet);
           if(in_array($fichier, $paths)) {
             $chemin_url = urlencode($chemin_complet);
             $icon = findicon($chemin_complet,);
