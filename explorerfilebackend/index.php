@@ -64,19 +64,19 @@ if (!isset($_SESSION['user_id'])) {
                   <img src="https://media1.tenor.com/m/BLOZw5VmYA8AAAAd/brain.gif" alt="brain overload" style="width: 100%; height: auto;">
                 </div>
               </div>
-                            <div class="window" style="width: 300px; margin: 20px auto;">
+              <div class="window" style="width: 300px; margin: 20px auto;">
                 <div class="title-bar">
                   <div class="title-bar-text">Bouton d'accès</div>
                   <div class="title-bar-controls">
                     <button aria-label="Close"></button>
                   </div>
                 </div>
-                    <button type="button" class="button" id="gotoProfile" onclick="goto('/explorerfile/explorerfilebackend/compte/compte.php')">Profil</button>
-                    <?php if($_SESSION['isadmin'] == 1) {
-                      $ref = '/explorerfile/explorerfilebackend/compte/compteadmin.php';
-                      echo "<button type='button' class='button' id='gotoEditProfile' onclick='goto(" . json_encode('/explorerfile/explorerfilebackend/compte/compteadmin.php') . ")'>Gestion des Comptes</button>";
-                    }?>
-                    <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
+                  <button type="button" class="button" id="gotoProfile" onclick="goto('/explorerfile/explorerfilebackend/compte/compte.php')">Profil</button>
+                  <?php if($_SESSION['isadmin'] == 1) {
+                    $ref = '/explorerfile/explorerfilebackend/compte/compteadmin.php';
+                    echo "<button type='button' class='button' id='gotoEditProfile' onclick='goto(" . json_encode('/explorerfile/explorerfilebackend/compte/compteadmin.php') . ")'>Gestion des Comptes</button>";
+                  }?>
+                  <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
               </div>
           </tbody>
         </table>

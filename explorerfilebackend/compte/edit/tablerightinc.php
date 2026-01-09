@@ -3,12 +3,11 @@ session_start();
 include '../../connectdb.php';
 
 $userId = $_POST['user_id'] ?? null;
-echo "User ID reçu pour modification des droits : " . $userId;
 
 include '../../affichage.php';
 
 // pour récupérer les droits user pour checkbox
-function pathright ($conn){
+function pathRight ($conn){
     if (!isset($_POST['user_id'])) {
         return [];
     }
@@ -34,17 +33,7 @@ function pathright ($conn){
     
     return is_array($decoded) ? $decoded : [];
 }
-
-$fichier = findfile($chemin);
-var_dump($fichier);
-$chemin = completepath($chemin, $fichier);
-
-
-
-// $paths = pathright($conn);
-// var_dump($paths);
-table($chemin, $paths);
-
+var_dump($_SERVER['HTTP_HOST']);
 //modification du chemin
 //
 //affichage chemin

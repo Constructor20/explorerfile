@@ -145,3 +145,6 @@ function toggleUpdateButton(checkbox) {
     }
   });
 }
+function compareCheckbox() {
+  
+}

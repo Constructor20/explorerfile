@@ -35,7 +35,7 @@
                         <button type="submit" class="button" name="update_account" data="baba" id="<?php echo $user['id']?>">Mettre à jour</button>
                     </div>
                 </form>
-                <form action="edit/tablerightinc.php" method="POST">
+                <form action="edit/tableright.php" method="POST">
                     <div class="field-row-stacked">
                         <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
                         <button type="submit" class="button" id="redirectionedituser" onclick="redirectioneditUser()">Modifier les droits de l'utilisateurs</button>

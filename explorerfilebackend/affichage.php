@@ -2,17 +2,16 @@
 include 'connectdb.php';
 // Récupère le chemin actuel ou le dossier racine si aucun paramètre 'path' n'est fourni
 $chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__ . "/new";
-
-
-function findicon($pChemin) {
+$server_host = $_SERVER['HTTP_HOST'];
+function findIcon($pChemin, $server_host) {
   $pathinfo = pathinfo($pChemin);
   if(is_dir($pChemin)){
-    return "<img src='icon/folder2.png' class='icon' style='vertical-align: middle;' />";
+    return "<img src='$server_host/explorerfile/explorerfilebackend/icon/folder2.png' class='icon' style='vertical-align: middle;' />";
   }
 
-  $file = './icon/'.$pathinfo['extension'].'.png';
+  $file = '/explorerfile/explorerfilebackend/icon/'.$pathinfo['extension'].'.png';
   if (!file_exists($file)) {
-    $file = './icon/file.png';
+    $file = '/explorerfile/explorerfilebackend/icon/file.png';
   }
   return "<img src='$file' class='icon' style='vertical-align: middle;' />";
 } 
@@ -49,11 +48,31 @@ function path($conn)
 }
 $paths = path($conn);
 
-function completepath($chemin, $fichier) {
+function pathForAdmin($conn){
+    $sql = "SELECT isadmin FROM userdata WHERE id = :id";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+
+    $allPaths = [];
+    while ($json = $stmt->fetchColumn()) {
+        if ($json) {
+            $decoded = json_decode($json, true);
+            if (is_array($decoded) && isset($decoded['paths'])) {
+                $allPaths = array_merge($allPaths, $decoded['paths']);
+            } elseif (is_array($decoded)) {
+                $allPaths = array_merge($allPaths, $decoded);
+            }
+        }
+    }
+    
+    return array_unique($allPaths);
+}
+
+function completePath($chemin, $fichier) {
   return $chemin . DIRECTORY_SEPARATOR . $fichier;
 }
 
-function findfile($chemin) {
+function findFile($chemin) {
   return scandir($chemin);
 }
 
@@ -73,13 +92,12 @@ function table($chemin, $paths) {
     }
 
     if (is_dir($chemin)) {
-        $fichiers = findfile($chemin);
+        $fichiers = findFile($chemin);
         foreach ($fichiers as $fichier) {
-          $chemin_complet = completepath($chemin, $fichier);
-          var_dump($chemin_complet);
-          if(in_array($fichier, $paths)) {
+          $chemin_complet = completePath($chemin, $fichier);
+          if(in_array($fichier, $paths) || $_SESSION['isadmin'] == 1) {
             $chemin_url = urlencode($chemin_complet);
-            $icon = findicon($chemin_complet,);
+            $icon = findIcon($chemin_complet, $server_host);
               // $fichier !== "." && $fichier !== ".."
                 if (is_dir($chemin_complet)) {
                   if ($fichier !== "." && $fichier !== "..") {
@@ -98,6 +116,8 @@ function table($chemin, $paths) {
                           </td>
                       </tr>";
                 }
+          } elseif($_SESSION['isadmin'] == 1) {
+
           }
         }
     } else {
