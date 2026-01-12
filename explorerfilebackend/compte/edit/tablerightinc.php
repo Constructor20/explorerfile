@@ -33,7 +33,6 @@ function pathRight ($conn){
     
     return is_array($decoded) ? $decoded : [];
 }
-var_dump($_SERVER['HTTP_HOST']);
 //modification du chemin
 //
 //affichage chemin

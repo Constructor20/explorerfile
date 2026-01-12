@@ -110,26 +110,48 @@ document.querySelectorAll('.draggable').forEach((windowEl, index) => {
   }
 });
 
-function toggleDeconnectionButton() {
-  window.location.href = '../logout.php';
-}
+// function toggleDeconnectionButton() {
+//   window.location.href = '../logout.php';
+// }
 function toggleUpdateButton() {
   const checkbox = document.getElementById('showUpdate');
   const updateBtn = document.getElementById('updateButtonContainer');
   updateBtn.style.display = checkbox.checked ? 'block' : 'none';
 }
-function toggleDeconnectionButton() {
-  window.location.href = 'logout.php';
-}
+
+// Redirection Edit mot de passe
 function redirectionPswd (){
   document.getElementById('redirectioneditpswd').addEventListener('click', function(event) {
   event.preventDefault();
-  window.location.href = 'edit/editmdp.php';
+  window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/edit/editmdp.php';
 });
 }
-function gotomanagementfiles() {
-    window.location.href = '../index.php'
+
+// Déconnexion
+function toggleDeconnectionButton() {
+  window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/logout.php';
 }
+
+// User fichier normale
+function gotomanagementfiles() {
+    window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/index.php';
+}
+
+// Compte Admin
+function gotomanagementaccounts() {
+    window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/compteadmin.php';
+}
+
+// Profil user
+function gotoaccounts() {
+    window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/compte.php';
+}
+
+// Edit user access files
+function redirectioneditUser (){
+  window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/edit/tableright.php';
+}
+
 function toggleUpdateButton(checkbox) {
   const windowBloc = checkbox.closest('.window');
 

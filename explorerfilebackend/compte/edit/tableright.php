@@ -35,11 +35,10 @@ include 'tablerightinc.php';
               <button aria-label="Close"></button>
               </div>
           </div>
-              <button type="button" class="button" id="gotoProfile" onclick="goto('/explorerfile/explorerfilebackend/compte/compte.php')">Profil</button>
-              <?php if($_SESSION['isadmin'] == 1) {
-              $ref = '/explorerfile/explorerfilebackend/compte/compteadmin.php';
-              echo "<button type='button' class='button' id='gotoEditProfile' onclick='goto(" . json_encode('/explorerfile/explorerfilebackend/compte/compteadmin.php') . ")'>Gestion des Comptes</button>";
-              }?>
+              <button type="button" class="button" id="gotoProfile" onclick="gotoaccounts()">Profil</button>
+              <?php if($_SESSION['isadmin'] == 1) {?>
+              <button type='button' class='button' id='gotoEditProfile' onclick="gotomanagementaccounts()">Gestion des Comptes</button>
+              <?}?>
               <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
         </div>
         <!-- Tableau scrollable -->

@@ -83,8 +83,25 @@ jour 7 - 08/01
 array(1) { ["paths"]=> array(4) { [0]=> string(8) "new copy" [1]=> string(15) "test copy 2.txt" [2]=> string(6) "blabla" [3]=> string(8) "test.txt" } }
 array(4) { [0]=> string(8) "new copy" [1]=> string(15) "test copy 2.txt" [2]=> string(6) "blabla" [3]=> string(8) "test.txt" }
 
-régler le listage des fichier
-soucis image pour les chemin dans tableright.php
-affichage complet de l'arborescence
+régler le listage des fichier xxx
+soucis image pour les chemin dans tableright.php xxx
+affichage complet de l'arborescence xxx
 Checkbox auto cocher des éléments accessible de l'user
-style de la page
+style de la page xxx
+
+jour 8 - 12/01
+
+Problème droit de chemin:
+
+accès non autorisé blabla/test.txt
+
+pourtant accès car dans json "test.txt" à le droit donc dans dossier aussi
+
+donc laisser accès au dossier si autorisé
+si dossier accès et pas aucun fichier alors laisser dossier visible seulement
+si dossier accès pas auto et fichier accès auto donné accès au dossier seulement pour aller au fichier sinon rien afficher d'autre
+
+Si accès au dossier autorisé → afficher le dossier.
+Si dossier accessible mais vide → afficher le dossier seulement.
+Si dossier non autorisé mais fichier autorisé → donner accès au dossier uniquement pour atteindre le fichier.
+Sinon → ne rien afficher.

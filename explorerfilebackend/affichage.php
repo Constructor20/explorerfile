@@ -3,15 +3,21 @@ include 'connectdb.php';
 // Récupère le chemin actuel ou le dossier racine si aucun paramètre 'path' n'est fourni
 $chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__ . "/new";
 $server_host = $_SERVER['HTTP_HOST'];
-function findIcon($pChemin, $server_host) {
+
+function findIcon($pChemin) {
   $pathinfo = pathinfo($pChemin);
+  $url = "/explorerfile/explorerfilebackend";
+  $iconDir = __DIR__ . '/icon';
+  
   if(is_dir($pChemin)){
-    return "<img src='$server_host/explorerfile/explorerfilebackend/icon/folder2.png' class='icon' style='vertical-align: middle;' />";
+    return "<img src='$url/icon/folder2.png' class='icon' style='vertical-align: middle;' />";
   }
 
-  $file = '/explorerfile/explorerfilebackend/icon/'.$pathinfo['extension'].'.png';
-  if (!file_exists($file)) {
-    $file = '/explorerfile/explorerfilebackend/icon/file.png';
+  $file = $iconDir.'/'.$pathinfo['extension'].'.png';
+  if (is_file($file)) {
+    $file = $url.'/icon/'.$pathinfo['extension'].'.png';
+  } else {
+    $file = $url . '/icon/file.png';
   }
   return "<img src='$file' class='icon' style='vertical-align: middle;' />";
 } 
@@ -76,8 +82,13 @@ function findFile($chemin) {
   return scandir($chemin);
 }
 
+function checkbox(){
+    return "<input type='checkbox' class='checkbox' onchange='checkboxChanged()'>
+    <label></label>";
+}
+
 function table($chemin, $paths) {
-    $icon_folder = "icon/folder2.png";
+    $icon_folder = "/explorerfile/explorerfilebackend/icon/folder2.png";
     // Lien vers le dossier parent
 
     if ($chemin !== __DIR__ . "/new") {
@@ -90,19 +101,20 @@ function table($chemin, $paths) {
                 </td>
             </tr>";
     }
-
     if (is_dir($chemin)) {
         $fichiers = findFile($chemin);
         foreach ($fichiers as $fichier) {
           $chemin_complet = completePath($chemin, $fichier);
           if(in_array($fichier, $paths) || $_SESSION['isadmin'] == 1) {
             $chemin_url = urlencode($chemin_complet);
-            $icon = findIcon($chemin_complet, $server_host);
+            $icon = findIcon($chemin_complet);
+            $checkbox = checkbox();
               // $fichier !== "." && $fichier !== ".."
                 if (is_dir($chemin_complet)) {
                   if ($fichier !== "." && $fichier !== "..") {
                       echo "<tr>
                               <td>
+                                  $checkbox
                                   $icon
                               <a href='?path=$chemin_url'>/$fichier</a>
                               </td>
@@ -111,13 +123,12 @@ function table($chemin, $paths) {
                 } else {
                   echo "<tr>
                           <td>
+                          $checkbox
                           $icon
                           $fichier
                           </td>
                       </tr>";
                 }
-          } elseif($_SESSION['isadmin'] == 1) {
-
           }
         }
     } else {

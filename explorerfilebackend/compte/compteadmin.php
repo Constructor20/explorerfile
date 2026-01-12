@@ -77,14 +77,6 @@ if (!isset($_SESSION['user_id'])) {
       arrow.textContent = isVisible ? '▶' : '▼';
     });
   });
-
-  function toggleDeconnectionButton() {
-    window.location.href = '../logout.php';
-  }
-
-  function redirectioneditUser (){
-    window.location.href = 'edit/tableright.php';
-  }
 </script>
 
 </body>
