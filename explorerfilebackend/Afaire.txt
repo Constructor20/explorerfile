@@ -106,3 +106,4 @@ Si dossier accessible mais vide → afficher le dossier seulement.
 Si dossier non autorisé mais fichier autorisé → give accès au dossier uniquement pour atteindre le fichier
 Sinon → ne rien afficher.
 
+si il y a un dossier+fichier
