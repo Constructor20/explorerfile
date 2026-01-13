@@ -152,7 +152,7 @@ function redirectioneditUser (){
   window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/edit/tableright.php';
 }
 
-function toggleUpdateButton(checkbox) {
+function toggleUpdateButtonAdmin(checkbox) {
   const windowBloc = checkbox.closest('.window');
 
   let updateButtonContainer = document.getElementsByName('update_account');
@@ -167,6 +167,10 @@ function toggleUpdateButton(checkbox) {
     }
   });
 }
+
+
+
+
 function compareCheckbox() {
   
 }

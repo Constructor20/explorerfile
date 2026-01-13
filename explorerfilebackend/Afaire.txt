@@ -103,5 +103,6 @@ si dossier accès pas auto et fichier accès auto donné accès au dossier seule
 
 Si accès au dossier autorisé → afficher le dossier.
 Si dossier accessible mais vide → afficher le dossier seulement.
-Si dossier non autorisé mais fichier autorisé → donner accès au dossier uniquement pour atteindre le fichier.
+Si dossier non autorisé mais fichier autorisé → give accès au dossier uniquement pour atteindre le fichier
 Sinon → ne rien afficher.
+

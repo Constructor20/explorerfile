@@ -27,7 +27,7 @@
                         <button type="button" class="button" id="redirectioneditpswd" onclick="redirectionPswd()">Modifier votre mot de passe</button>
                     </div>
                     <div class="field-row-stacked">
-                        <input type="checkbox" id="showUpdate<?php echo $user['id']?>" onchange="toggleUpdateButton(this)">
+                        <input type="checkbox" id="showUpdate<?php echo $user['id']?>" onchange="toggleUpdateButtonAdmin(this)">
                         <label for="showUpdate<?php echo $user['id']?>">Je veux modifier mes informations</label>
                     </div>
 
