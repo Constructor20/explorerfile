@@ -61,7 +61,7 @@ function path($conn) {
         return $decoded['paths'];
     }
     
-    return is_array($decoded) ? $decoded : [];
+    return $decoded['paths'];
     
 }
 $paths = path($conn);
@@ -87,7 +87,7 @@ function pathForAdmin($conn){
 }
 
 function completePath($chemin, $fichier) {
-  return $chemin . DIRECTORY_SEPARATOR . $fichier;
+  return $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
 }
 
 function findFile($chemin) {
@@ -98,7 +98,15 @@ function checkbox(){
     return "<input type='checkbox' class='checkbox' onchange='checkboxChanged()'>
     <label></label>";
 }
-
+function hasPath($chemin, $paths) {
+  $filterPath = [];
+  foreach ($paths as $path) {  
+      $filterPath[] = $chemin . '/' . $path;
+  }
+  return $filterPath;
+}
+// var_dump($chemin);
+// var_dump($paths);
 function table($chemin, $paths) {
     $icon_folder = "/explorerfile/explorerfilebackend/icon/folder2.png";
     // Lien vers le dossier parent
@@ -115,12 +123,15 @@ function table($chemin, $paths) {
     }
     if (is_dir($chemin)) {
       $fichiers = findFile($chemin);
+      $hasPath = hasPath($chemin, $paths);
       foreach ($fichiers as $fichier) {
-        $i = 1;
-        $filterPath = $chemin . '/' . $paths[-1+$i];
-        var_dump($filterPath);
-        if ($filterPath == $fichier) {echo "test";}
+          // chemin complet de tout les éléments afficher accessible mais pas des autres pour l'instant
           $chemin_complet = completePath($chemin, $fichier);
+          // var_dump($hasPath);
+          // var_dump($chemin_complet);
+          if ($chemin_complet !== $hasPath) {
+              echo "test ";
+          }
           if(in_array($fichier, $paths) || $_SESSION['isadmin'] == 1) {
             $chemin_url = urlencode($chemin_complet);
             $icon = findIcon($chemin_complet);
