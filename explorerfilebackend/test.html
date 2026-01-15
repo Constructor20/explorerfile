@@ -1,54 +1,103 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/98.css"> <!-- Style Windows 98 -->
-    <link rel="stylesheet" href="style.css"> <!-- Style personnalisé -->
-    <title>Explorateur de Fichiers</title>
+<meta charset="UTF-8">
+<title>Glass UI</title>
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #74b0ff, #b38bff);
+        height: 100vh;
+        padding: 40px;
+        color: white;
+    }
+
+    .glass-container {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 30px;
+        backdrop-filter: blur(20px);
+    }
+
+    .glass {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 15px;
+        padding: 25px;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    h3 {
+        margin-top: 0;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    /* Checkbox items */
+    .glass-item {
+        padding: 10px;
+        border: 1px solid rgba(255,255,255,0.4);
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        transition: 0.2s;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    .glass-item:hover {
+        background: rgba(255,255,255,0.25);
+    }
+
+    input[type="checkbox"] {
+        transform: scale(1.3);
+        margin-right: 10px;
+    }
+
+    table {
+        width: 100%;
+        color: #fff;
+    }
+
+    td, th {
+        padding: 8px;
+        border-bottom: 1px solid rgba(255,255,255,0.3);
+    }
+</style>
 </head>
+
 <body>
-    <div class="window" style="width: 90%; height: 90%; margin: 20px auto;">
-        <div class="title-bar">
-            <div class="title-bar-text">Explorateur de Fichiers</div>
-            <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
-            </div>
-        </div>
-        <div class="window-body" style="height: calc(100% - 40px); display: flex; flex-direction: column;">
-            <div class="field-row" style="justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <!-- Bouton pour sélectionner un dossier -->
-                <div>
-                    <input type="file" id="fileInput" webkitdirectory multiple style="display: none;" />
-                    <label for="fileInput" class="button">Sélectionner un dossier</label>
-                </div>
-                <!-- Chemin parent -->
-                <div>
-                    <span id="parentpath" style="font-size: 1.2em;">Chemin parent: /</span>
-                </div>
-                <!-- Bouton Retour -->
-                <div>
-                    <button id="goBackButton" class="button">Retour</button>
-                </div>
-            </div>
-            <!-- Tableau des fichiers -->
-            <div style="flex-grow: 1; overflow-y: auto;">
-                <table class="table" style="width: 100%; margin-top: 10px;">
-                    <thead>
-                        <tr>
-                            <th>Chemin d'accès</th>
-                            <th>Fichiers</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fileTableBody">
-                        <!-- Les fichiers seront insérés ici dynamiquement -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+
+<div class="glass-container">
+
+    <div class="glass">
+        <h3>Formats</h3>
+        <label class="glass-item">
+            <input type="checkbox" checked>
+            PDF
+        </label>
+        <label class="glass-item">
+            <input type="checkbox">
+            JPG
+        </label>
+        <label class="glass-item">
+            <input type="checkbox" checked>
+            PNG
+        </label>
     </div>
-    <script src="script.js"></script>
+
+    <div class="glass">
+        <h3>Chemins utilisateur</h3>
+        <table>
+            <tr><td>/mnt/data/project/test.txt</td></tr>
+            <tr><td>/home/user/images/img.png</td></tr>
+        </table>
+    </div>
+
+</div>
+
 </body>
 </html>
