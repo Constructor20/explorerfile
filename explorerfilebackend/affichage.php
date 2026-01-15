@@ -43,6 +43,22 @@ function path($conn) {
     }
 
     $decoded = json_decode($json, true);
+    if (!isset($decoded) || !is_array($decoded)) {
+        return [];
+    }
+
+
+    $filterPath = [];
+    $racine = __DIR__ . "/new";
+    foreach ($decoded['paths'] as $path) {  
+        $path = ltrim($path, '/'); // Supprimer le '/' initial s'il existe
+        $filterPath[] = $racine . '/' . $path;
+    }
+    var_dump($filterPath);
+    return $filterPath;
+    
+}
+$paths = path($conn);
 
     //triage dossier si auto = affiche dossier
     //prendre chaque élément json et comparer si il y a chemin parent
@@ -57,14 +73,7 @@ function path($conn) {
     // je fais une comparaison de dossier mais il faudrait que je compare un tableau['dossier'] voir si il a accès logiquement dcp
     // logiquement les paths sans extension seront automatiquement des dossiers et si il y a un '/' à ce moment là des chemins avec sous dossier
     
-    if (is_array($decoded) && isset($decoded['paths'])) {
-        return $decoded['paths'];
-    }
-    
-    return $decoded['paths'];
-    
-}
-$paths = path($conn);
+    // return $decoded['paths'];
 
 function pathForAdmin($conn){
     $sql = "SELECT isadmin FROM userdata WHERE id = :id";
@@ -98,12 +107,7 @@ function checkbox(){
     return "<input type='checkbox' class='checkbox' onchange='checkboxChanged()'>
     <label></label>";
 }
-function hasPath($chemin, $paths) {
-  $filterPath = [];
-  foreach ($paths as $path) {  
-      $filterPath[] = $chemin . '/' . $path;
-  }
-  return $filterPath;
+function hasPath($paths) {
 }
 // var_dump($chemin);
 // var_dump($paths);
@@ -123,16 +127,10 @@ function table($chemin, $paths) {
     }
     if (is_dir($chemin)) {
       $fichiers = findFile($chemin);
-      $hasPath = hasPath($chemin, $paths);
       foreach ($fichiers as $fichier) {
           // chemin complet de tout les éléments afficher accessible mais pas des autres pour l'instant
           $chemin_complet = completePath($chemin, $fichier);
-          // var_dump($hasPath);
-          // var_dump($chemin_complet);
-          if ($chemin_complet !== $hasPath) {
-              echo "test ";
-          }
-          if(in_array($fichier, $paths) || $_SESSION['isadmin'] == 1) {
+          if(in_array($chemin_complet, $paths) || $_SESSION['isadmin'] == 1) {
             $chemin_url = urlencode($chemin_complet);
             $icon = findIcon($chemin_complet);
             $checkbox = checkbox();
@@ -155,6 +153,7 @@ function table($chemin, $paths) {
                       $fichier
                       </td>
                   </tr>";
+                //   var_dump($fichier);
               }
           }
       }
