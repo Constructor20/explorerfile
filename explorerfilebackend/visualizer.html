@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Drag interne fichiers</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+        padding: 30px;
+    }
+
+    .container {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 20px;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Colonne gauche */
+    .left-box {
+        border-right: 1px solid #ddd;
+        padding-right: 20px;
+    }
+
+    h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .checkbox-item {
+        background: #f9f9f9;
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid #e5e5e5;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: grab;
+        transition: 0.15s;
+    }
+
+    .checkbox-item:hover {
+        background: #eef2f5;
+    }
+
+    /* Zone droite */
+    .selected-files {
+        background: #f9f9fb;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #d4d9e1;
+        min-height: 150px;
+        transition: 0.2s;
+    }
+
+    .selected-files.dragover {
+        background: #eef6ff;
+        border-color: #2e7de9;
+    }
+
+    .file-selected {
+        background: #eef2f5;
+        border: 1px solid #d5dce3;
+        margin: 6px 0;
+        padding: 8px 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: grab;
+    }
+
+    .remove-btn {
+        cursor: pointer;
+        color: #d9534f;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ---------------------- GAUCHE ---------------------- -->
+    <div class="left-box">
+        <h3>Fichiers disponibles</h3>
+
+        <div class="checkbox-list">
+            <label class="checkbox-item" draggable="true">
+                <input type="checkbox" class="file-checkbox">
+                <span>rapport.pdf</span>
+            </label>
+
+            <label class="checkbox-item" draggable="true">
+                <input type="checkbox" class="file-checkbox">
+                <span>photo1.jpg</span>
+            </label>
+
+            <label class="checkbox-item" draggable="true">
+                <input type="checkbox" class="file-checkbox">
+                <span>notes.txt</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- ---------------------- DROITE ---------------------- -->
+    <div class="right-box">
+        <h3>Fichiers sélectionnés</h3>
+        <div class="selected-files" id="selectedArea">
+            <!-- Rempli automatiquement -->
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const selectedArea = document.getElementById('selectedArea');
+    const leftItems = document.querySelectorAll('.checkbox-item');
+
+    let draggedFileName = null;
+    let draggedOrigin = null;
+
+    /* -------------------------------------------------------
+       DRAG & DROP GAUCHE → DROITE
+    ------------------------------------------------------- */
+    leftItems.forEach(item => {
+        const checkbox = item.querySelector(".file-checkbox");
+
+        item.addEventListener("dragstart", () => {
+            draggedFileName = item.querySelector("span").innerText.trim();
+            draggedOrigin = "left";
+        });
+
+        // Lorsque la checkbox est cliquée
+        checkbox.addEventListener("change", () => {
+            const name = item.querySelector("span").innerText.trim();
+
+            if (checkbox.checked) {
+                addSelectedFile(name);
+            } else {
+                removeSelectedFile(name);
+            }
+        });
+    });
+
+    /* DRAG OVER ZONE DROITE */
+    selectedArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        selectedArea.classList.add("dragover");
+    });
+
+    selectedArea.addEventListener("dragleave", () => {
+        selectedArea.classList.remove("dragover");
+    });
+
+    /* DROP GAUCHE → DROITE */
+    selectedArea.addEventListener("drop", () => {
+        selectedArea.classList.remove("dragover");
+
+        if (!draggedFileName) return;
+
+        addSelectedFile(draggedFileName);
+        updateCheckbox(draggedFileName, true);
+
+        draggedFileName = null;
+    });
+
+    /* -------------------------------------------------------
+       AJOUTER À DROITE
+    ------------------------------------------------------- */
+    function addSelectedFile(name) {
+        // Empêcher doublons
+        if ([...selectedArea.children].some(e => e.dataset?.name === name)) return;
+
+        const div = document.createElement("div");
+        div.classList.add("file-selected");
+        div.draggable = true;
+        div.dataset.name = name;
+        div.innerHTML = `📄 ${name} <span class="remove-btn">✖</span>`;
+
+        // Bouton suppression
+        div.querySelector(".remove-btn").addEventListener("click", () => {
+            removeSelectedFile(name);
+        });
+
+        // Drag & drop droite → gauche
+        div.addEventListener("dragstart", () => {
+            draggedFileName = name;
+            draggedOrigin = "right";
+        });
+
+        selectedArea.appendChild(div);
+    }
+
+    /* -------------------------------------------------------
+       SUPPRIMER À DROITE
+    ------------------------------------------------------- */
+    function removeSelectedFile(name) {
+        const el = [...selectedArea.children].find(e => e.dataset?.name === name);
+        if (el) el.remove();
+
+        updateCheckbox(name, false);
+    }
+
+    /* -------------------------------------------------------
+       MISE À JOUR DES CHECKBOX
+    ------------------------------------------------------- */
+    function updateCheckbox(fileName, state) {
+        document.querySelectorAll(".checkbox-item").forEach(item => {
+            const name = item.querySelector("span").innerText.trim();
+            if (name === fileName) {
+                item.querySelector("input").checked = state;
+            }
+        });
+    }
+
+    /* -------------------------------------------------------
+       DRAG & DROP DROITE → GAUCHE
+    ------------------------------------------------------- */
+    document.querySelector(".left-box").addEventListener("dragover", (e) => {
+        e.preventDefault();
+    });
+
+    document.querySelector(".left-box").addEventListener("drop", () => {
+        if (draggedOrigin === "right") {
+            removeSelectedFile(draggedFileName);
+        }
+        draggedFileName = null;
+    });
+</script>
+
+</body>
+</html>
