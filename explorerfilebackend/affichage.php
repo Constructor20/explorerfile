@@ -118,10 +118,12 @@ function renderFolderRow($chemin_complet, $fichier) {
     return '
     <tr class="folder-row" data-folder="'.$chemin_complet.'">
         <td class="cell">
-            <input type="checkbox" class="folder-checkbox perm-checkbox" data-folder="'.$chemin_complet.'">
-            <span class="entry">
+            <input type="checkbox" class="folder-checkbox perm-checkbox" data-folder="'.$chemin_complet.'" id="checkbox-'.$chemin_complet.'">
+            <label for="checkbox-'.$chemin_complet.'">
+              <span class="entry">
                 '.$icon.'<a href="?path='.$chemin_url.'">/'.$fichier.'</a>
-            </span>
+              </span>
+            </label>
         </td>
     </tr>';
 }
@@ -132,10 +134,11 @@ function renderFileRow($chemin_complet, $fichier) {
     $icon = findIcon($chemin_complet);
 
     echo '
-    <tr class="file-row" data-file="'.$chemin_complet.'">
+    <tr class="folder-row" data-folder="'.$chemin_complet.'">
         <td class="cell">
-            <input type="checkbox" class="file-checkbox perm-checkbox" data-file="'.$chemin_complet.'">
-            <span class="entry">
+            <input type="checkbox" class="folder-checkbox perm-checkbox" data-folder="'.$chemin_complet.'" id="checkbox-'.$chemin_complet.'">
+            <label for="checkbox-'.$chemin_complet.'">
+              <span class="entry">
                 '.$icon.'
                 <span class="entry-name">'.$fichier.'</span>
             </span>
