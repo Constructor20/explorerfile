@@ -6,7 +6,6 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 ?>
-
 <?php include 'affichage.php'; ?>
 <!DOCTYPE html>
 <html lang="fr">

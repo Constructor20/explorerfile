@@ -1,6 +1,7 @@
 <?php 
 
 include 'tablerightinc.php';
+var_dump($_POST);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -51,6 +52,7 @@ include 'tablerightinc.php';
             </thead>
             <tbody id="fileTableBody">
               <?php table($chemin, $paths); ?>
+              <!-- futur fonction sélection -->
             </tbody>
           </table>
         </div>

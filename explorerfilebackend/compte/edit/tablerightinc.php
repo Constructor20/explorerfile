@@ -6,6 +6,7 @@ $userId = $_POST['user_id'] ?? null;
 
 include '../../affichage.php';
 
+
 // pour récupérer les droits user pour checkbox
 // function pathRight ($conn){
 //     if (!isset($_POST['user_id'])) {

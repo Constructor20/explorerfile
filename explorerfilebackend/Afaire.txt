@@ -107,3 +107,11 @@ Si dossier non autorisé mais fichier autorisé → give accès au dossier uniqu
 Sinon → ne rien afficher.
 
 si il y a un dossier+fichier
+
+jour 9 - 16/O1
+
+Alors chose intéressante à savoir la "sélection" est les fichier/dossier manipulable par l'utilisateur 
+avec dcp la partie nouveau pour ceux qui ont été sélectionner à l'instant 
+et les anciens seront juste au dessus avec une ligne actuel: puis l'énumération des éléments appartenant déjà à l'utilisateur 
+et avec cette checkbox sa permettrais justement de vérrifier quel fichier à été mise à jour et qui est récent 
+et lesquels l'utilisateur possède avec un bouton de mise à jour pour envoyer le tout à la bdd

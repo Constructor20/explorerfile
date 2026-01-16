@@ -21,9 +21,6 @@ function findIcon($pChemin) {
   }
   return "<img src='$file' class='icon' style='vertical-align: middle;' />";
 } 
-// verif accès fichier selon user id
-// $_SESSION['user_id'] = $dada; // A supprimer après test
-
 function path($conn) {
     if (!isset($_SESSION['user_id'])) {
         return [];
@@ -54,26 +51,10 @@ function path($conn) {
         $path = ltrim($path, '/'); // Supprimer le '/' initial s'il existe
         $filterPath[] = $racine . '/' . $path;
     }
-    var_dump($filterPath);
     return $filterPath;
     
 }
 $paths = path($conn);
-
-    //triage dossier si auto = affiche dossier
-    //prendre chaque élément json et comparer si il y a chemin parent
-
-    //obliger un chemin direct absolue genre /blabla/test.txt les autres test.txt vont être automatiquement bloquer
-    
-    // Retourner le tableau 'paths' si présent, sinon le tableau décod­é complet
-
-
-    // résultat final:
-    //Donc avant de comparer les fichier 
-    // je fais une comparaison de dossier mais il faudrait que je compare un tableau['dossier'] voir si il a accès logiquement dcp
-    // logiquement les paths sans extension seront automatiquement des dossiers et si il y a un '/' à ce moment là des chemins avec sous dossier
-    
-    // return $decoded['paths'];
 
 function pathForAdmin($conn){
     $sql = "SELECT isadmin FROM userdata WHERE id = :id";
@@ -94,71 +75,118 @@ function pathForAdmin($conn){
     
     return array_unique($allPaths);
 }
-
 function completePath($chemin, $fichier) {
   return $chemin_complet = $chemin . DIRECTORY_SEPARATOR . $fichier;
 }
-
 function findFile($chemin) {
   return scandir($chemin);
 }
-
-function checkbox(){
+function checkbox(){ 
     return "<input type='checkbox' class='checkbox' onchange='checkboxChanged()'>
     <label></label>";
 }
-function hasPath($paths) {
-}
-// var_dump($chemin);
-// var_dump($paths);
-function table($chemin, $paths) {
-    $icon_folder = "/explorerfile/explorerfilebackend/icon/folder2.png";
-    // Lien vers le dossier parent
+// Affiche la ligne HTML pour remonter dans le dossier parent
+function renderParentFolderRow($chemin) {
 
+    $icon_folder = "/explorerfile/explorerfilebackend/icon/folder2.png";
+
+    // Si on est PAS à la racine, on affiche le lien "retour"
     if ($chemin !== __DIR__ . "/new") {
-        $parent = dirname($chemin);  // Chemin du dossier parent
-        $url_parent = urlencode($parent);  // URL encodée pour le lien
-        echo "<tr>
+        $parent = dirname($chemin); 
+        $url_parent = urlencode($parent);
+
+        return "<tr>
                 <td>
                 <img src='$icon_folder' class='icon' style='vertical-align: middle;' />
                 <a href='?path=$url_parent'>🔙 Revenir au dossier parent</a>
                 </td>
             </tr>";
     }
-    if (is_dir($chemin)) {
-      $fichiers = findFile($chemin);
-      foreach ($fichiers as $fichier) {
-          // chemin complet de tout les éléments afficher accessible mais pas des autres pour l'instant
-          $chemin_complet = completePath($chemin, $fichier);
-          if(in_array($chemin_complet, $paths) || $_SESSION['isadmin'] == 1) {
-            $chemin_url = urlencode($chemin_complet);
-            $icon = findIcon($chemin_complet);
-            $checkbox = checkbox();
-            // $fichier !== "." && $fichier !== ".."
-              if (is_dir($chemin_complet)) {
-                if ($fichier !== "." && $fichier !== "..") {
-                    echo "<tr>
-                            <td>
-                                $checkbox
-                                $icon
-                            <a href='?path=$chemin_url'>/$fichier</a>
-                            </td>
-                        </tr>";
-                }
-              } else {
-              echo "<tr>
-                      <td>
-                      $checkbox
-                      $icon
-                      $fichier
-                      </td>
-                  </tr>";
-                //   var_dump($fichier);
-              }
-          }
-      }
-    } else {
-        echo "<tr><td>⚠️ Ce dossier n'existe pas.</td></tr>";
+
+    return ""; // Si on est à la racine → rien
+}
+// Vérifie si l'utilisateur a le droit de VOIR ce fichier/dossier
+function hasAccessTo($chemin_complet, $paths) {
+    return in_array($chemin_complet, $paths) || $_SESSION['isadmin'] == 1;
+}
+// Créé une ligne HTML pour un DOSSIER
+
+function renderFolderRow($chemin_complet, $fichier) {
+    $icon = findIcon($chemin_complet);
+    $chemin_url = urlencode($chemin_complet);
+
+    return '
+    <tr class="folder-row" data-folder="'.$chemin_complet.'">
+        <td class="cell">
+            <input type="checkbox" class="folder-checkbox perm-checkbox" data-folder="'.$chemin_complet.'">
+            <span class="entry">
+                '.$icon.'<a href="?path='.$chemin_url.'">/'.$fichier.'</a>
+            </span>
+        </td>
+    </tr>';
+}
+
+// Créé une ligne HTML pour un FICHIER (en HTML)
+
+function renderFileRow($chemin_complet, $fichier) {
+    $icon = findIcon($chemin_complet);
+
+    echo '
+    <tr class="file-row" data-file="'.$chemin_complet.'">
+        <td class="cell">
+            <input type="checkbox" class="file-checkbox perm-checkbox" data-file="'.$chemin_complet.'">
+            <span class="entry">
+                '.$icon.'
+                <span class="entry-name">'.$fichier.'</span>
+            </span>
+        </td>
+    </tr>';
+}
+
+// Gère UN fichier/dossier et retourne la ligne HTML adaptée
+function renderOneElement($chemin, $fichier, $paths) {
+
+    $chemin_complet = completePath($chemin, $fichier);
+
+    // Si l'utilisateur ne peut pas y accéder → on ignore
+    if (!hasAccessTo($chemin_complet, $paths)) return "";
+
+    // Si c'est un dossier
+    if (is_dir($chemin_complet)) {
+
+        // On ignore les dossiers spéciaux
+        if ($fichier === "." || $fichier === "..") return "";
+
+        return renderFolderRow($chemin_complet, $fichier);
     }
-        
+
+    // Sinon → fichier normal
+    return renderFileRow($chemin_complet, $fichier);
+}
+
+// Fonction TABLE reconstruite proprement
+function table($chemin, $paths) {
+
+    // 1. Affiche le bouton retour si nécessaire
+    echo renderParentFolderRow($chemin);
+
+    // 2. Si ce n’est pas un dossier → message d’erreur
+    if (!is_dir($chemin)) {
+        echo "<tr><td>⚠️ Ce dossier n'existe pas.</td></tr>";
+        return;
+    }
+
+    // 3. Récupère tous les fichiers du dossier
+    $fichiers = findFile($chemin);
+
+    // 4. Boucle sur chaque fichier/dossier
+    foreach ($fichiers as $fichier) {
+
+        // Affiche 1 élément (si accessible)
+        echo renderOneElement($chemin, $fichier, $paths);
+    }
+}
+
+function selection(){
+  
 }
