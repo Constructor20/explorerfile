@@ -24,7 +24,7 @@
                         <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" id="email">
                     </div>
                     <div class="field-row-stacked">
-                        <button type="button" class="button" id="redirectioneditpswd" onclick="redirectionPswd()">Modifier votre mot de passe</button>
+                        <button type="button" class="button" id="redirectioneditpswd" onclick="redirectionPswd(baseDir)">Modifier votre mot de passe</button>
                     </div>
                     <div class="field-row-stacked">
                         <input type="checkbox" id="showUpdate<?php echo $user['id']?>" onchange="toggleUpdateButtonAdmin(this)">
@@ -38,7 +38,7 @@
                 <form action="edit/tableright.php" method="POST">
                     <div class="field-row-stacked">
                         <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
-                        <button type="submit" class="button" id="redirectionedituser" onclick="redirectioneditUser()">Modifier les droits de l'utilisateurs</button>
+                        <button type="submit" class="button" id="redirectionedituser" onclick="redirectioneditUser(baseDir)">Modifier les droits de l'utilisateurs</button>
                     </div>
                 </form>
             </div>

@@ -70,11 +70,11 @@ if (!isset($_SESSION['user_id'])) {
                     <button aria-label="Close"></button>
                   </div>
                 </div>
-                  <button type="button" class="button" id="gotoProfile" onclick="gotoaccounts()">Profil</button>
+                  <button type="button" class="button" id="gotoProfile" onclick="gotoaccounts(baseDir)">Profil</button>
                   <?php if($_SESSION['isadmin'] == 1) {?>
-                    <button type="button" class="button" id='gotoEditProfile' onclick='gotomanagementaccounts()'>Gestion des Comptes</button>
+                    <button type="button" class="button" id='gotoEditProfile' onclick='gotomanagementaccounts(baseDir)'>Gestion des Comptes</button>
                   <?}?>
-                  <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
+                  <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton(baseDir)">Déconnexion</button>
               </div>
           </tbody>
         </table>

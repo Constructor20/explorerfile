@@ -74,10 +74,10 @@ if (!isset($_SESSION['user_id'])) {
                         };?>
                     </div>
                     <div class="field-row-stacked">
-                        <button type="button" class="button" id="redirectioneditpswd" onclick="redirectionPswd()">Modifier votre mot de passe</button>
+                        <button type="button" class="button" id="redirectioneditpswd" onclick="redirectionPswd(baseDir)">Modifier votre mot de passe</button>
                     </div>
                     <div class="field-row-stacked">
-                        <input type="checkbox" id="showUpdate" onchange="toggleUpdateButton()">
+                        <input type="checkbox" id="showUpdate" onchange="toggleUpdateButton(baseDir)">
                         <label for="showUpdate">Je veux modifier mes informations</label>
                     </div>
 
@@ -87,7 +87,7 @@ if (!isset($_SESSION['user_id'])) {
                 </form>
                 <div class="field-row-stacked">
                     <h4>Gestion des fichiers</h4>
-                    <button type="button" class="button" id="gotomanagementfiles" onclick="gotomanagementfiles()">Accéder au gestionnaire de fichiers</button>
+                    <button type="button" class="button" id="gotomanagementfiles" onclick="gotomanagementfiles(baseDir)">Accéder au gestionnaire de fichiers</button>
                 </div>
             </div>
         </div>

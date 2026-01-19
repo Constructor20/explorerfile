@@ -41,7 +41,7 @@ if (!isset($_SESSION['user_id'])) {
 
   <div class="main">
       <div class="header">
-        <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
+        <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton(baseDir)">Déconnexion</button>
       </div>
 
     <div class="window" style="width: 100%;">
