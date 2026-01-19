@@ -119,37 +119,39 @@ function toggleUpdateButton() {
   updateBtn.style.display = checkbox.checked ? 'block' : 'none';
 }
 
+baseDir = '/explorerfile/explorerfilebackend/';
+
 // Redirection Edit mot de passe
-function redirectionPswd (){
+function redirectionPswd (baseDir){
   document.getElementById('redirectioneditpswd').addEventListener('click', function(event) {
   event.preventDefault();
-  window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/edit/editmdp.php';
+  window.location.href = baseDir + 'compte/edit/editmdp.php';
 });
 }
 
 // Déconnexion
-function toggleDeconnectionButton() {
-  window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/logout.php';
+function toggleDeconnectionButton(baseDir) {
+  window.location.href = baseDir + 'logout.php';
 }
 
 // User fichier normale
-function gotomanagementfiles() {
-    window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/index.php';
+function gotomanagementfiles(baseDir) {
+    window.location.href = baseDir + 'index.php';
 }
 
 // Compte Admin
-function gotomanagementaccounts() {
-    window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/compteadmin.php';
+function gotomanagementaccounts(baseDir) {
+    window.location.href = baseDir + 'compte/compteadmin.php';
 }
 
 // Profil user
-function gotoaccounts() {
-    window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/compte.php';
+function gotoaccounts(baseDir) {
+    window.location.href = baseDir + 'compte/compte.php';
 }
 
 // Edit user access files
-function redirectioneditUser (){
-  window.location.href = window.location.origin + '/explorerfile/explorerfilebackend/compte/edit/tableright.php';
+function redirectioneditUser (baseDir){
+  window.location.href = baseDir + 'compte/edit/tableright.php';
 }
 
 function toggleUpdateButtonAdmin(checkbox) {
@@ -167,9 +169,6 @@ function toggleUpdateButtonAdmin(checkbox) {
     }
   });
 }
-
-
-
 
 function compareCheckbox() {
   
