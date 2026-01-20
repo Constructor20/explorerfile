@@ -1,11 +1,15 @@
 <?php
-session_start();
-include '../../connectdb.php';
+// session_start();
+include "../../connectdb.php";
 
-$userId = $_POST['user_id'] ?? null;
+$userId = $_POST["user_id"] ?? null;
 // var_dump($userId);
-var_dump($_POST);
 
+var_dump($userId);
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && (isset($_POST["path-user-update"]) && isset($_POST["checkbox-"]))) {
+    header("Location: ../compte.php");
+}
 
 // pour récupérer les droits user pour checkbox
 // function pathRight ($conn){
@@ -26,12 +30,12 @@ var_dump($_POST);
 //     }
 
 //     $decoded = json_decode($json, true);
-    
+
 //     // Retourner le tableau 'paths' si présent, sinon le tableau décod­é complet
 //     if (is_array($decoded) && isset($decoded['paths'])) {
 //         return $decoded['paths'];
 //     }
-    
+
 //     return is_array($decoded) ? $decoded : [];
 // }
 

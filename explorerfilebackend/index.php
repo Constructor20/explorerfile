@@ -1,10 +1,5 @@
 <?php
-
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: registerphp/login.php');
-    exit;
-}
 ?>
 <?php include 'affichage.php'; ?>
 <!DOCTYPE html>
@@ -28,7 +23,7 @@ if (!isset($_SESSION['user_id'])) {
           <button aria-label="Close"></button>
         </div>
       </div>
-      
+
     <div class="window-body" style="height: calc(100% - 40px); display: flex; flex-direction: column;">
       <!-- Barre supérieure -->
       <div class="field-row" style="justify-content: space-between; align-items: center; margin-bottom: 10px;">

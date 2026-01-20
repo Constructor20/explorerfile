@@ -25,7 +25,7 @@
           <input type="password" name="old_password" placeholder="Mot de passe" />
         </label>
         <span style="color: red;">
-          <?php 
+          <?php
           if (!empty($_GET["error"])) {
             if ($_GET["error"] == "emptypassword1") {
               echo "Le champ est sois vide ou invalide";
@@ -41,7 +41,7 @@
           <input type="password" name="new_password" placeholder="Nouveau Mot de passe" />
         </label>
         <span style="color: red;">
-          <?php 
+          <?php
           if (!empty($_GET["error"])) {
             if ($_GET["error"] == "emptypassword2") {
               echo "Le champ est sois vide ou invalide";
@@ -57,7 +57,7 @@
           <input type="password" name="confirm_password" placeholder="Confirmation Mot de passe" />
         </label>
         <span style="color: red;">
-          <?php 
+          <?php
           if (!empty($_GET["error"])) {
             if ($_GET["error"] == "emptypassword3") {
               echo "Le champ est sois vide ou invalide";

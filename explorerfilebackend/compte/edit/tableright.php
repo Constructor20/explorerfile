@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 include '../../connectdb.php';
 
@@ -46,6 +46,7 @@ var_dump($user_id);
               <button type='button' class='button' id='gotoEditProfile' onclick="gotomanagementaccounts(baseDir)">Gestion des Comptes</button>
               <?}?>
               <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton(baseDir)">Déconnexion</button>
+              <button class="button" id="backToCompteAdmin" onclick="toggleCompteAdmin(baseDir)">Retour</button>
         </div>
         <!-- Tableau scrollable -->
         <div class="explorer-table-scroll" style="max-height: 400px; overflow-y: auto;">
@@ -56,9 +57,9 @@ var_dump($user_id);
               </tr>
             </thead>
             <tbody id="fileTableBody">
-              <form class="checkbox" method="post" action="tablerightinc.php">
                 <?php table($chemin, $paths); ?>
-                <button type="submit" class="button">Enregistrer les modifications</button>
+              <form class="checkbox" method="post" action="tablerightinc.php">
+                <?php submit($user_id); ?>
               </form>
               <!-- futur fonction sélection -->
             </tbody>
@@ -70,3 +71,4 @@ var_dump($user_id);
   <script src="../../script.js"></script>
 </body>
 </html>
+<?php include 'tablerightinc.php'?>

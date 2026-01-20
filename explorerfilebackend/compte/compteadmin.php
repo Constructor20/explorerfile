@@ -1,12 +1,5 @@
 <?php
-
-session_start();
-
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../registerphp/login.php');
-    exit;
-}
-?>
+session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -49,17 +42,17 @@ if (!isset($_SESSION['user_id'])) {
         <div class="title-bar-text">Gestion des comptes</div>
       </div>
       <div class="window-body">
-        <p><b>Admin <?php echo htmlspecialchars($_SESSION['username']); ?></b></p>
-        <?php 
-        if(!empty($_GET["success"])) {
-          if($_GET["success"] == "success") {
-            echo "<b><p>Les données ont bien été modifiées avec succès</b></p>";
-          }
-        };
-        ?>
+        <p><b>Admin <?php echo htmlspecialchars(
+            $_SESSION["username"],
+        ); ?></b></p>
+        <?php if (!empty($_GET["success"])) {
+            if ($_GET["success"] == "success") {
+                echo "<b><p>Les données ont bien été modifiées avec succès</b></p>";
+            }
+        } ?>
         <div class="field-row-stacked">
           <label>Comptes utilisateurs :</label>
-          <?php include '../compte/edit/gestioncompte.php'; ?>
+          <?php include "../compte/edit/gestioncompte.php"; ?>
         </div>
       </div>
     </div>

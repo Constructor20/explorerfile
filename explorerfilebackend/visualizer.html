@@ -2,242 +2,395 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Drag interne fichiers</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gestion des droits — Mix Table & Chips (flou + remplacement bouton)</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f6f8;
-        padding: 30px;
-    }
+  :root{
+    --bg:#f5f6f8;
+    --panel:#ffffff;
+    --border:#d6d9df;
+    --text:#1f2328;
+    --muted:#6a737d;
+    --success-bg:#e6ffed;
+    --success:#1a7f37;
+    --chip:#e9ecf3;
+    --chip-border:#cfd6e6;
+    --chip-remove:#a23;
+    --row-hover:#f2f6ff;
+    --btn:#2f6bff;
+    --btn-text:#fff;
+    --shadow: 0 4px 20px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Arial,"Apple Color Emoji","Segoe UI Emoji";
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.45;
+    padding:24px;
+  }
+  .layout{
+    display:grid;
+    grid-template-columns: 1.2fr .8fr;
+    gap:24px;
+  }
+  .window{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow: var(--shadow);
+  }
+  .title-bar{
+    padding:14px 16px;
+    background:linear-gradient(#f8f9fb,#f1f3f7);
+    border-bottom:1px solid var(--border);
+    font-weight:600;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .title-bar small{ color:var(--muted); font-weight:400; }
+  .window-body{ padding:16px; }
 
-    .container {
-        display: grid;
-        grid-template-columns: 300px 1fr;
-        gap: 20px;
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
+  /* Explorer (table) */
+  .explorer-hint{
+    color:var(--muted);
+    font-size:.92rem;
+    margin-bottom:8px;
+  }
+  table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    background:#fff;
+  }
+  thead th{
+    background:#f7f9fc;
+    text-align:left;
+    font-weight:600;
+    font-size:.95rem;
+    padding:10px 12px;
+    border-bottom:1px solid var(--border);
+  }
+  tbody td{
+    padding:10px 12px;
+    border-bottom:1px solid var(--border);
+    vertical-align:middle;
+  }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background:var(--row-hover); }
+  .entry{
+    display:flex; align-items:center; gap:10px;
+  }
+  .entry .icon{
+    width:20px; height:20px; display:inline-grid; place-items:center;
+    border-radius:4px; background:#e3e8f4; font-size:.9rem;
+  }
+  .name{ font-weight:500; }
+  .name a{ color:var(--text); text-decoration:none; }
+  .name a:hover{ text-decoration:underline; }
 
-    /* Colonne gauche */
-    .left-box {
-        border-right: 1px solid #ddd;
-        padding-right: 20px;
-    }
+  .actions{ text-align:right; white-space:nowrap; width:1%; }
+  .btn{
+    appearance:none; border:none; border-radius:8px;
+    background:var(--btn); color:var(--btn-text);
+    padding:8px 12px; font-weight:600; cursor:pointer;
+    transition:transform .04s ease, opacity .2s ease, box-shadow .2s ease;
+    box-shadow: 0 2px 6px rgba(47,107,255,.25);
+  }
+  .btn.secondary{
+    background:#eef2ff; color:#2140d4; border:1px solid #cdd7ff; box-shadow:none;
+  }
+  .btn[disabled]{ opacity:.45; cursor:not-allowed; }
+  .btn:active{ transform:translateY(1px); }
 
-    h3 {
-        margin-top: 0;
-        margin-bottom: 10px;
-        font-size: 18px;
-        color: #333;
-    }
+  /* ÉTAT LIGNE DÉJÀ AJOUTÉE : flouter toutes les cellules SAUF .actions */
+  tr.is-disabled > td:not(.actions) {
+    filter: blur(2px);
+    opacity: .45;
+    pointer-events: none;
+    transition: filter .15s ease, opacity .15s ease;
+  }
 
-    .checkbox-item {
-        background: #f9f9f9;
-        padding: 8px 10px;
-        border-radius: 6px;
-        border: 1px solid #e5e5e5;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: grab;
-        transition: 0.15s;
-    }
+  /* Badge "Ajouté" qui remplace le bouton dans la cellule actions */
+  .added-tag {
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--success-bg);
+    color:var(--success);
+    padding:7px 12px;
+    border-radius: 999px;
+    border: 1px solid #b7f0c4;
+    font-weight: 700;
+    font-size: .85rem;
+    animation: fadeUp .18s ease-out both;
+  }
+  .added-tag .check{
+    display:inline-grid; place-items:center;
+    width:18px; height:18px; border-radius:50%;
+    background:#c9f0d1; color:var(--success); font-size:.8rem;
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(4px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
 
-    .checkbox-item:hover {
-        background: #eef2f5;
-    }
+  /* Droits (chips) */
+  .chips{
+    display:flex; gap:8px; flex-wrap:wrap; margin:8px 0 12px;
+    min-height:46px; padding:8px; border:1px dashed var(--border); border-radius:8px; background:#fbfcff;
+  }
+  .chip{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:8px 10px; border-radius:999px; background:var(--chip);
+    border:1px solid var(--chip-border); font-weight:500;
+  }
+  .chip .tag{
+    font-size:.8rem; padding:2px 6px; border-radius:12px;
+    background:var(--success-bg); color:var(--success); border:1px solid #b7f0c4;
+  }
+  .chip.new{ background:var(--success-bg); border-color:#b7f0c4; color:var(--success); }
+  .chip button.remove{
+    background:transparent; border:none; color:var(--chip-remove);
+    cursor:pointer; font-weight:700; padding:0 4px; font-size:1rem; line-height:1;
+  }
 
-    /* Zone droite */
-    .selected-files {
-        background: #f9f9fb;
-        padding: 10px;
-        border-radius: 8px;
-        border: 1px solid #d4d9e1;
-        min-height: 150px;
-        transition: 0.2s;
-    }
+  .save-row{ display:flex; gap:10px; justify-content:flex-end; margin-top:10px; }
+  .muted{ color:var(--muted); font-size:.92rem; }
 
-    .selected-files.dragover {
-        background: #eef6ff;
-        border-color: #2e7de9;
-    }
-
-    .file-selected {
-        background: #eef2f5;
-        border: 1px solid #d5dce3;
-        margin: 6px 0;
-        padding: 8px 10px;
-        border-radius: 6px;
-        font-size: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: grab;
-    }
-
-    .remove-btn {
-        cursor: pointer;
-        color: #d9534f;
-        font-weight: bold;
-    }
+  /* Responsive */
+  @media (max-width: 980px){
+    .layout{ grid-template-columns: 1fr; }
+  }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="layout">
+  <!-- PANEL GAUCHE : EXPLORATEUR -->
+  <section class="window" aria-labelledby="explorer-title">
+    <div class="title-bar">
+      <div id="explorer-title">Explorateur</div>
+      <small id="current-path">/racine/projet</small>
+    </div>
+    <div class="window-body">
+      <div class="explorer-hint">Cliquez sur <b>Ajouter</b> pour proposer un nouveau droit.</div>
 
-    <!-- ---------------------- GAUCHE ---------------------- -->
-    <div class="left-box">
-        <h3>Fichiers disponibles</h3>
+      <table aria-describedby="explorer-title">
+        <thead>
+          <tr>
+            <th>Élément</th>
+            <th class="actions">Action</th>
+          </tr>
+        </thead>
+        <tbody id="explorer-body">
+          <!-- Exemples (remplace par ton rendu serveur : garde data-rel / data-abs / data-name) -->
+          <tr data-rel="docs" data-abs="/racine/projet/docs" data-name="/docs">
+            <td>
+              <div class="entry">
+                <span class="icon" aria-hidden="true">📁</span>
+                <span class="name">#/docs</a></span>
+              </div>
+            </td>
+            <td class="actions">
+              <button class="btn secondary add" type="button">Ajouter</button>
+            </td>
+          </tr>
+          <tr data-rel="assets/images" data-abs="/racine/projet/assets/images" data-name="/assets/images">
+            <td>
+              <div class="entry">
+                <span class="icon" aria-hidden="true">📁</span>
+                <span class="name">#/assets/images</a></span>
+              </div>
+            </td>
+            <td class="actions">
+              <button class="btn secondary add" type="button">Ajouter</button>
+            </td>
+          </tr>
+          <tr data-rel="README.md" data-abs="/racine/projet/README.md" data-name="README.md">
+            <td>
+              <div class="entry">
+                <span class="icon" aria-hidden="true">📄</span>
+                <span class="name">README.md</span>
+              </div>
+            </td>
+            <td class="actions">
+              <button class="btn secondary add" type="button">Ajouter</button>
+            </td>
+          </tr>
+          <!-- /Exemples -->
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-        <div class="checkbox-list">
-            <label class="checkbox-item" draggable="true">
-                <input type="checkbox" class="file-checkbox">
-                <span>rapport.pdf</span>
-            </label>
-
-            <label class="checkbox-item" draggable="true">
-                <input type="checkbox" class="file-checkbox">
-                <span>photo1.jpg</span>
-            </label>
-
-            <label class="checkbox-item" draggable="true">
-                <input type="checkbox" class="file-checkbox">
-                <span>notes.txt</span>
-            </label>
-        </div>
+  <!-- PANEL DROIT : VOS DROITS (CHIPS) -->
+  <section class="window" aria-labelledby="rights-title">
+    <div class="title-bar">
+      <div id="rights-title">Vos droits</div>
+      <small class="muted">Les nouveaux éléments sont surlignés en vert</small>
     </div>
 
-    <!-- ---------------------- DROITE ---------------------- -->
-    <div class="right-box">
-        <h3>Fichiers sélectionnés</h3>
-        <div class="selected-files" id="selectedArea">
-            <!-- Rempli automatiquement -->
-        </div>
-    </div>
+    <div class="window-body">
+      <!-- Chips existantes (ex: droits actuels) -->
+      <div id="chips" class="chips" role="list">
+        <!-- Exemple: droit déjà acquis -->
+        <span class="chip" role="listitem" data-rel="existing/path" data-new="0">
+          <span>✅ /existing/path</span>
+          <button title="Retirer" class="remove" aria-label="Retirer ce droit">×</button>
+          <input type="hidden" name="paths[]" value="existing/path" />
+        </span>
+        <!-- Les nouveaux ajoutés auront la classe .new -->
+      </div>
 
+      <div class="save-row">
+        <button class="btn" type="button" id="saveBtn">Enregistrer</button>
+      </div>
+      <p class="muted" id="saveHint" style="display:none;margin-top:6px;"></p>
+    </div>
+  </section>
 </div>
 
 <script>
-    const selectedArea = document.getElementById('selectedArea');
-    const leftItems = document.querySelectorAll('.checkbox-item');
+/**
+ * Contrôleur côté client
+ * - Ajouter depuis l’explorateur → créer une chip et flouter la ligne + remplacer bouton par badge
+ * - Retirer une chip → déflouter la ligne et remettre le bouton Ajouter
+ * - Enregistrer (simulation POST) : affiche paths[] retenus
+ */
+(function(){
+  const chips = document.getElementById('chips');
+  const explorer = document.getElementById('explorer-body');
+  const saveBtn = document.getElementById('saveBtn');
+  const saveHint = document.getElementById('saveHint');
 
-    let draggedFileName = null;
-    let draggedOrigin = null;
+  // Index des chemins relatifs déjà présents dans "Vos droits"
+  const have = new Set(
+    Array.from(chips.querySelectorAll('.chip input[name="paths[]"]'))
+      .map(i => i.value)
+  );
 
-    /* -------------------------------------------------------
-       DRAG & DROP GAUCHE → DROITE
-    ------------------------------------------------------- */
-    leftItems.forEach(item => {
-        const checkbox = item.querySelector(".file-checkbox");
+  // Remplace la cellule Action par badge "Ajouté" et floute la ligne
+  function blurRow(rel){
+    const tr = explorer.querySelector(`tr[data-rel="${cssEscape(rel)}"]`);
+    if (!tr) return;
 
-        item.addEventListener("dragstart", () => {
-            draggedFileName = item.querySelector("span").innerText.trim();
-            draggedOrigin = "left";
-        });
+    tr.classList.add('is-disabled');
+    tr.setAttribute('aria-disabled','true');
 
-        // Lorsque la checkbox est cliquée
-        checkbox.addEventListener("change", () => {
-            const name = item.querySelector("span").innerText.trim();
-
-            if (checkbox.checked) {
-                addSelectedFile(name);
-            } else {
-                removeSelectedFile(name);
-            }
-        });
-    });
-
-    /* DRAG OVER ZONE DROITE */
-    selectedArea.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        selectedArea.classList.add("dragover");
-    });
-
-    selectedArea.addEventListener("dragleave", () => {
-        selectedArea.classList.remove("dragover");
-    });
-
-    /* DROP GAUCHE → DROITE */
-    selectedArea.addEventListener("drop", () => {
-        selectedArea.classList.remove("dragover");
-
-        if (!draggedFileName) return;
-
-        addSelectedFile(draggedFileName);
-        updateCheckbox(draggedFileName, true);
-
-        draggedFileName = null;
-    });
-
-    /* -------------------------------------------------------
-       AJOUTER À DROITE
-    ------------------------------------------------------- */
-    function addSelectedFile(name) {
-        // Empêcher doublons
-        if ([...selectedArea.children].some(e => e.dataset?.name === name)) return;
-
-        const div = document.createElement("div");
-        div.classList.add("file-selected");
-        div.draggable = true;
-        div.dataset.name = name;
-        div.innerHTML = `📄 ${name} <span class="remove-btn">✖</span>`;
-
-        // Bouton suppression
-        div.querySelector(".remove-btn").addEventListener("click", () => {
-            removeSelectedFile(name);
-        });
-
-        // Drag & drop droite → gauche
-        div.addEventListener("dragstart", () => {
-            draggedFileName = name;
-            draggedOrigin = "right";
-        });
-
-        selectedArea.appendChild(div);
+    const actionCell = tr.querySelector('.actions');
+    if (actionCell) {
+      actionCell.innerHTML = `
+        <span class="added-tag">
+          <span class="check">✔</span> Ajouté
+        </span>
+      `;
     }
+  }
 
-    /* -------------------------------------------------------
-       SUPPRIMER À DROITE
-    ------------------------------------------------------- */
-    function removeSelectedFile(name) {
-        const el = [...selectedArea.children].find(e => e.dataset?.name === name);
-        if (el) el.remove();
+  // Rétablit la ligne et remet le bouton Ajouter
+  function unblurRow(rel){
+    const tr = explorer.querySelector(`tr[data-rel="${cssEscape(rel)}"]`);
+    if (!tr) return;
 
-        updateCheckbox(name, false);
+    tr.classList.remove('is-disabled');
+    tr.removeAttribute('aria-disabled');
+
+    const actionCell = tr.querySelector('.actions');
+    if (actionCell) {
+      actionCell.innerHTML = `<button class="btn secondary add" type="button">Ajouter</button>`;
     }
+  }
 
-    /* -------------------------------------------------------
-       MISE À JOUR DES CHECKBOX
-    ------------------------------------------------------- */
-    function updateCheckbox(fileName, state) {
-        document.querySelectorAll(".checkbox-item").forEach(item => {
-            const name = item.querySelector("span").innerText.trim();
-            if (name === fileName) {
-                item.querySelector("input").checked = state;
-            }
-        });
-    }
+  // Crée une chip (si inexistante)
+  function addChip(rel, label, isNew=true){
+    if(have.has(rel)) return; // déjà présent
 
-    /* -------------------------------------------------------
-       DRAG & DROP DROITE → GAUCHE
-    ------------------------------------------------------- */
-    document.querySelector(".left-box").addEventListener("dragover", (e) => {
-        e.preventDefault();
-    });
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (isNew ? ' new' : '');
+    chip.setAttribute('role','listitem');
+    chip.dataset.rel = rel;
+    chip.dataset.new = isNew ? '1' : '0';
 
-    document.querySelector(".left-box").addEventListener("drop", () => {
-        if (draggedOrigin === "right") {
-            removeSelectedFile(draggedFileName);
-        }
-        draggedFileName = null;
-    });
+    chip.innerHTML = `
+      <span>${escapeHtml(label)} ${isNew ? '<span class="tag">Nouveau</span>' : ''}</span>
+      <button title="Retirer" class="remove" aria-label="Retirer ce droit">×</button>
+      <input type="hidden" name="paths[]" value="${escapeHtml(rel)}"/>
+    `;
+    chips.appendChild(chip);
+    have.add(rel);
+
+    // Flouter la ligne + remplacer le bouton par badge
+    blurRow(rel);
+  }
+
+  // Supprimer une chip
+  function removeChip(chip){
+    const rel = chip.dataset.rel;
+    chip.remove();
+    have.delete(rel);
+    // Déflouter la ligne + remettre le bouton Ajouter
+    unblurRow(rel);
+  }
+
+  // Clic sur bouton "Ajouter" dans l’explorateur
+  explorer.addEventListener('click', function(e){
+    const btn = e.target.closest('.add');
+    if(!btn) return;
+    const tr = btn.closest('tr[data-rel][data-abs][data-name]');
+    if(!tr) return;
+    const rel = tr.getAttribute('data-rel');
+    const label = tr.getAttribute('data-name');
+
+    addChip(rel, label, true);
+  });
+
+  // Clic sur "×" d’une chip
+  chips.addEventListener('click', function(e){
+    const btn = e.target.closest('button.remove');
+    if(!btn) return;
+    const chip = btn.closest('.chip');
+    removeChip(chip);
+  });
+
+  // Simulation d’envoi (remplace par un vrai <form> + submit si besoin)
+  saveBtn.addEventListener('click', function(){
+    const values = Array.from(chips.querySelectorAll('input[name="paths[]"]')).map(i=>i.value);
+    // Exemple d'envoi réel :
+    // const form = document.createElement('form');
+    // form.method = 'POST';
+    // form.action = 'tablerightinc.php';
+    // values.forEach(v => {
+    //   const inp = document.createElement('input');
+    //   inp.type = 'hidden'; inp.name = 'paths[]'; inp.value = v;
+    //   form.appendChild(inp);
+    // });
+    // document.body.appendChild(form);
+    // form.submit();
+
+    saveHint.style.display = 'block';
+    saveHint.textContent = 'POST → paths[] = [' + values.join(', ') + ']';
+  });
+
+  // Utils
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'",'&#039;');
+  }
+  // Échappe un sélecteur CSS (pour data-rel)
+  function cssEscape(s){
+    return String(s).replace(/["\\]/g, '\\$&');
+  }
+})();
 </script>
-
 </body>
 </html>
