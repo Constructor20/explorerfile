@@ -1,9 +1,6 @@
 <?php
 
-$servername = "mysql-db";
-$username = "root";
-$password = "yaspasdemdpsalemerdeuxdechintok";
-$dbname = "file_explorer_bdd";
+include 'varconnect.php';
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
