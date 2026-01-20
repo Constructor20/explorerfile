@@ -1,7 +1,12 @@
 <?php 
+session_start();
+include '../../connectdb.php';
 
-include 'tablerightinc.php';
-var_dump($_POST);
+include '../../affichage.php';
+$user_id = $_POST['user_id'] ?? null;
+var_dump($user_id);
+
+// var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -36,11 +41,11 @@ var_dump($_POST);
               <button aria-label="Close"></button>
               </div>
           </div>
-              <button type="button" class="button" id="gotoProfile" onclick="gotoaccounts()">Profil</button>
+              <button type="button" class="button" id="gotoProfile" onclick="gotoaccounts(baseDir)">Profil</button>
               <?php if($_SESSION['isadmin'] == 1) {?>
-              <button type='button' class='button' id='gotoEditProfile' onclick="gotomanagementaccounts()">Gestion des Comptes</button>
+              <button type='button' class='button' id='gotoEditProfile' onclick="gotomanagementaccounts(baseDir)">Gestion des Comptes</button>
               <?}?>
-              <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
+              <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton(baseDir)">Déconnexion</button>
         </div>
         <!-- Tableau scrollable -->
         <div class="explorer-table-scroll" style="max-height: 400px; overflow-y: auto;">
@@ -51,7 +56,10 @@ var_dump($_POST);
               </tr>
             </thead>
             <tbody id="fileTableBody">
-              <?php table($chemin, $paths); ?>
+              <form class="checkbox" method="post" action="tablerightinc.php">
+                <?php table($chemin, $paths); ?>
+                <button type="submit" class="button">Enregistrer les modifications</button>
+              </form>
               <!-- futur fonction sélection -->
             </tbody>
           </table>

@@ -114,37 +114,62 @@ function hasAccessTo($chemin_complet, $paths) {
 function renderFolderRow($chemin_complet, $fichier) {
     $icon = findIcon($chemin_complet);
     $chemin_url = urlencode($chemin_complet);
+    $currentPage = basename($_SERVER['PHP_SELF']);
+    $showCheckbox = ($currentPage !== "index.php");
 
-    return '
+    echo '
     <tr class="folder-row" data-folder="'.$chemin_complet.'">
-        <td class="cell">
-            <input type="checkbox" class="folder-checkbox perm-checkbox" data-folder="'.$chemin_complet.'" id="checkbox-'.$chemin_complet.'">
-            <label for="checkbox-'.$chemin_complet.'">
+        <td class="cell">';
+    if ($showCheckbox) {
+        echo '
+            <input type="checkbox" class="folder-checkbox perm-checkbox" data-folder="'.$chemin_complet.'" id="checkbox-'.$chemin_complet.'" name="checkbox-'.$chemin_complet.'">
+            <label for="checkbox-'.$chemin_complet.'">';
+        }
+            echo'
               <span class="entry">
                 '.$icon.'<a href="?path='.$chemin_url.'">/'.$fichier.'</a>
-              </span>
-            </label>
+              </span>';
+    if ($showCheckbox) {
+        echo '
+            </label>';
+    }
+    echo '
         </td>
     </tr>';
 }
 
 // Créé une ligne HTML pour un FICHIER (en HTML)
 
+
 function renderFileRow($chemin_complet, $fichier) {
     $icon = findIcon($chemin_complet);
+    $currentPage = basename($_SERVER['PHP_SELF']);
+    $showCheckbox = ($currentPage !== "index.php");
 
     echo '
     <tr class="folder-row" data-folder="'.$chemin_complet.'">
-        <td class="cell">
-            <input type="checkbox" class="folder-checkbox perm-checkbox" data-folder="'.$chemin_complet.'" id="checkbox-'.$chemin_complet.'">
-            <label for="checkbox-'.$chemin_complet.'">
+        <td class="cell">';
+    if ($showCheckbox) {
+        echo '
+            <input type="checkbox" class="folder-checkbox perm-checkbox" 
+                   data-folder="'.$chemin_complet.'" 
+                   id="checkbox-'.$chemin_complet.'">
+
+            <label for="checkbox-'.$chemin_complet.'">';
+    }
+    echo '
               <span class="entry">
                 '.$icon.'
                 <span class="entry-name">'.$fichier.'</span>
-            </span>
+              </span>';
+    if ($showCheckbox) {
+        echo '</label>';
+    }
+    echo '
         </td>
     </tr>';
 }
+
 
 // Gère UN fichier/dossier et retourne la ligne HTML adaptée
 function renderOneElement($chemin, $fichier, $paths) {

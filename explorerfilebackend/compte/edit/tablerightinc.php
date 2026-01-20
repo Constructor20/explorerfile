@@ -3,8 +3,8 @@ session_start();
 include '../../connectdb.php';
 
 $userId = $_POST['user_id'] ?? null;
-
-include '../../affichage.php';
+// var_dump($userId);
+var_dump($_POST);
 
 
 // pour récupérer les droits user pour checkbox
@@ -39,3 +39,4 @@ include '../../affichage.php';
 //
 //affichage chemin
 
+// header('Location: tableright.php');
