@@ -84,11 +84,6 @@ function findFile($chemin)
 {
     return scandir($chemin);
 }
-function checkbox()
-{
-    return "<input type='checkbox' class='checkbox' onchange='checkboxChanged()'>
-    <label></label>";
-}
 // Affiche la ligne HTML pour remonter dans le dossier parent
 function renderParentFolderRow($chemin)
 {
@@ -121,40 +116,37 @@ function renderFolderRow($chemin_complet, $fichier)
     $icon = findIcon($chemin_complet);
     $chemin_url = urlencode($chemin_complet);
     $currentPage = basename($_SERVER["PHP_SELF"]);
-    $showCheckbox = $currentPage !== "index.php";
+    $showButton = $currentPage !== "index.php";
 
     echo '
     <tr class="folder-row" data-folder="' .
         $chemin_complet .
         '">
         <td class="cell">';
-    if ($showCheckbox) {
-        echo '
-            <input type="checkbox" class="folder-checkbox perm-checkbox" data-folder="' .
-            $chemin_complet .
-            '" id="checkbox-' .
-            $chemin_complet .
-            '" name="checkbox-' .
-            $chemin_complet .
-            '">
-            <label for="checkbox-' .
-            $chemin_complet .
-            '">';
-    }
+
     echo '
-              <span class="entry">
-                ' .
+    <span class="entry">
+      ' .
         $icon .
         '<a href="?path=' .
         $chemin_url .
         '">/' .
         $fichier .
         '</a>
-              </span>';
-    if ($showCheckbox) {
+    </span>';
+    if ($showButton) {
         echo '
-            </label>';
+            <input type="checkbox" class="hidden-checkbox" id="checkbox-' .
+            $chemin_complet .
+            '">
+            <button class="add-btn" data-folder="' .
+            $chemin_complet .
+            '">Ajouter</button>
+            <label class="folder-click" for="checkbox-' .
+            $chemin_complet .
+            '"></label>';
     }
+
     echo '
         </td>
     </tr>';
@@ -162,47 +154,35 @@ function renderFolderRow($chemin_complet, $fichier)
 
 // Créé une ligne HTML pour un FICHIER (en HTML)
 
+
 function renderFileRow($chemin_complet, $fichier)
 {
     $icon = findIcon($chemin_complet);
     $currentPage = basename($_SERVER["PHP_SELF"]);
-    $showCheckbox = $currentPage !== "index.php";
+    $showButton = $currentPage !== "index.php";
 
     echo '
-    <tr class="folder-row" data-folder="' .
-        $chemin_complet .
-        '">
-        <td class="cell">';
-    if ($showCheckbox) {
+    <tr class="folder-row" data-rel="' . $chemin_complet . '" data-abs="' . $chemin_complet . '" data-name="' . htmlspecialchars($fichier) . '">
+
+        <!-- Colonne gauche : icône + nom -->
+        <td class="cell-left">
+            <div class="entry">
+                '. $icon .'
+                <span class="entry-name">' . $fichier . '</span>
+            </div>
+        </td>';
+
+    if ($showButton) {
         echo '
-            <input type="checkbox" class="folder-checkbox perm-checkbox"
-                   data-folder="' .
-            $chemin_complet .
-            '"
-                   id="checkbox-' .
-            $chemin_complet .
-            '">
+        <td class="actions">
+          <button class="btn secondary add" type="button">Ajouter</button>
+        </td>';
+    }
 
-            <label for="checkbox-' .
-            $chemin_complet .
-            '">';
-    }
     echo '
-              <span class="entry">
-                ' .
-        $icon .
-        '
-                <span class="entry-name">' .
-        $fichier .
-        '</span>
-              </span>';
-    if ($showCheckbox) {
-        echo "</label>";
-    }
-    echo '
-        </td>
     </tr>';
 }
+
 
 // Gère UN fichier/dossier et retourne la ligne HTML adaptée
 function renderOneElement($chemin, $fichier, $paths)

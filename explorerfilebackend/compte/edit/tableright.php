@@ -16,6 +16,49 @@ var_dump($user_id);
   <title>Explorateur Win98</title>
   <link rel="stylesheet" href="https://unpkg.com/98.css">
   <link rel="stylesheet" href="../../style.css">
+  <style>
+
+
+
+
+  /* État "ligne désactivée" → flou (on garde) */
+  tr.is-disabled > td:not(.actions) {
+    filter: blur(2px);
+    opacity: .45;
+    pointer-events: none;
+    transition: filter .15s ease, opacity .15s ease;
+  }
+
+  .actions .btn.secondary,
+  .actions {
+      width: 90px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      text-align: center;
+  }
+
+  .added-tag {
+      width: 90px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      text-align: center;
+      background: #A8E8A8;  /* pastille verte clair */
+      color: #005F00;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+
+
+
+  </style>
   <div class="window" style="width: 90%; margin: 20px auto;">
     <div class="title-bar">
       <div class="title-bar-text">Explorateur de Fichiers</div>
@@ -69,6 +112,36 @@ var_dump($user_id);
     </div>
   </div>
   <script src="../../script.js"></script>
+
+
+  <script>
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("click", function(e){
+      const btn = e.target.closest(".add");
+      if(!btn) return;
+
+      const tr = btn.closest("tr");
+      if(!tr) return;
+
+      tr.classList.add("is-disabled"); // flou
+
+      const cell = tr.querySelector(".actions");
+      cell.innerHTML = `
+
+        <td class="added-tag">
+          <button disabled class="added-tag"><span class="check">✔</span>Ajouter</button>
+        </td>
+      `;
+    });
+  });
+
+  // <span class="added-tag">
+  //   <span class="check">✔</span> Ajouté
+  // </span>
+  </script>
+
+
 </body>
 </html>
 <?php include 'tablerightinc.php'?>
