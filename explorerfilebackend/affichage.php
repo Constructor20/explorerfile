@@ -119,36 +119,22 @@ function renderFolderRow($chemin_complet, $fichier)
     $showButton = $currentPage !== "index.php";
 
     echo '
-    <tr class="folder-row" data-folder="' .
-        $chemin_complet .
-        '">
+    <tr class="folder-row" data-folder="' .$chemin_complet . '">
         <td class="cell">';
 
     echo '
-    <span class="entry">
-      ' .
-        $icon .
-        '<a href="?path=' .
-        $chemin_url .
-        '">/' .
-        $fichier .
-        '</a>
-    </span>';
+            <span class="entry">' . $icon .'
+                <a href="?path=' . $chemin_url .'">/' .$fichier . '</a>
+            </span>
+        </td>';
     if ($showButton) {
         echo '
-            <input type="checkbox" class="hidden-checkbox" id="checkbox-' .
-            $chemin_complet .
-            '">
-            <button class="add-btn" data-folder="' .
-            $chemin_complet .
-            '">Ajouter</button>
-            <label class="folder-click" for="checkbox-' .
-            $chemin_complet .
-            '"></label>';
+        <td class="actions">
+          <button class="btn secondary add" type="button">Ajouter</button>
+        </td>';
     }
 
     echo '
-        </td>
     </tr>';
 }
 
@@ -161,9 +147,7 @@ function renderFileRow($chemin_complet, $fichier)
     $currentPage = basename($_SERVER["PHP_SELF"]);
     $showButton = $currentPage !== "index.php";
 
-    echo '
-    <tr class="folder-row" data-rel="' . $chemin_complet . '" data-abs="' . $chemin_complet . '" data-name="' . htmlspecialchars($fichier) . '">
-
+    echo '<tr class="folder-row" data-rel="' . $chemin_complet . '" data-abs="' . $chemin_complet . '" data-name="' . htmlspecialchars($fichier) . '">
         <!-- Colonne gauche : icône + nom -->
         <td class="cell-left">
             <div class="entry">

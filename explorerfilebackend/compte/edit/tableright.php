@@ -55,9 +55,6 @@ var_dump($user_id);
     to   { opacity: 1; transform: translateY(0); }
   }
 
-
-
-
   </style>
   <div class="window" style="width: 90%; margin: 20px auto;">
     <div class="title-bar">
@@ -101,11 +98,15 @@ var_dump($user_id);
             </thead>
             <tbody id="fileTableBody">
                 <?php table($chemin, $paths); ?>
-              <form class="checkbox" method="post" action="tablerightinc.php">
-                <?php submit($user_id); ?>
-              </form>
-              <!-- futur fonction sélection -->
+              <!--<form class="checkbox" method="post" action="tablerightinc.php">
+                <?php //submit($user_id); ?>
+              </form>-->
             </tbody>
+            <thead>
+              <tr>
+                <th>Chemin</th>
+              </tr>
+            </thead>
           </table>
         </div>
       </div>
