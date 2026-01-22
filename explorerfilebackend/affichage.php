@@ -111,61 +111,65 @@ function hasAccessTo($chemin_complet, $paths)
 }
 // Créé une ligne HTML pour un DOSSIER
 
+
 function renderFolderRow($chemin_complet, $fichier)
 {
     $icon = findIcon($chemin_complet);
     $chemin_url = urlencode($chemin_complet);
     $currentPage = basename($_SERVER["PHP_SELF"]);
-    $showButton = $currentPage !== "index.php";
+    $showButton = ($currentPage !== "index.php");
 
-    echo '
-    <tr class="folder-row" data-folder="' .$chemin_complet . '">
-        <td class="cell">';
+    echo '<tr class="folder-row" data-folder="' . htmlspecialchars($chemin_complet) . '">';
 
-    echo '
-            <span class="entry">' . $icon .'
-                <a href="?path=' . $chemin_url .'">/' .$fichier . '</a>
-            </span>
-        </td>';
+    // 2) Colonne Chemin (à droite) : le bouton sera collé à la bordure droite du tableau
+    echo '  <td class="path-col">
+              <div class="path-cell">
+                <span class="entry">' . $icon . '
+                  <a class="entry-name" href="?path=' . $chemin_url . '">/' . htmlspecialchars($fichier) . '</a>
+                </span>';
+
     if ($showButton) {
-        echo '
-        <td class="actions">
-          <button class="btn secondary add" type="button">Ajouter</button>
-        </td>';
+        echo '    <button class="btn seconday add">Ajouter</button>';
+    } else {
+        echo '    <span class="no-action"></span>';
     }
 
-    echo '
-    </tr>';
+    echo '    </div>
+            </td>';
+
+    echo '</tr>';
 }
-
-// Créé une ligne HTML pour un FICHIER (en HTML)
-
 
 function renderFileRow($chemin_complet, $fichier)
 {
     $icon = findIcon($chemin_complet);
     $currentPage = basename($_SERVER["PHP_SELF"]);
-    $showButton = $currentPage !== "index.php";
+    $showButton = ($currentPage !== "index.php");
 
-    echo '<tr class="folder-row" data-rel="' . $chemin_complet . '" data-abs="' . $chemin_complet . '" data-name="' . htmlspecialchars($fichier) . '">
-        <!-- Colonne gauche : icône + nom -->
-        <td class="cell-left">
-            <div class="entry">
-                '. $icon .'
-                <span class="entry-name">' . $fichier . '</span>
-            </div>
-        </td>';
+    echo '<tr class="file-row"
+              data-rel="' . htmlspecialchars($chemin_complet) . '"
+              data-abs="' . htmlspecialchars($chemin_complet) . '"
+              data-name="' . htmlspecialchars($fichier) . '">';
+
+    // 2) Colonne Chemin (à droite)
+    echo '  <td class="path-col">
+              <div class="path-cell">
+                <span class="entry">' . $icon . '
+                  <span class="entry-name">' . htmlspecialchars($fichier) . '</span>
+                </span>';
 
     if ($showButton) {
-        echo '
-        <td class="actions">
-          <button class="btn secondary add" type="button">Ajouter</button>
-        </td>';
+        echo '    <button class="btn secondary add">Ajouter</button>';
+    } else {
+        echo '    <span class="no-action"></span>';
     }
 
-    echo '
-    </tr>';
+    echo '    </div>
+            </td>';
+
+    echo '</tr>';
 }
+
 
 
 // Gère UN fichier/dossier et retourne la ligne HTML adaptée

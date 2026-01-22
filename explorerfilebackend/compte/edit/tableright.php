@@ -21,39 +21,120 @@ var_dump($user_id);
 
 
 
-  /* État "ligne désactivée" → flou (on garde) */
-  tr.is-disabled > td:not(.actions) {
-    filter: blur(2px);
-    opacity: .45;
-    pointer-events: none;
-    transition: filter .15s ease, opacity .15s ease;
+  /* ======== TABLEAU GLOBAL ======== */
+
+  table.explorer-table {
+      width: 100%;
+      border: 1px solid black;      /* bordure extérieur */
+      border-collapse: collapse;     /* important pour séparation propre */
+      table-layout: fixed;           /* colonnes stables */
   }
 
-  .actions .btn.secondary,
-  .actions {
-      width: 90px;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      box-sizing: border-box;
+  .explorer-table th,
+  .explorer-table td {
+      padding: 6px 8px;
+      vertical-align: middle;
+  }
+
+  /* ======== COLONNE Sélection ======== */
+
+  .select-col,
+  .explorer-table thead th.select-col {
+      width: 52px;
       text-align: center;
   }
+
+  /* Ligne de séparation entre Sélection et Chemin */
+  .explorer-table thead th.select-col,
+  .explorer-table tbody td.select-col {
+      border-right: 1px solid #b5b5b5; /* gris style Win98 */
+  }
+
+  /* ======== COLONNE Chemin ======== */
+
+  .path-col {
+      width: auto;
+      padding-right: 0; /* bouton collé à la bordure droite */
+  }
+
+  /* Conteneur interne de la cellule Chemin */
+  .path-cell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; /* nom ↔ bouton */
+      gap: 12px; /* espace CONSTANT entre texte et bouton */
+      min-width: 0;
+  }
+
+  /* Texte + icône */
+  .entry {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+  }
+
+  .entry .entry-name,
+  .entry a.entry-name {
+      display: block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+  }
+
+
+  /* ======== ÉTAT LIGNE DÉSACTIVÉE (flou) ======== */
+
+  tr.is-disabled .entry {
+      filter: blur(2px);
+      opacity: .45;
+      pointer-events: none;
+      transition: filter .15s ease, opacity .15s ease;
+  }
+
+  /* NE PAS flouter le bouton */
+  tr.is-disabled button,
+  tr.is-disabled .added-tag {
+      filter: none !important;
+      opacity: 1 !important;
+      pointer-events: none;  /* empêche clic même si disabled sauté */
+  }
+
+
+  /* ======== BOUTON AJOUTER ======== */
+
+  .btn.secondary.add {
+      margin-left: auto; /* pousse le bouton à droite */
+      min-width: 100px;
+      text-align: center;
+  }
+
+
+  /* ======== BOUTON ÉTAT AJOUTÉ ======== */
 
   .added-tag {
-      width: 90px;
+      min-width: 100px;
       display: inline-flex;
       justify-content: center;
       align-items: center;
       box-sizing: border-box;
-      text-align: center;
-      background: #A8E8A8;  /* pastille verte clair */
+      background: #A8E8A8;   /* vert clair */
       color: #005F00;
+      border: 1px solid #5bb85b;
+      border-radius: 2px;
+      gap: 6px;
+      padding: 2px 6px;
+      font-weight: bold;
+      animation: fadeUp .15s ease-out;
   }
 
+  /* Animation apparition */
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
   }
+
+
 
   </style>
   <div class="window" style="width: 90%; margin: 20px auto;">
@@ -94,6 +175,7 @@ var_dump($user_id);
             <thead>
               <tr>
                 <th>Chemin</th>
+                <th>Sélectionné</th>
               </tr>
             </thead>
             <tbody id="fileTableBody">
@@ -102,11 +184,6 @@ var_dump($user_id);
                 <?php //submit($user_id); ?>
               </form>-->
             </tbody>
-            <thead>
-              <tr>
-                <th>Chemin</th>
-              </tr>
-            </thead>
           </table>
         </div>
       </div>
@@ -117,29 +194,32 @@ var_dump($user_id);
 
   <script>
 
+
+
   document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener("click", function(e){
       const btn = e.target.closest(".add");
       if(!btn) return;
 
       const tr = btn.closest("tr");
-      if(!tr) return;
+      const cell = btn.parentElement; // .path-cell
 
-      tr.classList.add("is-disabled"); // flou
+      // Floute le nom
+      tr.classList.add("is-disabled");
 
-      const cell = tr.querySelector(".actions");
-      cell.innerHTML = `
+      // Rend le bouton inclicable
+      btn.disabled = true;
 
-        <td class="added-tag">
-          <button disabled class="added-tag"><span class="check">✔</span>Ajouter</button>
-        </td>
-      `;
+      // Transforme le bouton en pastille verte
+      btn.classList.add("added-tag");
+
+      // Change le texte du bouton
+      btn.innerHTML = '<span class="check">✔</span> Ajouté';
     });
   });
+  ``
 
-  // <span class="added-tag">
-  //   <span class="check">✔</span> Ajouté
-  // </span>
+
   </script>
 
 
