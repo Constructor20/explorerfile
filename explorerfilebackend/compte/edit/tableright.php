@@ -18,123 +18,135 @@ var_dump($user_id);
   <link rel="stylesheet" href="../../style.css">
   <style>
 
+  /* ======================== */
+  /*    TABLEAU GLOBAL        */
+  /* ======================== */
 
+    table.explorer-table {
+        width: 100%;
+        border: 1px solid black;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
 
+    .explorer-table th,
+    .explorer-table td {
+        padding: 2px 4px;   /* compact */
+        vertical-align: middle;
+    }
 
-  /* ======== TABLEAU GLOBAL ======== */
+    /* ======================== */
+    /*   COLONNE SELECTION      */
+    /* ======================== */
 
-  table.explorer-table {
-      width: 100%;
-      border: 1px solid black;      /* bordure extérieur */
-      border-collapse: collapse;     /* important pour séparation propre */
-      table-layout: fixed;           /* colonnes stables */
-  }
+    .select-col,
+    .explorer-table thead th.select-col {
+        width: 360px;
+        text-align: center;
+    }
 
-  .explorer-table th,
-  .explorer-table td {
-      padding: 6px 8px;
-      vertical-align: middle;
-  }
+    /* Séparation visuelle entre colonnes */
+    .explorer-table thead th.select-col,
+    .explorer-table tbody td.select-col {
+        border-right: 1px solid #b5b5b5;
+    }
 
-  /* ======== COLONNE Sélection ======== */
+    /* ======================== */
+    /*     COLONNE CHEMIN       */
+    /* ======================== */
 
-  .select-col,
-  .explorer-table thead th.select-col {
-      width: 52px;
-      text-align: center;
-  }
+    .path-col {
+        padding-right: 0;      /* bouton collé au bord droite */
+        width: auto;
+    }
 
-  /* Ligne de séparation entre Sélection et Chemin */
-  .explorer-table thead th.select-col,
-  .explorer-table tbody td.select-col {
-      border-right: 1px solid #b5b5b5; /* gris style Win98 */
-  }
+    /* Grid → texte 1fr / bouton 110px */
+    .path-cell {
+        display: grid;
+        grid-template-columns: 1fr 110px; /* bouton largeur FIXE */
+        align-items: center;
+        column-gap: 8px;                  /* écart fixe nom ↔ bouton */
+        min-width: 0;
+    }
 
-  /* ======== COLONNE Chemin ======== */
+    /* Texte & icône */
+    .entry {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+    }
+    .entry .entry-name,
+    .entry a.entry-name {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
 
-  .path-col {
-      width: auto;
-      padding-right: 0; /* bouton collé à la bordure droite */
-  }
+    /* ======================== */
+    /*     ETAT "AJOUTÉ"        */
+    /* ======================== */
 
-  /* Conteneur interne de la cellule Chemin */
-  .path-cell {
-      display: flex;
-      align-items: center;
-      justify-content: space-between; /* nom ↔ bouton */
-      gap: 12px; /* espace CONSTANT entre texte et bouton */
-      min-width: 0;
-  }
+    /* Floute uniquement le nom, PAS le bouton */
+    tr.is-disabled .entry {
+        filter: blur(2px);
+        opacity: .45;
+        pointer-events: none;
+        transition: filter .15s ease, opacity .15s ease;
+    }
 
-  /* Texte + icône */
-  .entry {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-  }
+    /* Bouton/pastille restent nets */
+    tr.is-disabled button,
+    tr.is-disabled .added-tag {
+        filter: none !important;
+        opacity: 1 !important;
+        pointer-events: none; /* anti-clic de sûreté */
+    }
 
-  .entry .entry-name,
-  .entry a.entry-name {
-      display: block;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-  }
+    /* ======================== */
+    /*     BOUTON AJOUTER       */
+    /* ======================== */
 
+    .btn.secondary.add {
+        width: 110px;         /* largeur FIXE */
+        min-width: 110px;
+        max-width: 110px;
+        justify-self: end;    /* aligne à droite dans la grid */
+        text-align: center;
+    }
 
-  /* ======== ÉTAT LIGNE DÉSACTIVÉE (flou) ======== */
+    /* ======================== */
+    /*  PASTILLE VERTE AJOUTÉ   */
+    /* ======================== */
 
-  tr.is-disabled .entry {
-      filter: blur(2px);
-      opacity: .45;
-      pointer-events: none;
-      transition: filter .15s ease, opacity .15s ease;
-  }
+    .added-tag {
+        width: 110px;         /* même largeur que le bouton → alignement parfait */
+        min-width: 110px;
+        max-width: 110px;
 
-  /* NE PAS flouter le bouton */
-  tr.is-disabled button,
-  tr.is-disabled .added-tag {
-      filter: none !important;
-      opacity: 1 !important;
-      pointer-events: none;  /* empêche clic même si disabled sauté */
-  }
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
 
+        background: #A8E8A8;
+        color: #005F00;
+        border: 1px solid #5bb85b;
+        border-radius: 2px;
+        gap: 6px;
+        padding: 2px 6px;
+        font-weight: bold;
 
-  /* ======== BOUTON AJOUTER ======== */
+        box-sizing: border-box;
 
-  .btn.secondary.add {
-      margin-left: auto; /* pousse le bouton à droite */
-      min-width: 100px;
-      text-align: center;
-  }
+        animation: fadeUp .15s ease-out;
+    }
 
-
-  /* ======== BOUTON ÉTAT AJOUTÉ ======== */
-
-  .added-tag {
-      min-width: 100px;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      box-sizing: border-box;
-      background: #A8E8A8;   /* vert clair */
-      color: #005F00;
-      border: 1px solid #5bb85b;
-      border-radius: 2px;
-      gap: 6px;
-      padding: 2px 6px;
-      font-weight: bold;
-      animation: fadeUp .15s ease-out;
-  }
-
-  /* Animation apparition */
-  @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(4px); }
-      to   { opacity: 1; transform: translateY(0); }
-  }
-
-
+    /* Animation */
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(4px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 
   </style>
   <div class="window" style="width: 90%; margin: 20px auto;">
@@ -174,8 +186,9 @@ var_dump($user_id);
           <table class="table explorer-table" style="width: 100%;">
             <thead>
               <tr>
+                <button type="submit" form="selectionForm"class="button">Enregistrer</button>
                 <th>Chemin</th>
-                <th>Sélectionné</th>
+                <th class="select-col">Sélection</th>
               </tr>
             </thead>
             <tbody id="fileTableBody">
@@ -186,42 +199,34 @@ var_dump($user_id);
             </tbody>
           </table>
         </div>
+        <form id="selectionForm" method="post" action="tablerightinc.php">
+          <input type="hidden" id="selectedFiles" name="selectedFiles" value="[]">
+        </form>
       </div>
     </div>
   </div>
   <script src="../../script.js"></script>
-
-
   <script>
-
-
-
   document.addEventListener("DOMContentLoaded", () => {
-    document.body.addEventListener("click", function(e){
-      const btn = e.target.closest(".add");
-      if(!btn) return;
+    document.body.addEventListener("click", (e) => {
+      const btn = e.target.closest(".add");   // bouton "Ajouter"
+      if (!btn) return;
 
       const tr = btn.closest("tr");
-      const cell = btn.parentElement; // .path-cell
+      if (!tr) return;
 
-      // Floute le nom
+      // 1) Floute uniquement le nom + icône (pas le bouton)
       tr.classList.add("is-disabled");
 
-      // Rend le bouton inclicable
+      // 2) Rend le bouton inclicable
       btn.disabled = true;
 
-      // Transforme le bouton en pastille verte
+      // 3) Transforme le bouton en pastille verte "Ajouté"
       btn.classList.add("added-tag");
-
-      // Change le texte du bouton
       btn.innerHTML = '<span class="check">✔</span> Ajouté';
     });
   });
-  ``
-
-
   </script>
-
 
 </body>
 </html>

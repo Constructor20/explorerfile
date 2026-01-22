@@ -119,7 +119,7 @@ function renderFolderRow($chemin_complet, $fichier)
     $currentPage = basename($_SERVER["PHP_SELF"]);
     $showButton = ($currentPage !== "index.php");
 
-    echo '<tr class="folder-row" data-folder="' . htmlspecialchars($chemin_complet) . '">';
+    echo '<tr class="folder-row" data-abs="' . htmlspecialchars($chemin_complet) . '">';
 
     // 2) Colonne Chemin (à droite) : le bouton sera collé à la bordure droite du tableau
     echo '  <td class="path-col">
