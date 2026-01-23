@@ -18,135 +18,206 @@ var_dump($user_id);
   <link rel="stylesheet" href="../../style.css">
   <style>
 
-  /* ======================== */
-  /*    TABLEAU GLOBAL        */
-  /* ======================== */
+  table.explorer-table {
+    width: 100%;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    table-layout: fixed;              /* stabilité des largeurs */
+  }
 
-    table.explorer-table {
-        width: 100%;
-        border: 1px solid black;
-        border-collapse: collapse;
-        table-layout: fixed;
-    }
+  .explorer-table th,
+  .explorer-table td {
+    padding: 2px 4px;                 /* compact */
+    vertical-align: middle;
+  }
 
-    .explorer-table th,
-    .explorer-table td {
-        padding: 2px 4px;   /* compact */
-        vertical-align: middle;
-    }
+  .select-col,
+  .explorer-table thead th.select-col {
+    width: 360px;
+    text-align: center;
+  }
 
-    /* ======================== */
-    /*   COLONNE SELECTION      */
-    /* ======================== */
+  .explorer-table thead th.select-col,
+  .explorer-table tbody td.select-col {
+    border-right: 1px solid #b5b5b5;
+  }
 
-    .select-col,
-    .explorer-table thead th.select-col {
-        width: 360px;
-        text-align: center;
-    }
+  /* ===========================
+     COLONNE CHEMIN (GRILLE)
+     =========================== */
 
-    /* Séparation visuelle entre colonnes */
-    .explorer-table thead th.select-col,
-    .explorer-table tbody td.select-col {
-        border-right: 1px solid #b5b5b5;
-    }
+  /* La cellule qui contient le nom/icône + bouton/pastille */
+  .path-cell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 110px;  /* texte fluide + action fixe */
+    align-items: center;
+    column-gap: 8px;                              /* écart constant */
+    min-width: 0;
+  }
 
-    /* ======================== */
-    /*     COLONNE CHEMIN       */
-    /* ======================== */
+  /* ===========================
+     ENTRÉE (ICÔNE + NOM)
+     =========================== */
 
-    .path-col {
-        padding-right: 0;      /* bouton collé au bord droite */
-        width: auto;
-    }
+  .entry {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
 
-    /* Grid → texte 1fr / bouton 110px */
-    .path-cell {
-        display: grid;
-        grid-template-columns: 1fr 110px; /* bouton largeur FIXE */
-        align-items: center;
-        column-gap: 8px;                  /* écart fixe nom ↔ bouton */
-        min-width: 0;
-    }
+    /* Padding & radius constants → pas de “shift” visuel */
+    padding: 1px 4px;
+    border-radius: 2px;
 
-    /* Texte & icône */
-    .entry {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        min-width: 0;
-    }
-    .entry .entry-name,
-    .entry a.entry-name {
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
+    /* Héritage de couleurs par défaut */
+    color: inherit;
+  }
 
-    /* ======================== */
-    /*     ETAT "AJOUTÉ"        */
-    /* ======================== */
+  /* Texte avec ellipsis */
+  .entry .entry-name,
+  .entry a.entry-name {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width: 0;
+    max-width: 100%;
+  }
 
-    /* Floute uniquement le nom, PAS le bouton */
-    tr.is-disabled .entry {
-        filter: blur(2px);
-        opacity: .45;
-        pointer-events: none;
-        transition: filter .15s ease, opacity .15s ease;
-    }
+  /* Rendre les liens visiblement focus (accessibilité) */
+  .entry a:focus-visible {
+    outline: 2px solid #1a73e8;
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 
-    /* Bouton/pastille restent nets */
-    tr.is-disabled button,
-    tr.is-disabled .added-tag {
-        filter: none !important;
-        opacity: 1 !important;
-        pointer-events: none; /* anti-clic de sûreté */
-    }
+  /* ===========================
+     ÉTATS DE LIGNE
+     =========================== */
 
-    /* ======================== */
-    /*     BOUTON AJOUTER       */
-    /* ======================== */
+  /* État "désactivé" visuel (après clic sur Ajouter) */
+  tr.is-disabled .entry {
+    filter: blur(2px);
+    opacity: .45;
+    /* on NE bloque PAS les clics sur les liens dans .entry */
+  }
 
-    .btn.secondary.add {
-        width: 110px;         /* largeur FIXE */
-        min-width: 110px;
-        max-width: 110px;
-        justify-self: end;    /* aligne à droite dans la grid */
-        text-align: center;
-    }
+  /* Lien toujours cliquable malgré l’état "désactivé" */
+  tr.is-disabled .entry a,
+  tr.is-disabled .entry .entry-name a {
+    pointer-events: auto;
+  }
 
-    /* ======================== */
-    /*  PASTILLE VERTE AJOUTÉ   */
-    /* ======================== */
+  /* Le bouton/pastille restent nets mais non cliquables */
+  tr.is-disabled button,
+  tr.is-disabled .added-tag {
+    filter: none !important;
+    opacity: 1 !important;
+    pointer-events: none;
+  }
 
+  /* Dossier ajouté : fond vert, pas de flou, pas de décalage */
+  tr.is-folder.is-added .entry {
+    background: #CFF2CF;
+    color: #005F00;
+    filter: none !important;
+    opacity: 1 !important;
+  }
+
+  /* ===========================
+     BOUTON "AJOUTER"
+     =========================== */
+
+  .btn.secondary.add {
+    width: 110px;         /* largeur FIXE */
+    min-width: 110px;
+    max-width: 110px;
+    height: 28px;         /* hauteur harmonisée avec la pastille */
+    line-height: 26px;
+    box-sizing: border-box;
+
+    justify-self: end;    /* aligne à droite dans la grid */
+    text-align: center;
+    cursor: pointer;
+  }
+
+  /* Bouton désactivé : non cliquable / légèrement atténué */
+  .btn.secondary.add[disabled] {
+    opacity: .85;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* ===========================
+     PASTILLE VERTE "AJOUTÉ"
+     =========================== */
+
+  .added-tag {
+    width: 110px;         /* même largeur que le bouton → alignement parfait */
+    min-width: 110px;
+    max-width: 110px;
+    height: 28px;
+    box-sizing: border-box;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #A8E8A8;
+    color: #005F00;
+    border: 1px solid #5bb85b;
+    border-radius: 2px;
+    gap: 6px;
+    padding: 2px 6px;
+    font-weight: bold;
+
+    animation: fadeUp .15s ease-out;
+  }
+
+  /* ===========================
+     ANIMATIONS & RÉDUCTIONS
+     =========================== */
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Respect des préférences utilisateur (réduit les animations) */
+  @media (prefers-reduced-motion: reduce) {
     .added-tag {
-        width: 110px;         /* même largeur que le bouton → alignement parfait */
-        min-width: 110px;
-        max-width: 110px;
-
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-
-        background: #A8E8A8;
-        color: #005F00;
-        border: 1px solid #5bb85b;
-        border-radius: 2px;
-        gap: 6px;
-        padding: 2px 6px;
-        font-weight: bold;
-
-        box-sizing: border-box;
-
-        animation: fadeUp .15s ease-out;
+      animation: none;
     }
-
-    /* Animation */
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(4px); }
-        to   { opacity: 1; transform: translateY(0); }
+    tr.is-disabled .entry {
+      transition: none;
     }
+  }
+
+  /* ===========================
+     SCROLL AREA
+     =========================== */
+
+  .explorer-table-scroll {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  /* ===========================
+     DIVERS (ROBUSTESSE)
+     =========================== */
+
+  /* Garantir que le texte prend le max d’espace disponible */
+  .path-col {
+    padding-right: 0;
+    width: auto;
+  }
+
+  /* Évite tout recouvrement accidentel si tu ajoutes des effets de position */
+  .path-cell { position: relative; }
+  .entry     { position: relative; z-index: 1; }
+  .added-tag { position: relative; z-index: 0; }
+  ``
+
 
   </style>
   <div class="window" style="width: 90%; margin: 20px auto;">
@@ -207,26 +278,58 @@ var_dump($user_id);
   </div>
   <script src="../../script.js"></script>
   <script>
+
   document.addEventListener("DOMContentLoaded", () => {
-    document.body.addEventListener("click", (e) => {
-      const btn = e.target.closest(".add");   // bouton "Ajouter"
-      if (!btn) return;
-
-      const tr = btn.closest("tr");
-      if (!tr) return;
-
-      // 1) Floute uniquement le nom + icône (pas le bouton)
-      tr.classList.add("is-disabled");
-
-      // 2) Rend le bouton inclicable
-      btn.disabled = true;
-
-      // 3) Transforme le bouton en pastille verte "Ajouté"
-      btn.classList.add("added-tag");
-      btn.innerHTML = '<span class="check">✔</span> Ajouté';
-    });
+    document.body.addEventListener("click", handleAddClick);
   });
-  </script>
+
+  function getAddButton(e) {
+    return e.target.closest(".add");
+  }
+  function getRow(btn) {
+    return btn.closest("tr");
+  }
+  function disableRow(tr) {
+    tr.classList.add("is-disabled");
+  }
+  function markButtonAsAdded(btn) {
+    btn.disabled = true;
+    btn.classList.add("added-tag");
+    btn.innerHTML = '<span class="check">✔</span> Ajouté';
+  }
+  function markFolderAsAdded(tr) {
+    if (tr.classList.contains("is-folder")) {
+      tr.classList.add("is-added");
+    }
+  }
+  function getDataAbs(tr) {
+    return tr.dataset.abs || null;
+  }
+
+  function handleAddClick(e) {
+    const btn = getAddButton(e);
+    if (!btn) return;
+
+    const tr = getRow(btn);
+    if (!tr) return;
+
+    disableRow(tr);
+    markButtonAsAdded(btn);
+    markFolderAsAdded(tr);
+
+    putDataInput(e);
+  }
+
+  function putDataInput(e){
+    const absPath = getDataAbs(e.target.closest("tr"));
+    if (absPath) {
+
+      const input = document.getElementById("selectedForm");
+      console.log(input);
+    }
+  }
+
+</script>
 
 </body>
 </html>

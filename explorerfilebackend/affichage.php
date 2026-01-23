@@ -111,7 +111,6 @@ function hasAccessTo($chemin_complet, $paths)
 }
 // Créé une ligne HTML pour un DOSSIER
 
-
 function renderFolderRow($chemin_complet, $fichier)
 {
     $icon = findIcon($chemin_complet);
@@ -119,9 +118,9 @@ function renderFolderRow($chemin_complet, $fichier)
     $currentPage = basename($_SERVER["PHP_SELF"]);
     $showButton = ($currentPage !== "index.php");
 
-    echo '<tr class="folder-row" data-abs="' . htmlspecialchars($chemin_complet) . '">';
+    // ✅ Classe is-folder ajoutée
+    echo '<tr class="folder-row is-folder" data-abs="' . htmlspecialchars($chemin_complet) . '">';
 
-    // 2) Colonne Chemin (à droite) : le bouton sera collé à la bordure droite du tableau
     echo '  <td class="path-col">
               <div class="path-cell">
                 <span class="entry">' . $icon . '
@@ -129,7 +128,7 @@ function renderFolderRow($chemin_complet, $fichier)
                 </span>';
 
     if ($showButton) {
-        echo '    <button class="btn seconday add">Ajouter</button>';
+        echo '    <button class="btn secondary add">Ajouter</button>';
     } else {
         echo '    <span class="no-action"></span>';
     }
