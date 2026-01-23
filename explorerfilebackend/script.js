@@ -121,13 +121,6 @@ function toggleUpdateButton() {
 
 baseDir = "/";
 
-function redirectionPswd (baseDir){
-  document.getElementById("redirectioneditpswd").addEventListener("click", function(event) {
-  event.preventDefault();
-  window.location.href = baseDir + "compte/password/";
-});
-}
-
 function toggleDeconnectionButton(baseDir) {
   window.location.href = "logout.php";
 }
@@ -142,26 +135,6 @@ function gotomanagementaccounts(baseDir) {
 
 function gotoaccounts(baseDir) {
     window.location.href = baseDir + "compte/";
-}
-
-function redirectioneditUser (baseDir){
-  window.location.href = baseDir + "admin/users/123/permissions/";
-}
-
-function toggleUpdateButtonAdmin(checkbox) {
-  const windowBloc = checkbox.closest(".window");
-
-  let updateButtonContainer = document.getElementsByName("update_account");
-
-  updateButtonContainer.forEach(theUpdate => {
-    const checkbox = document.getElementById("showUpdate" + theUpdate.id);
-    const updateButton = document.getElementById("updateButtonContainer" + theUpdate.id);
-    if (checkbox.checked) {
-      updateButton.style.display = "block";
-    } else {
-      updateButton.style.display = "none";
-    }
-  });
 }
 
 function compareCheckbox() {

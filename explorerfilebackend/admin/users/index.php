@@ -1,46 +1,33 @@
-    <?php
-    $conn = require __DIR__ . '/../../Config/database.php';
+<?php
+$conn = require __DIR__ . '/../../Config/database.php';
 
-    $sql = "SELECT id, username, email FROM userdata";
-    $stmt = $conn->query($sql);
-    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    ?>
+$sql = "SELECT id, username, email, isadmin FROM userdata";
+$stmt = $conn->query($sql);
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 
+<table class="table" style="width: 100%;">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Admin</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
     <?php foreach ($users as $user): ?>
-        <div class="window">
-            <div class="toggle-header">
-                <span class="arrow">▶</span>
-                <span class="username"><?php echo htmlspecialchars($user['username']); ?></span>
-            </div>
-            <div class="window-body" style="display: none;">
-                <form action="update.php" method="POST">
-                    <div class="field-row-stacked">
-                        <label>Nom</label>
-                        <input type="text" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" id="username">
-                        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
-                    </div>
-                    <div class="field-row-stacked">
-                        <label>Email</label>
-                        <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" id="email">
-                    </div>
-                    <div class="field-row-stacked">
-                        <button type="button" class="button" id="redirectioneditpswd" onclick="redirectionPswd(baseDir)">Modifier votre mot de passe</button>
-                    </div>
-                    <div class="field-row-stacked">
-                        <input type="checkbox" id="showUpdate<?php echo $user['id']?>" onchange="toggleUpdateButtonAdmin(this)">
-                        <label for="showUpdate<?php echo $user['id']?>">Je veux modifier mes informations</label>
-                    </div>
-
-                    <div class="field-row-stacked" id="updateButtonContainer<?php echo $user['id']?>" style="display: none;">
-                        <button type="submit" class="button" name="update_account" data="baba" id="<?php echo $user['id']?>">Mettre à jour</button>
-                    </div>
-                </form>
-                <form action="permissions/" method="GET">
-                    <div class="field-row-stacked">
-                        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
-                        <button type="submit" class="button" id="redirectionedituser" onclick="redirectioneditUser(baseDir)">Modifier les droits de l'utilisateurs</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+      <tr>
+        <td><?php echo htmlspecialchars($user['username']); ?></td>
+        <td><?php echo htmlspecialchars($user['email']); ?></td>
+        <td><?php echo $user['isadmin'] == 1 ? 'Yes' : 'No'; ?></td>
+        <td>
+          <form action="permissions/" method="GET" style="display: inline;">
+            <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
+            <button type="submit" class="button">Manage Permissions</button>
+          </form>
+        </td>
+      </tr>
     <?php endforeach; ?>
+  </tbody>
+</table>

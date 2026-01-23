@@ -15,11 +15,6 @@ if (!isset($_SESSION['user_id'])) {
   <title>Admin - Gestion des comptes</title>
   <link rel="stylesheet" href="../style/stylecompte.css">
   <link rel="stylesheet" href="https://unpkg.com/98.css">
-  <style>
-  .toggle-header {
-    cursor: pointer;
-  }
-  </style>
 
 </head>
 <body>
@@ -50,13 +45,6 @@ if (!isset($_SESSION['user_id'])) {
       </div>
       <div class="window-body">
         <p><b>Admin <?php echo htmlspecialchars($_SESSION['username']); ?></b></p>
-        <?php
-        if(!empty($_GET["success"])) {
-          if($_GET["success"] == "success") {
-            echo "<b><p>Les données ont bien été modifiées avec succès</b></p>";
-          }
-        };
-        ?>
         <div class="field-row-stacked">
           <label>Comptes utilisateurs :</label>
           <?php include 'users/index.php'; ?>
@@ -64,19 +52,8 @@ if (!isset($_SESSION['user_id'])) {
       </div>
     </div>
   </div>
-<script src="../script.js"></script>
-<script>
-  document.querySelectorAll('.toggle-header').forEach(header => {
-    header.addEventListener('click', () => {
-      const details = header.nextElementSibling;
-      const arrow = header.querySelector('.arrow');
+  <script src="../script.js"></script>
 
-      const isVisible = details.style.display === 'block';
-      details.style.display = isVisible ? 'none' : 'block';
-      arrow.textContent = isVisible ? '▶' : '▼';
-    });
-  });
-</script>
 
 </body>
 </html>

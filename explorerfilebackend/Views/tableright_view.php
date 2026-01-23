@@ -30,6 +30,34 @@
         <button type="button" class="button" onclick="toggleDeconnectionButton(baseDir)">Déconnexion</button>
       </div>
 
+      <div class="window" style="margin-bottom: 15px;">
+        <div class="title-bar">
+          <div class="title-bar-text">Changer le mot de passe</div>
+        </div>
+        <div class="window-body">
+          <form method="POST" action="update_password.php">
+            <input type="hidden" name="user_id" value="<?= htmlspecialchars($userId) ?>" />
+            <div class="field-row-stacked">
+              <label>Nouveau mot de passe:</label>
+              <input type="password" name="new_password" required />
+            </div>
+            <div class="field-row-stacked">
+              <label>Confirmer le mot de passe:</label>
+              <input type="password" name="confirm_password" required />
+            </div>
+            <div class="field-row-stacked">
+              <button type="submit" class="button">Changer le mot de passe</button>
+            </div>
+            <?php if (!empty($_GET['password_error'])): ?>
+              <p style="color: red;"><?= htmlspecialchars($_GET['password_error']) ?></p>
+            <?php endif; ?>
+            <?php if (!empty($_GET['password_success'])): ?>
+              <p style="color: green;"><?= htmlspecialchars($_GET['password_success']) ?></p>
+            <?php endif; ?>
+          </form>
+        </div>
+      </div>
+
       <div class="drag-container">
         <div class="window">
           <div class="title-bar">
