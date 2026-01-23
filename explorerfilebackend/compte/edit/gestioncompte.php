@@ -1,5 +1,5 @@
     <?php
-    include '../connectdb.php';
+    $conn = require __DIR__ . '/../../Config/database.php';
 
     $sql = "SELECT id, username, email FROM userdata";
     $stmt = $conn->query($sql);

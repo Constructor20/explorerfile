@@ -1,14 +1,14 @@
 <?php
-include 'connectdb.php';
+$conn = require __DIR__ . '/Config/database.php';
 // Récupère le chemin actuel ou le dossier racine si aucun paramètre 'path' n'est fourni
 $chemin = isset($_GET['path']) ? $_GET['path'] : __DIR__ . "/new";
 $server_host = $_SERVER['HTTP_HOST'];
 
 function findIcon($pChemin) {
   $pathinfo = pathinfo($pChemin);
-  $url = "/explorerfile/explorerfilebackend";
+  $url = "/explorerfilebackend";
   $iconDir = __DIR__ . '/icon';
-  
+
   if(is_dir($pChemin)){
     return "<img src='$url/icon/folder2.png' class='icon' style='vertical-align: middle;' />";
   }
@@ -20,7 +20,7 @@ function findIcon($pChemin) {
     $file = $url . '/icon/file.png';
   }
   return "<img src='$file' class='icon' style='vertical-align: middle;' />";
-} 
+}
 function path($conn) {
     if (!isset($_SESSION['user_id'])) {
         return [];

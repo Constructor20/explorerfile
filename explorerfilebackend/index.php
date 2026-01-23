@@ -74,7 +74,7 @@ if (!isset($_SESSION['user_id'])) {
                   <?php if($_SESSION['isadmin'] == 1) {?>
                     <button type="button" class="button" id='gotoEditProfile' onclick='gotomanagementaccounts(baseDir)'>Gestion des Comptes</button>
                   <?}?>
-                  <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton(baseDir)">Déconnexion</button>
+                  <button class="button" id="updateDeconnection" onclick="toggleDeconnectionButton()">Déconnexion</button>
               </div>
           </tbody>
         </table>

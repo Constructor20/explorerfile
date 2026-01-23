@@ -119,7 +119,7 @@ function toggleUpdateButton() {
   updateBtn.style.display = checkbox.checked ? 'block' : 'none';
 }
 
-baseDir = '/explorerfile/explorerfilebackend/';
+baseDir = '/';
 
 // Redirection Edit mot de passe
 function redirectionPswd (baseDir){
@@ -131,7 +131,7 @@ function redirectionPswd (baseDir){
 
 // Déconnexion
 function toggleDeconnectionButton(baseDir) {
-  window.location.href = baseDir + 'logout.php';
+  window.location.href = 'logout.php';
 }
 
 // User fichier normale
@@ -141,12 +141,12 @@ function gotomanagementfiles(baseDir) {
 
 // Compte Admin
 function gotomanagementaccounts(baseDir) {
-    window.location.href = baseDir + 'compte/compteadmin.php';
+    window.location.href = baseDir + 'admin.php';
 }
 
 // Profil user
 function gotoaccounts(baseDir) {
-    window.location.href = baseDir + 'compte/compte.php';
+    window.location.href = baseDir + 'profile.php';
 }
 
 // Edit user access files

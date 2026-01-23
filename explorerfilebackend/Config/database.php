@@ -1,8 +1,6 @@
 <?php
 
 try {
-    // host.docker.internal pointe vers ton Windows,
-    // qui redirige ensuite vers le conteneur MySQL grâce au mappage de port.
     $conn = new PDO(
         "mysql:host=host.docker.internal;port=3306;dbname=explorerfile;charset=utf8",
         "root",
@@ -14,3 +12,5 @@ try {
     error_log("Erreur connexion BDD : " . $e->getMessage());
     die("Erreur de connexion à la base de données");
 }
+
+return $conn;

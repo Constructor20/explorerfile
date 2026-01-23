@@ -1,42 +1,34 @@
 <?php
+
+require_once '../../Config/paths.php';
+require_once '../../Config/database.php';
+require_once '../../Repositories/PermissionRepository.php';
+require_once '../../Models/Permission.php';
+
 session_start();
-include '../../connectdb.php';
 
 $userId = $_POST['user_id'] ?? null;
-// var_dump($userId);
-var_dump($_POST);
+$permissionsJson = $_POST['permissions'] ?? null;
 
+if (!$userId || !$permissionsJson) {
+    die('Données invalides');
+}
 
-// pour récupérer les droits user pour checkbox
-// function pathRight ($conn){
-//     if (!isset($_POST['user_id'])) {
-//         return [];
-//     }
-//     $userId = (int) $_POST['user_id'];
+try {
+    $repository = new PermissionRepository($conn);
+    $paths = json_decode($permissionsJson, true);
 
-//     $sql = "SELECT encodedjson FROM permission WHERE user_id = :id";
-//     $stmt = $conn->prepare($sql);
-//     $stmt->bindValue(':id', $userId, PDO::PARAM_INT);
-//     $stmt->execute();
+    if (!is_array($paths)) {
+        $paths = [];
+    }
 
-//     $json = $stmt->fetchColumn();
+    $permission = new Permission((int) $userId, $paths);
+    $repository->save($permission);
 
-//     if (!$json) {
-//         return [];
-//     }
+    header('Location: tableright.php?user_id=' . $userId);
+    exit;
 
-//     $decoded = json_decode($json, true);
-    
-//     // Retourner le tableau 'paths' si présent, sinon le tableau décod­é complet
-//     if (is_array($decoded) && isset($decoded['paths'])) {
-//         return $decoded['paths'];
-//     }
-    
-//     return is_array($decoded) ? $decoded : [];
-// }
-
-//modification du chemin
-//
-//affichage chemin
-
-// header('Location: tableright.php');
+} catch (Exception $e) {
+    error_log('Erreur dans tablerightinc.php: ' . $e->getMessage());
+    die('Erreur lors de la sauvegarde des permissions.');
+}

@@ -1,0 +1,15 @@
+services:
+  web:
+    image: php:8.2-apache
+    volumes:
+      - ./explorerfilebackend:/var/www/html
+    ports:
+      - "8001:80"
+    networks:
+      - reseau_existant
+    command: sh -c "docker-php-ext-install pdo pdo_mysql && a2enmod rewrite && apache2-foreground"
+
+networks:
+  reseau_existant:
+    external: true
+    name: docker_default # Remplacez par le vrai nom
