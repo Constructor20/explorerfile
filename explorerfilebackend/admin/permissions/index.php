@@ -9,13 +9,13 @@ require_once "../../Repositories/PermissionRepository.php";
 session_start();
 
 if (!isset($_SESSION["user_id"])) {
-    header("Location: ../../registerphp/login.php");
+    header("Location: ../../login.php");
     exit();
 }
 
-$userId = $_GET["user_id"] ?? ($_POST["user_id"] ?? null);
+$userId = $_GET['user_id'] ?? null;
 
-if (!$userId) {
+if (!$userId || !is_numeric($userId)) {
     die("ID utilisateur requis");
 }
 
@@ -29,6 +29,6 @@ try {
 
     require "../../Views/tableright_view.php";
 } catch (Exception $e) {
-    error_log("Erreur dans tableright.php: " . $e->getMessage());
+    error_log("Erreur dans permissions/index.php: " . $e->getMessage());
     die("Une erreur est survenue lors du chargement des données.");
 }

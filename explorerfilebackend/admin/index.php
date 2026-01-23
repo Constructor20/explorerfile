@@ -3,7 +3,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit;
 }
 ?>
@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 <head>
   <meta charset="UTF-8">
   <title>Admin - Gestion des comptes</title>
-  <link rel="stylesheet" href="style/stylecompte.css">
+  <link rel="stylesheet" href="../style/stylecompte.css">
   <link rel="stylesheet" href="https://unpkg.com/98.css">
   <style>
   .toggle-header {
@@ -33,8 +33,8 @@ if (!isset($_SESSION['user_id'])) {
       <ul>
         <li><b>Home</b></li>
         <li class="browse-item">🔍 Browse</li>
-        <li><a href="profile.php">Profil</a></li>
-        <li><a href="index.php">Accéder au gestionnaires de fichiers</a></li>
+        <li><a href="../compte/">Profil</a></li>
+        <li><a href="../index.php">Accéder au gestionnaires de fichiers</a></li>
       </ul>
     </div>
   </div>
@@ -59,14 +59,13 @@ if (!isset($_SESSION['user_id'])) {
         ?>
         <div class="field-row-stacked">
           <label>Comptes utilisateurs :</label>
-          <?php include 'compte/edit/gestioncompte.php'; ?>
+          <?php include 'users/index.php'; ?>
         </div>
       </div>
     </div>
   </div>
-<script src="script.js"></script>
+<script src="../script.js"></script>
 <script>
-  // Pour gérer l'ouverture/fermeture du bloc
   document.querySelectorAll('.toggle-header').forEach(header => {
     header.addEventListener('click', () => {
       const details = header.nextElementSibling;

@@ -3,7 +3,7 @@
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit;
 }
 ?>
@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 <head>
   <meta charset="UTF-8">
   <title>Utilisateur - Modifier les informations</title>
-  <link rel="stylesheet" href="style/stylecompte.css">
+  <link rel="stylesheet" href="../style/stylecompte.css">
   <link rel="stylesheet" href="https://unpkg.com/98.css">
 </head>
 <body>
@@ -25,10 +25,10 @@ if (!isset($_SESSION['user_id'])) {
     <div class="window-body">
       <h4>Mon Compte</h4>
       <ul>
-        <li><a href="index.php">Home</a></li>
-        <li><a href="profile.php">Mon Profil</a></li>
+        <li><a href="../index.php">Home</a></li>
+        <li><b>Mon Profil</b></li>
         <?php if($_SESSION['isadmin'] == 1) {
-            echo"<li><a href='admin.php'>Gestion des comptes</a></li>";
+            echo"<li><a href='../admin/'>Gestion des comptes</a></li>";
         }?>
       </ul>
     </div>
@@ -44,7 +44,7 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             <div class="window-body">
                 <p><b>Utilisateur : <?php echo htmlspecialchars($_SESSION['username']);?></b></p>
-                <form action="compte/compteinc.php" method="POST">
+                <form action="update.php" method="POST">
                     <div class="field-row-stacked">
                         <label>Nom</label>
                         <input type="text" name="username" value="<?php echo htmlspecialchars($_SESSION['username']); ?>" id="username">
@@ -92,6 +92,6 @@ if (!isset($_SESSION['user_id'])) {
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="../script.js"></script>
 </body>
 </html>

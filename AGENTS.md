@@ -87,8 +87,8 @@ No automated test suite currently configured. Manual testing via browser require
 **Imports/Includes:**
 
 - Use `include` or `require` for PHP files
-- Include `connectdb.php` first in backend files
-- Use relative paths: `include '../connectdb.php'`
+- Include `Config/database.php` for database connections
+- Use relative paths: `require __DIR__ . '/../Config/database.php'`
 
 **Type Handling:**
 
@@ -286,11 +286,28 @@ explorerfilebackend/           # Backend PHP application
     - js/                    # JavaScript modules
       - permission-manager.js
     - css/                   # Component-specific styles
+  - Controllers/              # Request handlers
+    - AuthController.php      # Authentication logic
+  - compte/                  # User account management ONLY
+    - index.php             # User profile page
+    - update.php            # POST: Update user profile
+    - password/             # Password management
+      - index.php          # Password change form
+      - update.php         # POST: Update password
+  - admin/                   # Admin panel (NEW - RESTful routes)
+    - index.php            # Admin dashboard
+    - users/               # User management
+      - index.php         # User list + inline edit
+      - update.php        # POST: Update user
+    - permissions/         # Permission management
+      - index.php         # Permission editor
+      - update.php        # POST: Save permissions
   - index.php                # Main file explorer
   - affichage.php            # Display logic & table rendering
   - connectdb.php            # Database connection
-  - registerphp/             # User registration/login
-  - compte/                  # User profile & account management
+  - register.php             # User registration
+  - login.php                # User login
+  - logout.php               # User logout
   - new/                     # Default file directory
   - icon/                    # File/folder icons
   - style/                   # Global styles
@@ -419,6 +436,52 @@ define('FOLDER_ICON', ICON_URL . '/folder2.png');
 define('FILE_ICON', ICON_URL . '/file.png');
 ```
 
+### Route Architecture
+
+**RESTful Design:**
+- **User Routes**: `/compte/` - Profile, password management
+- **Admin Routes**: `/admin/` - User management, permissions
+- **GET**: Display forms/pages
+- **POST**: Process form submissions
+
+**Route Patterns:**
+- `{resource}/` - Display resource (GET)
+- `{resource}/update.php` - Update resource (POST)
+- Nested resources: `/admin/permissions/?user_id={id}`
+
+**Authentication Middleware:**
+```php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: /login.php');
+    exit;
+}
+if ($_SESSION['isadmin'] !== 1) {
+    header('Location: /compte/');
+    exit;
+}
+```
+
+**Form Action Examples:**
+```php
+// User profile update
+<form action="update.php" method="POST">
+
+// Admin user update
+<form action="update.php" method="POST">
+
+// Permission editor
+<form action="permissions/" method="GET">
+    <input type="hidden" name="user_id" value="<?php echo $userId; ?>">
+</form>
+
+// Permission save
+<form action="update.php" method="POST">
+    <input type="hidden" name="user_id" value="<?php echo $userId; ?>">
+    <input type="hidden" name="permissions" value="">
+</form>
+```
+
 ### Permission System
 
 User file access stored as JSON in `permission` table:
@@ -434,7 +497,7 @@ Decoded and filtered in `affichage.php` via `path()` function.
 ```php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header('Location: registerphp/login.php');
+    header('Location: /login.php');
     exit;
 }
 ```

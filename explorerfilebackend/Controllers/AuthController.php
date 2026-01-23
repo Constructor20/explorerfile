@@ -54,11 +54,11 @@ class AuthController
         $_SESSION['isadmin'] = $user->isAdmin() ? 1 : 0;
 
         if ($user->isAdmin()) {
-            header('Location: /admin.php');
+            header('Location: /admin/');
             exit;
         }
 
-        header('Location: /profile.php');
+        header('Location: /compte/');
         exit;
     }
 

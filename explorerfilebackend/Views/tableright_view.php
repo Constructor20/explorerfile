@@ -54,7 +54,7 @@
         </div>
       </div>
 
-      <form id="permissionsForm" method="post" action="tablerightinc.php">
+      <form id="permissionsForm" method="post" action="update.php">
         <input type="hidden" id="user_id_input" name="user_id" value="<?= htmlspecialchars(
             $userId,
         ) ?>" />

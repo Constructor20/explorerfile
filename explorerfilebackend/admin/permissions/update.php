@@ -25,10 +25,10 @@ try {
     $permission = new Permission((int) $userId, $paths);
     $repository->save($permission);
 
-    header('Location: tableright.php?user_id=' . $userId);
+    header('Location: ?user_id=' . $userId);
     exit;
 
 } catch (Exception $e) {
-    error_log('Erreur dans tablerightinc.php: ' . $e->getMessage());
+    error_log('Erreur dans permissions/update.php: ' . $e->getMessage());
     die('Erreur lors de la sauvegarde des permissions.');
 }
