@@ -86,4 +86,17 @@ class UserRepository
 
         return $stmt->execute();
     }
+
+    public function update(User $user): bool
+    {
+        $sql = "UPDATE userdata SET username = :username, email = :email,
+            isadmin = :isadmin WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':username', $user->getUsername(), PDO::PARAM_STR);
+        $stmt->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
+        $stmt->bindValue(':isadmin', $user->isAdmin() ? 1 : 0, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $user->getId(), PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }

@@ -5,6 +5,7 @@ require_once "../../Config/database.php";
 require_once "../../Services/FileSystemService.php";
 require_once "../../Services/PermissionService.php";
 require_once "../../Repositories/PermissionRepository.php";
+require_once "../../Repositories/UserRepository.php";
 
 session_start();
 
@@ -20,6 +21,15 @@ if (!$userId || !is_numeric($userId)) {
 }
 
 try {
+    $userRepository = new UserRepository($conn);
+    $user = $userRepository->findById((int)$userId);
+    if (!$user) {
+        die("Utilisateur non trouvé");
+    }
+    $userName = $user->getUsername();
+    $userEmail = $user->getEmail();
+    $userIsAdmin = $user->isAdmin();
+
     $fileSystemService = new FileSystemService(BASE_DIR);
     $permissionService = new PermissionService($conn);
 

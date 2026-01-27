@@ -20,17 +20,38 @@
     </div>
 
     <div class="window-body">
-      <div class="field-row" style="justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <div>
-          <label for="user_id">ID Utilisateur:</label>
-          <input type="number" id="user_id" name="user_id" value="<?= htmlspecialchars(
-              $userId,
-          ) ?>" />
+      <div class="field-row" style="justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+        <div class="user-info-section">
+          <div class="user-info-item">
+            <span class="user-info-label">Utilisateur:</span>
+            <span class="user-info-value"><?= htmlspecialchars($userName ?? '') ?></span>
+          </div>
+          <div class="user-info-item">
+            <span class="user-info-label">Email:</span>
+            <span class="user-info-value"><?= htmlspecialchars($userEmail ?? '') ?></span>
+          </div>
+          <div class="user-role-section">
+            <div class="current-role-badge <?= ($userIsAdmin ?? false) ? 'role-admin' : 'role-user' ?>">
+              <?= ($userIsAdmin ?? false) ? '👤 Administrateur' : '🧑 Utilisateur Standard' ?>
+            </div>
+            <form method="POST" action="update_admin.php" class="admin-toggle-form">
+              <input type="hidden" name="user_id" value="<?= htmlspecialchars($userId) ?>" />
+              <label class="admin-toggle-switch">
+                <input type="checkbox" name="is_admin" value="1" <?= ($userIsAdmin ?? false) ? 'checked' : '' ?> onchange="this.form.submit()" />
+                <span class="toggle-slider"></span>
+                <span class="toggle-label"><?= ($userIsAdmin ?? false) ? 'Désactiver admin' : 'Activer admin' ?></span>
+              </label>
+            </form>
+          </div>
+          <input type="hidden" id="user_id" name="user_id" value="<?= htmlspecialchars($userId) ?>" />
         </div>
-        <button type="button" class="button" onclick="toggleDeconnectionButton(baseDir)">Déconnexion</button>
+        <div>
+          <button type="button" class="button" onclick="window.location.href='../../admin/'">Retour</button>
+          <button type="button" class="button" onclick="toggleDeconnectionButton(baseDir)">Déconnexion</button>
+        </div>
       </div>
 
-      <div class="window" style="margin-bottom: 15px;">
+      <div class="window password-section-compact" style="margin-bottom: 15px;">
         <div class="title-bar">
           <div class="title-bar-text">Changer le mot de passe</div>
         </div>
