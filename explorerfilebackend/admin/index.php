@@ -23,14 +23,39 @@ if (!isset($_SESSION['user_id'])) {
     <div class="title-bar">
       <div class="title-bar-text">Admin</div>
     </div>
-    <div class="window-body">
-      <h4>Compte</h4>
-      <ul>
-        <li><b>Home</b></li>
-        <li class="browse-item">🔍 Browse</li>
-        <li><a href="../compte/">Profil</a></li>
-        <li><a href="../index.php">Accéder au gestionnaires de fichiers</a></li>
-      </ul>
+    <div class="sidebar-body">
+      <fieldset class="nav-section">
+        <legend>Navigation</legend>
+        <ul class="nav-list">
+          <li class="nav-item current">
+            <img src="../icon/admin.svg" alt="" class="nav-icon">
+            <span>Administration</span>
+          </li>
+          <li class="nav-item">
+            <a href="../compte/">
+              <img src="../icon/user.svg" alt="" class="nav-icon">
+              <span>Mon profil</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../index.php">
+              <img src="../icon/folder.svg" alt="" class="nav-icon">
+              <span>Fichiers</span>
+            </a>
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset class="nav-section">
+        <legend>Outils admin</legend>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="./users/">
+              <img src="../icon/users.svg" alt="" class="nav-icon">
+              <span>Utilisateurs</span>
+            </a>
+          </li>
+        </ul>
+      </fieldset>
     </div>
   </div>
 

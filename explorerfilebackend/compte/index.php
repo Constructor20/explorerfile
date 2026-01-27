@@ -22,15 +22,30 @@ if (!isset($_SESSION['user_id'])) {
     <div class="title-bar">
       <div class="title-bar-text">Utilisateur</div>
     </div>
-    <div class="window-body">
-      <h4>Mon Compte</h4>
-      <ul>
-        <li><a href="../index.php">Home</a></li>
-        <li><b>Mon Profil</b></li>
-        <?php if($_SESSION['isadmin'] == 1) {
-            echo"<li><a href='../admin/'>Gestion des comptes</a></li>";
-        }?>
-      </ul>
+    <div class="sidebar-body">
+      <fieldset class="nav-section">
+        <legend>Navigation</legend>
+        <ul class="nav-list">
+          <li class="nav-item current">
+            <img src="../icon/file.png" alt="" class="nav-icon">
+            <span>Mon profil</span>
+          </li>
+          <li class="nav-item">
+            <a href="../index.php">
+              <img src="../icon/folder2.png" alt="" class="nav-icon">
+              <span>Fichiers</span>
+            </a>
+          </li>
+          <?php if($_SESSION['isadmin'] == 1) {
+            echo '<li class="nav-item">
+            <a href="../admin/">
+              <img src="../icon/html.png" alt="" class="nav-icon">
+              <span>Administration</span>
+            </a>
+          </li>';
+          }?>
+        </ul>
+      </fieldset>
     </div>
   </div>
 
