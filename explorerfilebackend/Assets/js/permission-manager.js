@@ -18,6 +18,16 @@ const PermissionManager = (function () {
     return count;
   }
 
+  function fileIcon(displayName){
+    const baseDirIcon = "/marvin-architecture/explorerfilebackend/icon/";
+    const extension = displayName.lastIndexOf(".");
+    let fileExtension = extension > 0 ? displayName.slice(extension + 1).toLowerCase() : "file";
+    return {
+      iconUrl: `${baseDirIcon}${fileExtension}.png`,
+      fallbackUrl: `${baseDirIcon}file.png`
+    }
+  }
+
   function buildTreeHTML(tree, parentPath = "") {
     let html = "";
 
@@ -63,17 +73,18 @@ const PermissionManager = (function () {
         `;
       } else {
         const displayName = key.split("/").pop();
+        const { iconUrl, fallbackUrl } = fileIcon(displayName);
 
         html += `
           <li>
             <div class="tree-item file" draggable="true" data-path="${fullPath}" data-type="file">
               <span class="tree-toggle"></span>
-              <img src="../../icon/file.png" class="tree-icon" alt="fichier">
+              <img src="${iconUrl}" class="tree-icon" alt="fichier" onerror="this.src='${fallbackUrl}';">
               <span class="tree-label">${displayName}</span>
             </div>
           </li>
         `;
-      }
+        }
     }
 
     return html;
@@ -176,12 +187,13 @@ const PermissionManager = (function () {
         `;
       } else {
         const displayName = key.split("/").pop();
+        const { iconUrl, fallbackUrl } = fileIcon(displayName);
 
         html += `
           <li>
             <div class="tree-item file" draggable="true" data-path="${originalPath}" data-type="file">
               <span class="tree-toggle"></span>
-              <img src="../../icon/file.png" class="tree-icon" alt="fichier">
+              <img src="${iconUrl}" class="tree-icon" alt="fichier" onerror="this.src='${fallbackUrl}';">
               <span class="tree-label">${displayName}</span>
               <button type="button" class="remove-btn" draggable="false" data-path="${originalPath}" style="margin-left: auto;">✕</button>
             </div>
