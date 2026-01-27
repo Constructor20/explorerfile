@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add explorerfilebackend/admin/users/index.php explorerfilebackend/admin/users/toggle_admin.php explorerfilebackend/Views/tableright_view.php explorerfilebackend/Assets/css/tableright.css explorerfilebackend/Repositories/UserRepository.php explorerfilebackend/admin/permissions/index.php)",
+      "Bash(git add explorerfilebackend/admin/permissions/update_admin.php)",
+      "Bash(git commit -m \"feat\\(admin\\): improve admin role UX with visual badges and inline toggles\n\n- Add visual role badges \\(👤 Admin / 🧑 User\\) with color coding\n- Add light green row highlighting for admin users in user list\n- Add inline Promote/Demote buttons with self-protection\n- Create toggle_admin.php handler for admin role changes\n- Create update_admin.php for permissions page toggle\n- Replace checkbox with toggle switch on permissions page\n- Add prominent role badge on permissions page\n- Prevent direct access to users/index.php standalone page\")"
+    ]
+  }
+}
