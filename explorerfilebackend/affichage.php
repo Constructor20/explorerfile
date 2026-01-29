@@ -52,6 +52,7 @@ function path($conn)
         $path = ltrim($path, "/"); // Supprimer le '/' initial s'il existe
         $filterPath[] = $racine . "/" . $path;
     }
+    var_dump($json);
     return $filterPath;
 }
 $paths = path($conn);
