@@ -1,0 +1,193 @@
+document.querySelectorAll(".draggable").forEach((windowEl, index) => {
+    const titleBar = windowEl.querySelector(".title-bar");
+    const minimizeBtn = titleBar.querySelector('button[aria-label="Minimize"]');
+    const maximizeBtn = titleBar.querySelector('button[aria-label="Maximize"]');
+    const content = windowEl.querySelector(".window-body");
+
+    const windowId = `window-${index}`;
+    let isDragging = false,
+        offsetX,
+        offsetY;
+    let isMaximized = false;
+    let originalStyle = {};
+
+    // Charger état depuis localStorage
+    const saved = JSON.parse(localStorage.getItem(windowId));
+    if (saved) {
+        if (saved.isMaximized) {
+            maximizeWindow();
+        } else {
+            windowEl.style.left = saved.left;
+            windowEl.style.top = saved.top;
+            windowEl.style.position = "absolute";
+        }
+    }
+
+    titleBar.style.cursor = "move";
+
+    titleBar.addEventListener("mousedown", (e) => {
+        if (isMaximized) return;
+
+        isDragging = true;
+        const rect = windowEl.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+
+        windowEl.style.position = "absolute";
+        windowEl.style.zIndex = 1000;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (isDragging && !isMaximized) {
+            const left = `${e.clientX - offsetX}px`;
+            const top = `${e.clientY - offsetY}px`;
+
+            windowEl.style.left = left;
+            windowEl.style.top = top;
+
+            // Enregistrer la position si pas maximisé
+            localStorage.setItem(
+                windowId,
+                JSON.stringify({
+                    left,
+                    top,
+                    isMaximized: false,
+                }),
+            );
+        }
+    });
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+    });
+
+    // Minimize
+    if (minimizeBtn && content) {
+        minimizeBtn.addEventListener("click", () => {
+            content.style.display =
+                content.style.display === "none" ? "flex" : "none";
+        });
+    }
+
+    // Maximize
+    if (maximizeBtn) {
+        maximizeBtn.addEventListener("click", () => {
+            if (!isMaximized) {
+                maximizeWindow();
+            } else {
+                restoreWindow();
+            }
+        });
+    }
+
+    function maximizeWindow() {
+        originalStyle = {
+            left: windowEl.style.left,
+            top: windowEl.style.top,
+            width: windowEl.style.width,
+            height: windowEl.style.height,
+            position: windowEl.style.position,
+        };
+
+        windowEl.style.left = "0";
+        windowEl.style.top = "0";
+        windowEl.style.width = "100vw";
+        windowEl.style.height = "100vh";
+        windowEl.style.position = "fixed";
+        windowEl.style.margin = "0";
+        isMaximized = true;
+
+        localStorage.setItem(
+            windowId,
+            JSON.stringify({
+                isMaximized: true,
+            }),
+        );
+    }
+
+    function restoreWindow() {
+        Object.entries(originalStyle).forEach(([key, value]) => {
+            windowEl.style[key] = value;
+        });
+        isMaximized = false;
+
+        localStorage.setItem(
+            windowId,
+            JSON.stringify({
+                left: originalStyle.left,
+                top: originalStyle.top,
+                isMaximized: false,
+            }),
+        );
+    }
+});
+
+// function toggleDeconnectionButton() {
+//   window.location.href = '../logout.php';
+// }
+function toggleUpdateButton() {
+    const checkbox = document.getElementById("showUpdate");
+    const updateBtn = document.getElementById("updateButtonContainer");
+    updateBtn.style.display = checkbox.checked ? "block" : "none";
+}
+
+baseDir = "/explorerfile/explorerfilebackend/";
+
+// Redirection Edit mot de passe
+function redirectionPswd(baseDir) {
+    document
+        .getElementById("redirectioneditpswd")
+        .addEventListener("click", function (event) {
+            event.preventDefault();
+            window.location.href = baseDir + "compte/edit/editmdp.php";
+        });
+}
+
+// Déconnexion
+function toggleDeconnectionButton(baseDir) {
+    window.location.href = baseDir + "logout.php";
+}
+
+// User fichier normale
+function gotomanagementfiles(baseDir) {
+    window.location.href = baseDir + "index.php";
+}
+
+// Compte Admin
+function gotomanagementaccounts(baseDir) {
+    window.location.href = baseDir + "compte/compteadmin.php";
+}
+
+// Profil user
+function gotoaccounts(baseDir) {
+    window.location.href = baseDir + "compte/compte.php";
+}
+
+// Edit user access files
+function redirectioneditUser(baseDir) {
+    window.location.href = baseDir + "compte/edit/tableright.php";
+}
+
+function toggleCompteAdmin(baseDir) {
+    window.location.href = baseDir + "compte/compteadmin.php";
+}
+
+function toggleUpdateButtonAdmin(checkbox) {
+    const windowBloc = checkbox.closest(".window");
+
+    let updateButtonContainer = document.getElementsByName("update_account");
+
+    updateButtonContainer.forEach((theUpdate) => {
+        const checkbox = document.getElementById("showUpdate" + theUpdate.id);
+        const updateButton = document.getElementById(
+            "updateButtonContainer" + theUpdate.id,
+        );
+        if (checkbox.checked) {
+            updateButton.style.display = "block";
+        } else {
+            updateButton.style.display = "none";
+        }
+    });
+}
+
+function compareCheckbox() {}

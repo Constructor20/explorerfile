@@ -1,0 +1,23 @@
+body {
+    background-color: teal;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .window {
+    width: 320px;
+  }
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .register-form input {
+    margin-top: 4px;
+  }
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
